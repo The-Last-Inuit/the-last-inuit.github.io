@@ -1,6 +1,9 @@
-footer
-  p Relevant links:
-  nav
-    ul
-      li = link @env, "Docs", to: "https://hexdocs.pm/still/"
-      li = link @env, "Github", to: "https://github.com/still-ex/still"
+footer class="py-10 mt-12 border-t border-c64alt/30 text-xs opacity-80"
+  div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2"
+    p
+      span id="year"
+        | 2025
+        |  ©
+        |  i dunno what i am doing
+    a href="https://thelastinu.it"
+      | built with ❤️ by thelastinuit

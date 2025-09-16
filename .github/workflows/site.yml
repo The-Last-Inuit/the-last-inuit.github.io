@@ -32,8 +32,8 @@ jobs:
             _build
             _site
           key: mix-${{ hashFiles('mix.lock') }}
-      - run: MIX_ENV=site mix deps.get
-      - run: MIX_ENV=site mix still.compile
+      - run: MIX_ENV=config mix deps.get
+      - run: MIX_ENV=config mix still.compile
       - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,11 +1,8 @@
 header class="pt-10 pb-6 border-b border-c64alt/30"
   div class="flex items-center justify-between gap-4"
     a class="group inline-flex items-center gap-3" href="#"
-      span class="inline-block h-4 w-4 bg-c64alt shadow-soft"
       h1 class="text-2xl tracking-wide" i dunno what i am doing
-    nav class="text-sm"
-      ul class="flex items-center gap-4"
-        li: a class="hover:underline underline-offset-4" href="/rss.xml" aria-label="RSS" RSS
+      span class="block"
   p class="mt-3 text-sm opacity-80"
     em Software engineering à la Mexicana
     div class="text-xs"

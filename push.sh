@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
+mix still.compile
 git add .
-mv _site/* .
 git commit -m "update website".
 git push -f

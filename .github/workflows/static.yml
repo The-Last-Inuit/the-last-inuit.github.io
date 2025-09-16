@@ -31,6 +31,12 @@ jobs:
         run: |
           mkdir deploy
           cp -r css deploy/
+          cp apple* deploy/
+          cp android* deploy/
+          cp browser* deploy/
+          cp favicon* deploy/
+          cp manifest* deploy/
+          cp ms-* deploy/
           cp index.html deploy/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

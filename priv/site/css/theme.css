@@ -1355,7 +1355,6 @@ body {
   text-shadow: 0 0 1px #33ff33, 0 0 3px #33ff33;
   filter: contrast(1.2) brightness(1.1);
   position: relative;
-  overflow: hidden;
 }
 
 body::before {

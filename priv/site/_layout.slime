@@ -28,7 +28,7 @@ html lang="en"
     meta name="description" content="A software engineering blog."
     = link_to_css @env, "css/theme.css", media: "all"
 
-  body class="min-h-screen bg-c64bg text-c64ink antialiased font-mono"
+  body class="min-h-screen bg-black text-c64ink antialiased font-mono"
     div class="mx-auto max-w-prose px-4 sm:px-6 lg:px-8"
       main id="content" class="py-10 space-y-16"
         = @children

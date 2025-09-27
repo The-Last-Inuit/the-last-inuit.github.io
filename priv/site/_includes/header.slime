@@ -7,4 +7,8 @@ header class="pt-10 pb-6 border-b border-c64alt/30"
     em Software engineering à la Mexicana
     div class="text-xs"
       p
-        | This is a very opinionated blog about software engineering. None of the following is la neta del planeta. If you came here buscando la verdad absoluta, pos órale, move along, carnal. Aquí lo que hacemos is throw ideas around and see what kind of despapaye they cause. Basically, it’s like physics, but the cantina version: messy, questionable, and maybe con hangover. Use these ideas bajo tu propio riesgo, mijo.
+        | This is a very opinionated blog about software engineering. None of the following is la neta del planeta.
+        |  If you came here buscando la verdad absoluta, pos órale, move along, carnal.
+        |  Aquí lo que hacemos is throw ideas around and see what kind of despapaye they cause.
+        |  It's messy, questionable, and maybe ilogical.
+        |  Use these ideas bajo tu propio riesgo, mi'jo.

@@ -1,0 +1,202 @@
+details class="max-w-xl mx-auto mt-6"
+  summary class="cursor-pointer select-none text-white p-3 rounded flex items-center justify-between"
+    span How I Matched Invoices [2025.09.17](WIP)
+    span
+      | [+]
+
+  article class="max-w-none text-sm"
+    p class="mt-6"
+      | Matching financial records can be deceptively tricky. In this post, we'll
+      |  walk through a small, orthogonal design that lets you compose simple
+      |  rules into a robust system.
+
+    h4 class="mt-6 font-semibold tracking-tight"
+      | [•] The Situation
+
+    p class="text-base leading-7 text-neutral-700 dark:text-neutral-300"
+      | You have two lists. On one side, reconciliation_items (a.k.a. the poor souls from your bank statements).
+      |  On the other side, invoices (a.k.a. the proud warriors of your accounting system).
+      |  Your job? Match them together. And no, you can't just eyeball them while sipping cafe con leche.
+      |  You need something systematic, repeatable, and fun.
+
+    p class="text-base leading-7 text-neutral-700 dark:text-neutral-300"
+      | Most people hack together spaghetti if-else conditionals until the compiler shits bricks.
+      |  But we can do better. Much better. We can do it orthogonal ISA style.
+
+    p class="text-base leading-7 text-neutral-700 dark:text-neutral-300"
+      | OK, there are a million ways to do this, but it’s my engineering blog, so I'll do it my way, you're not my mom.
+
+    p class="text-base leading-7 text-neutral-700 dark:text-neutral-300"
+      | Fair warning: I'm obsessed with orthogonal instruction-set architecture.
+      |  Why? Dunno. My brain just, well, goes bananas.
+
+    h3 class="mt-6 font-semibold tracking-tight"
+      | [•] Orthogonal ISA
+
+    p class="text-base leading-7 text-neutral-700 dark:text-neutral-300"
+      | ISA = Instruction Set Architecture. Think of your CPU: it has a set of small,
+      |  atomic instructions
+      em
+        |  (add, load, jump, etc.).
+      |  Orthogonal means these instructions are independent and composable.
+      |  You don't have one giant monster instruction called
+      em
+        |  add_two_numbers_if_they_are_positive_and_the_day_is_tuesday.
+
+    p class="text-base leading-7 text-neutral-700 dark:text-neutral-300"
+      | Instead, you have:
+
+      ul
+        li
+          b • Require:
+          |  "This must be true, or bye-bye match."
+        li
+          b • Compare:
+          |  "Measure similarity and add some points."
+        li
+          b • Weight:
+          |  "Scale the score because why not."
+        li
+          b • Flag:
+          |  "Mark a condition in context, like ‘oye, this vendor looks sus’."
+        li
+          b • If:
+          |  "Branch to a tiny program if some condition is met."
+
+    p class="text-base leading-7 text-neutral-700 dark:text-neutral-300"
+      | It’s like LEGO, but for cookin' the numbers,
+      em
+        |  *cough*
+      | , accounting, I mean.
+
+    h3 class="mt-6 font-semibold tracking-tight"
+      | [•] Accounting
+
+    p class="text-base leading-7 text-neutral-700 dark:text-neutral-300"
+      | Reconciling invoices is usually:
+      ol
+        li
+          | • Amounts must match (más o menos).
+        li
+          | • Currencies must match (obvio).
+        li
+          | • Dates must be close (7 days? 10? depende de tu jefe).
+        li
+          | • Names must look similar enough (thank you, Jaro-Winkler, our hero).
+
+    p class="text-base leading-7 text-neutral-700 dark:text-neutral-300"
+      | This screams for an instruction set. Each rule is an instruction, and a match is just running a program over a pair.
+
+    h3 class="mt-6 font-semibold tracking-tight"
+      | [•] Solution
+
+    p class="text-base leading-7 text-neutral-700 dark:text-neutral-300"
+      | We build a tiny VM in Elixir:
+      ol
+        li
+          b
+            | ReconciliationMatcher.State
+          |  holds the left (reco item), right (invoice), current score, context, and logs.
+        li
+          b
+            | ReconciliationMatcher.Instruction
+          |  defines Require, Compare, Weight, Flag, If.
+        li
+          b
+            | ReconciliationMatcher.Metrics
+          |  is where we keep similarity functions: exact eq, within_days, within_pct, Jaro, etc.
+        li
+          b
+            | ReconciliationMatcher.VM
+          |  runs a program (list of instructions) on a pair.
+        li
+          b
+            | ReconciliationMatcher.Engine
+          |  matches two lists and applies tie-breakers.
+        li
+          b
+            | ReconciliationMatcher.DSL
+          |  makes writing rules human-friendly.
+
+    p class="text-base leading-7 text-neutral-700 dark:text-neutral-300"
+      | A rule program looks like this:
+
+    img src="OISA.png"
+
+    p class="text-base leading-7 text-neutral-700 dark:text-neutral-300"
+      | Now, to run:
+
+    img src="OISA-2.png"
+
+    p class="text-base leading-7 text-neutral-700 dark:text-neutral-300"
+      | This prints out matches, their scores, and a log of why they matched. Transparencia, baby.
+
+    h3 class="mt-6 font-semibold tracking-tight"
+      | [•] ReconciliationMatcher.State
+
+    img src="OISA-3.png"
+
+    p class="text-base leading-7 text-neutral-700 dark:text-neutral-300"
+      | The module is basically the state struct that your tiny matching "virtual machine" carries around while it executes instructions for a
+      em
+        |  {reconciliation_item, invoice}
+      |  pair.
+
+    h3 class="mt-6 font-semibold tracking-tight"
+      | [••] Definitions
+
+    p class="text-base leading-7 text-neutral-700 dark:text-neutral-300"
+      ul
+        li
+          b
+            | :left
+          em
+            |  This holds the reconciliation_item you’re currently evaluating. (Think: "bank side" record).
+        li
+          b
+            | :right
+          em
+            |  This holds the invoice you’re comparing against. (Think: "accounting side" record).
+        li
+          b
+            | :context
+          em
+            |  A map where instructions can store flags, intermediate values, or metadata.
+            |  Example: a Flag instruction could mark %{sus_vendor: true} if it detects something odd.
+            |  This makes the VM flexible: you can condition later instructions on these values.
+        li
+          b
+            | :score
+          em
+            |  The accumulated numeric score for how well the two records match.
+            |  Starts at 0.0 and grows as Compare instructions succeed.
+            |  Example: an amount similarity might add +0.7, a name similarity +0.3, giving you 1.0.
+        li
+          b
+            | :hard_fail?
+          em
+            |  A boolean that says: “This pair should never match.”
+            |  If a Require instruction fails (like different currencies), this flips to true and stops further meaningful accumulation.
+            |  That way you don’t accidentally accept garbage matches.
+        li
+          b
+            | :log
+          em
+            |  A list of strings that track what happened during execution.
+            |  Every instruction appends a note here (e.g. "CMP amount ±1.5%: sim=0.98 * w=0.7 -> +0.686").
+            |  This makes it easy to explain matches later to humans (“oye jefe, mira the log!”).
+        li
+          b
+            | function :log
+          em
+            |  Small helper to append a message to the log.
+            |  It just prepends a new string (msg) to the list.
+
+    h3 class="mt-6 font-semibold tracking-tight"
+      | [to be continued...]
+
+
+
+
+
+

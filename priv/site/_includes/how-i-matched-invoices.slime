@@ -121,12 +121,12 @@ details class="max-w-xl mx-auto mt-6"
     p class="text-base leading-7 text-neutral-700 dark:text-neutral-300"
       | A rule program looks like this:
 
-    img src="OISA.png"
+    img src="/OISA.png"
 
     p class="text-base leading-7 text-neutral-700 dark:text-neutral-300"
       | Now, to run:
 
-    img src="OISA-2.png"
+    img src="/OISA-2.png"
 
     p class="text-base leading-7 text-neutral-700 dark:text-neutral-300"
       | This prints out matches, their scores, and a log of why they matched. Transparencia, baby.
@@ -134,7 +134,7 @@ details class="max-w-xl mx-auto mt-6"
     h3 class="mt-6 font-semibold tracking-tight"
       | [•] ReconciliationMatcher.State
 
-    img src="OISA-3.png"
+    img src="/OISA-3.png"
 
     p class="text-base leading-7 text-neutral-700 dark:text-neutral-300"
       | The module is basically the state struct that your tiny matching "virtual machine" carries around while it executes instructions for a

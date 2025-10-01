@@ -7,8 +7,10 @@ header class="pt-10 pb-6 border-b border-c64alt/30"
     em Software engineering à la Mexicana
     div class="text-xs"
       p
-        | This is a very opinionated blog about software engineering. None of the following is la neta del planeta.
-        |  If you came here buscando la verdad absoluta, pos órale, move along, carnal.
-        |  Aquí lo que hacemos is throw ideas around and see what kind of despapaye they cause.
-        |  It's messy, questionable, and maybe ilogical.
-        |  Use these ideas bajo tu propio riesgo, mi'jo.
+        | This is a very opinionated blog about software engineering. None of the following is la
+        em
+          | neta del planeta.
+        |  If you came here tru tru, nah, move along, carnal.
+        |  What we do he'a is throw ideas 'round and see what kind of desmadre they cause.
+        |  It's messy, questionable, ilogical, and maybe illegal.
+        |  Don't use these ideas, play, learn, and move on, carnal.

@@ -1,4 +1,4 @@
-details class="max-w-xl mx-auto mt-6"
+details class="max-w-xl mx-auto"
   summary class="cursor-pointer select-none text-white p-3 rounded flex items-center justify-between"
     span Database [2025.10.29](WIP)
     span

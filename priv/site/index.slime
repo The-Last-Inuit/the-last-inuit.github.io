@@ -2,6 +2,7 @@
 layout: _layout.slime
 ---
 = include(@env, "_includes/header.slime")
+= include(@env, "_includes/noumenon.slime")
 = include(@env, "_includes/database.slime")
 = include(@env, "_includes/a-simple-redis.slime")
 = include(@env, "_includes/how-i-matched-invoices.slime")

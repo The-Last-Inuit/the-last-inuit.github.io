@@ -1,6 +1,6 @@
 details class="max-w-xl mx-auto mt-2"
   summary class="cursor-pointer select-none text-white p-3 rounded flex items-center justify-between"
-    span How I Matched Invoices [2025.09.17](WIP)
+    span How I Matched Invoices (WIP)
     span
       | [+]
 
@@ -194,6 +194,9 @@ details class="max-w-xl mx-auto mt-2"
           em
             |  Small helper to append a message to the log.
             |  It just prepends a new string (msg) to the list.
+
+    h3 class="mt-6 font-semibold tracking-tight"
+      | [•] ReconciliationMatcher.Instr
 
     h3 class="mt-6 font-semibold tracking-tight"
       | [to be continued...]

@@ -1,0 +1,2 @@
+gen:
+	mix still.compile

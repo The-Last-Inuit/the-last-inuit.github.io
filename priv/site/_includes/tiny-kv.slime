@@ -1,0 +1,32 @@
+details class="max-w-xl mx-auto mt-6"
+  summary class="cursor-pointer select-none text-white p-3 rounded flex items-center justify-between"
+    span Systems Engineering: TinyKV (Elixir)
+    span
+      | [+]
+
+  article class="max-w-none text-sm"
+    p class="mt-6"
+      | For the time being, working on The World of Noumenon requires time and thought. All of that is good, but I also want other things in life. One of the things I like is systems thinking. So I thought that perhaps I could build a few projects with Elixir and Rust to cover systems engineering within the context of software engineering.
+      |  Today, we will work on a simple key–value store:
+
+    p class="mt-6 text-base text-neutral-700 dark:text-neutral-300"
+      | TinyKV – an in-memory key–value store over TCP
+
+    ul class="ml-6 mt-6"
+      li
+        | • Concepts to cover: sockets, protocols, concurrency, state, back-pressure.
+      li
+        | • Elixir: GenServer + Task.Supervisor + :gen_tcp
+      li
+        | • Rust: Tokio + async/await + TcpListener
+
+    p class="mt-6 text-base text-neutral-700 dark:text-neutral-300"
+      | Let’s dive in.
+
+    p class="mt-6 text-base text-neutral-700 dark:text-neutral-300"
+      | We can execute all the following code by using the
+      a href="https://gist.github.com/n0um3n4/30261f7eee95a3229a4d86d15459b921"
+        |  raw-dogged technique (if we need libraries).
+
+    div class="mt-6"
+      script src="https://gist.github.com/n0um3n4/f44a9b5de1a9447099426d599cd50bc3.js"

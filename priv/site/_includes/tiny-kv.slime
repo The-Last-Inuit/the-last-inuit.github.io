@@ -18,7 +18,7 @@ details class="max-w-xl mx-auto mt-6"
       li
         | • Elixir: GenServer + Task.Supervisor + :gen_tcp
       li
-        | • Rust: Tokio + async/await + TcpListener
+        | • Rust: std::net + std::thread + std::sync
 
     p class="mt-6 text-base text-neutral-700 dark:text-neutral-300"
       | Let’s dive in.
@@ -30,3 +30,9 @@ details class="max-w-xl mx-auto mt-6"
 
     div class="mt-6"
       script src="https://gist.github.com/n0um3n4/f44a9b5de1a9447099426d599cd50bc3.js"
+
+    p class="mt-6 text-base text-neutral-700 dark:text-neutral-300"
+      | For the rust version, I dunno how to make it a raw-dogged version. Instead, we do the simple way:
+
+    div class="mt-6"
+      script src="https://gist.github.com/n0um3n4/b6832397fe800360b379844dcc85b6a1.js"

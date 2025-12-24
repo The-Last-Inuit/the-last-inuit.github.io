@@ -8,6 +8,7 @@ rm -rf ./img
 rm -rf ./js
 rm -rf ./posts
 mv public/* .
+rm -rf public
 git add .
 git commit -m "update website".
 git push -f

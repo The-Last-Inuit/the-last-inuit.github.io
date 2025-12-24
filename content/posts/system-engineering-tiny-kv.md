@@ -1,5 +1,5 @@
 +++
-title = "System Engineering | Tiny KV"
+title = "Systems Engineering | Tiny KV"
 date = 2025-11-28
 +++
 

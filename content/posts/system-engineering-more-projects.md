@@ -1,5 +1,5 @@
 +++
-title = "System Engineering | More Projects To Come"
+title = "Systems Engineering | More Projects To Come"
 date = 2025-12-24
 +++
 

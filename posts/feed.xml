@@ -1439,6 +1439,20 @@ Let us centralize that with &lt;code&gt;input.rs&lt;&#x2F;code&gt;:&lt;&#x2F;p&g
 </content>
 	</entry>
 	<entry xml:lang="en">
+		<title>Tor</title>
+		<published>2025-12-24T00:00:00+00:00</published>
+		<updated>2025-12-24T00:00:00+00:00</updated>
+		<link rel="alternate" type="text/html" href="https://idunnowhatiamdoing.engineering/posts/tor/"/>
+		<id>https://idunnowhatiamdoing.engineering/posts/tor/</id>
+    
+		<content type="html" xml:base="https://idunnowhatiamdoing.engineering/posts/tor/">&lt;p&gt;I&#x27;ve been self-studying hacking again. I wanted to add the ethical part, but honestly, I&#x27;ve stopped seeing the world in those terms.
+No, I have no plans to be &quot;evil&quot;. But you see, the world is run by a very small group of &quot;people&quot;.
+And technology is our best chance at freedom. It&#x27;s almost diabolical that it has to be this way but hey, at least we have a chance.&lt;&#x2F;p&gt;
+&lt;p&gt;While studying, I got the idea for a CLI to interact with the Tor protocol.
+And why not? That could be a great project for this blog.&lt;&#x2F;p&gt;
+</content>
+	</entry>
+	<entry xml:lang="en">
 		<title>rustamp</title>
 		<published>2025-12-20T00:00:00+00:00</published>
 		<updated>2025-12-20T00:00:00+00:00</updated>

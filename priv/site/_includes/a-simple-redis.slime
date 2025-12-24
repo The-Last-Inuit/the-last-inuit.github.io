@@ -1,5 +1,0 @@
-details class="max-w-xl mx-auto mt-2"
-  summary class="cursor-pointer select-none text-white p-3 rounded flex items-center justify-between"
-    span A Simple Redis (WIP)
-    span
-      | [+]

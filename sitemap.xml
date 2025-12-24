@@ -13,6 +13,10 @@
         <loc>https://idunnowhatiamdoing.engineering/posts/</loc>
     </url>
     <url>
+        <loc>https://idunnowhatiamdoing.engineering/posts/rustamp-core/</loc>
+        <lastmod>2025-12-25</lastmod>
+    </url>
+    <url>
         <loc>https://idunnowhatiamdoing.engineering/posts/rustamp/</loc>
         <lastmod>2025-12-20</lastmod>
     </url>

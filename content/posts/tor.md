@@ -1,6 +1,6 @@
 +++
 title = "Tor"
-date = 2025-12-24
+date = 2025-11-22
 +++
 
 I've been self-studying hacking again. I wanted to add the ethical part, but honestly, I've stopped seeing the world in those terms.

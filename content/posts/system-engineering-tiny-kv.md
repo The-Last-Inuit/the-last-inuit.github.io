@@ -1,6 +1,6 @@
 +++
 title = "Systems Engineering | Tiny KV"
-date = 2025-11-28
+date = 2025-11-04
 +++
 
 For the time being, working on The World of Noumenon requires time and thought. All of that is good, but I also want other things in life. One of the things I like is systems thinking. So I thought that perhaps I could build a few projects with Elixir and Rust to cover systems thinking within the context of software engineering.

@@ -1,6 +1,6 @@
 +++
 title = "Systems Engineering | More Projects To Come"
-date = 2025-12-24
+date = 2025-11-24
 +++
 
 I've working on different projects:

@@ -1,6 +1,6 @@
 +++
 title = "rustamp"
-date = 2025-12-20
+date = 2025-11-10
 +++
 
 Do you remember the era of Winamp and Napster? I kind miss those days. So, today I want share *rustamp*, a small certainly-not-winamp mp3 player.

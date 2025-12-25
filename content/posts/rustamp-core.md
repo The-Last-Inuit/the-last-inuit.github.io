@@ -1,6 +1,6 @@
 +++
 title = "rustamp | core + (Iced || RatatUI)"
-date = 2025-12-25
+date = 2025-11-12
 +++
 
 We are going with both UI engines. I like the idea of maintaining both.

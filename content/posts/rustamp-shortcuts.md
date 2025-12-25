@@ -1,6 +1,6 @@
 +++
 title = "rustamp | shortcuts"
-date = 2025-12-26
+date = 2025-11-15
 +++
 
 One thing I don't like is the different shortcuts for each UI engine. Ughh! 

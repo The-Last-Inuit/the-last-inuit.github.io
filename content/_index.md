@@ -13,7 +13,6 @@ id = "n0um3n4"
 bio = "program writer"
 avatar = "img/noumena.jpg"
 links = [
-    { name = "linkedin", icon = "linkedin-fill", url = "https://linkedin.com/in/noumena" },
     { name = "repos", icon = "git-pull-request-fill", url = "https://app.radicle.xyz/nodes/seed.radicle.garden/users/did%3Akey%3Az6MkvqpvdaA8YpMzn5sQ67PChE3jRdzQQ69Qmco73HBtyUpm" },
     { name = "email", icon = "email", url = "mailto:email@noumena.mx" },
     { name = "simplex", icon = "hashtag", url = "https://smp9.simplex.im/a#zJxikzJyWUZyNm9AisqA2dREiD37o3gKqsSd1OvyCDI" },

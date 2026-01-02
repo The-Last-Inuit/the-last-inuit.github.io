@@ -1,0 +1,208 @@
+% Two-column Agile Lead Programmer Cheat Sheet
+% Texifier-compatible (no special fonts required)
+
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[margin=0.7in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{parskip}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{titlesec}
+\usepackage{hyperref}
+
+\setlist[itemize]{leftmargin=*, itemsep=2pt, topsep=2pt}
+\setlist[enumerate]{leftmargin=*, itemsep=2pt, topsep=2pt}
+
+\titleformat{\section}{\large\bfseries}{}{0pt}{}
+\titleformat{\subsection}{\normalsize\bfseries}{}{0pt}{}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  urlcolor=black
+}
+
+\begin{document}
+
+\begin{center}
+{\LARGE \textbf{Agile Lead Programmer}}\\
+\vspace{4pt}
+{\small Ship small value safely, continuously, with learning loops built in.}
+\end{center}
+
+\begin{multicols}{2}
+
+\section{What ``nobody does agile'' usually means}
+\begin{itemize}
+  \item Standups become status reporting.
+  \item Sprints become mini-waterfalls.
+  \item Estimates become promises.
+  \item Retros happen without consequences.
+\end{itemize}
+
+\textbf{My actual goal:} make reality visible, reduce risk early, keep flow unblocked, protect quality.
+
+\section{My take}
+\textit{Help the team ship small, valuable increments safely, continuously, with learning loops built in.}
+
+\section{Six core habits}
+
+\subsection{1) Make work thin and finishable}
+\begin{itemize}
+  \item Prefer items that complete in \textbf{1--3 days}.
+  \item Slice by \textbf{workflow/value}, not by layers.
+  \item Example: \textbf{Good} --- User can upload avatar (validation + UI feedback).
+  \item Example: \textbf{Bad} --- Build avatar upload API (layer-only).
+\end{itemize}
+
+\textbf{Definition of Done (minimum):}
+\begin{itemize}
+  \item Code + tests
+  \item Basic observability (logs/metrics)
+  \item Notes/docs if behavior changes
+  \item Feature flag if risky
+\end{itemize}
+
+\subsection{2) Protect flow with ruthless WIP limits}
+\begin{itemize}
+  \item Hard cap: \textbf{1 active item per dev}. (2 only if one is blocked/support.)
+  \item Measure \textbf{cycle time} (start $\to$ done), not velocity.
+  \item \textit{Almost done} counts as \textbf{not done}.
+\end{itemize}
+
+\subsection{3) Engineer quality}
+Agile without quality becomes faster failure.
+\begin{itemize}
+  \item CI green is sacred.
+  \item PRs small (aim \textbf{$<$300 lines changed}).
+  \item Feature flags for risky work.
+  \item Automated tests for critical paths.
+  \item Anyone can block merge/deploy for safety.
+\end{itemize}
+
+\subsection{4) Run ceremonies as control systems}
+\textbf{Standup (10 min):}
+\begin{itemize}
+  \item What moved to Done?
+  \item What is blocked?
+  \item What will move to Done today?
+  \item If problem-solving starts: park it; 2 people continue after.
+\end{itemize}
+
+\textbf{Planning:}
+\begin{itemize}
+  \item Decide what you'll \textbf{finish}, not what you'll start.
+  \item Readiness check: acceptance criteria, deps known, demoable outcome.
+\end{itemize}
+
+\textbf{Retro:}
+\begin{itemize}
+  \item Only matters if behavior changes.
+  \item Pick \textbf{one} experiment for next iteration; track it visibly.
+\end{itemize}
+
+\textbf{Review/Demo:}
+\begin{itemize}
+  \item Demo increments to stakeholders.
+  \item If nobody shows: you have a feedback problem.
+\end{itemize}
+
+\subsection{5) Make risk visible early (spikes \& seams)}
+\begin{itemize}
+  \item Time-boxed \textbf{spike} (0.5--2 days) for uncertainty.
+  \item Create a \textbf{seam} (interface boundary) so risky parts can be swapped.
+  \item Deliver a \textbf{walking skeleton}: thinnest end-to-end slice that proves integration.
+\end{itemize}
+
+\subsection{6) Build a truthful board}
+If your board lies, your decisions will lie.
+\begin{itemize}
+  \item Columns: Backlog (ready) / In Progress / Review / Blocked / Done
+  \item No item enters In Progress without clear acceptance criteria.
+  \item Blocked means explicit: why, who, next action.
+\end{itemize}
+
+\section{Four metrics that actually help}
+Skip maturity. Track:
+\begin{enumerate}
+  \item \textbf{Cycle time} --- how long items take once started
+  \item \textbf{Throughput} --- items finished per week
+  \item \textbf{WIP} --- items currently in progress
+  \item \textbf{Change failure rate} --- deploys that break/rollback
+\end{enumerate}
+
+\textbf{Rules of thumb:}
+\begin{itemize}
+  \item High cycle time $\to$ slice smaller + reduce WIP.
+  \item High change failure rate $\to$ invest in tests, flags, review quality, staging parity.
+\end{itemize}
+
+\section{Lead without becoming a Scrum Cop}
+\begin{itemize}
+  \item \textbf{Coach:} make work smaller/safer/clearer.
+  \item \textbf{Shield:} protect focus from random interrupts.
+  \item \textbf{Amplifier:} show stakeholders reality early/often.
+  \item \textbf{Systems thinker:} fix bottlenecks, not people.
+\end{itemize}
+
+Useful phrases:
+\begin{itemize}
+  \item What would \textit{done} look like by tomorrow?
+  \item What's the smallest demoable slice?
+  \item What's the risk, and how do we surface it this week?
+  \item What do we stop doing to make room for this?
+\end{itemize}
+
+\section{Two-week practical plan}
+
+\subsection{Week 1: Stabilize flow}
+\begin{itemize}
+  \item Enforce \textbf{WIP = 1}.
+  \item Start tracking \textbf{cycle time}.
+  \item Slice big tasks into 1--3 day increments.
+  \item Set PR-size and CI discipline expectations.
+\end{itemize}
+
+\subsection{Week 2: Improve learning and safety}
+\begin{itemize}
+  \item Feature-flag habit for risky changes.
+  \item Retro selects 1 experiment; you track it.
+  \item Stakeholder demo to gather feedback.
+\end{itemize}
+
+\vfill
+\columnbreak
+
+\section{Quick diagnosis template}
+\begin{itemize}
+  \item Team size and stack
+  \item Release cadence (daily/weekly/monthly)
+  \item Biggest pain: interrupts / late surprises / slow delivery / regressions / unclear priorities
+\end{itemize}
+
+\section{Working Agreements}
+\begin{itemize}
+  \item We optimize for \textbf{finished work}, not started work.
+  \item WIP is limited (default: 1 item per dev).
+  \item CI must be green before merge.
+  \item PRs stay small; if large, explain why.
+  \item Risky work uses feature flags.
+  \item ``Blocked'' always has an owner and next action.
+  \item Retros produce one measurable experiment.
+\end{itemize}
+
+\section{Board policy}
+\begin{itemize}
+  \item Backlog items are "ready" only with clear acceptance criteria and known dependencies. 
+  \item Work enters In Progress only when someone is available to carry it through to Done. 
+  \item Blocked items explicitly state why, who can unblock, and the next action. 
+  \item Done means code is merged, tested, and deployed (or marked explicitly as "done-not-deployed").
+\end{itemize}
+
+\end{multicols}
+
+\end{document}

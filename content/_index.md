@@ -16,10 +16,8 @@ links = [
     { name = "repos", icon = "git-pull-request-fill", url = "https://app.radicle.xyz/nodes/seed.radicle.garden/users/did%3Akey%3Az6MkvqpvdaA8YpMzn5sQ67PChE3jRdzQQ69Qmco73HBtyUpm" },
     { name = "email", icon = "email", url = "mailto:email@noumena.mx" },
     { name = "simplex", icon = "hashtag", url = "https://smp9.simplex.im/a#zJxikzJyWUZyNm9AisqA2dREiD37o3gKqsSd1OvyCDI" },
-    { name = "friendica", icon = "friendica-fill", url = "https://friendica.world/profile/noumena" },
     { name = "hachyderm", icon = "mastodon", url = "https://hachyderm.io/@noumena" },
     { name = "genserve", icon = "mastodon-fill", url = "https://genserver.social/n0um3n4" },
-    { name = "instagram", icon = "instagram-fill", url = "https://gram.social/noumena" }
 ]
 
 # Show a few recent posts in home page

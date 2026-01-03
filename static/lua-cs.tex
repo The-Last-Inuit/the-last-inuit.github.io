@@ -1,0 +1,362 @@
+\documentclass[10pt]{article}
+
+\usepackage[margin=0.6in]{geometry}
+\usepackage{multicol}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{amsmath}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+
+\newcommand{\hdr}[1]{\vspace{4pt}\textbf{\large #1}\vspace{2pt}}
+\newcommand{\shdr}[1]{\vspace{3pt}\textbf{#1}\vspace{1pt}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\sep}{\vspace{4pt}\hrule\vspace{4pt}}
+
+\newenvironment{tightitemize}{
+  \begin{itemize}[leftmargin=*, itemsep=1pt, topsep=2pt, parsep=0pt, partopsep=0pt]
+}{
+  \end{itemize}
+}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE \textbf{Lua Cheatsheet}}\\
+  \vspace{2pt}
+\end{center}
+
+\begin{multicols}{2}
+
+\hdr{Tooling \& Running Code}
+\shdr{Run}
+\begin{tightitemize}
+  \item Run file: \code{lua main.lua}
+  \item REPL: \code{lua} (then type expressions)
+  \item LuaJIT: \code{luajit main.lua} (if using LuaJIT)
+\end{tightitemize}
+
+\shdr{Packages}
+\begin{tightitemize}
+  \item LuaRocks (common): \code{luarocks install <pkg>}
+  \item Require: \code{local m = require("modname")}
+\end{tightitemize}
+
+\sep
+
+\hdr{Basics: Values, Variables, Types}
+\shdr{Hello}
+\code{print("Hello, Lua")}
+\vspace{2pt}
+
+\shdr{Types}
+\begin{tightitemize}
+  \item \code{nil}, \code{boolean}, \code{number}, \code{string}, \code{table}, \code{function}, \code{userdata}, \code{thread}
+  \item \code{type(x)} returns type name
+\end{tightitemize}
+
+\shdr{Variables}
+\begin{tightitemize}
+  \item Local: \code{local x = 1}
+  \item Global (avoid): \code{x = 1}
+  \item Multiple assign: \code{local a,b = 1,2}
+  \item Unassigned becomes \code{nil}
+\end{tightitemize}
+
+\shdr{Truthiness}
+\begin{tightitemize}
+  \item Only \code{false} and \code{nil} are falsey
+  \item \code{0} and \code{""} are truthy
+\end{tightitemize}
+
+\sep
+
+\hdr{Operators}
+\shdr{Arithmetic}
+\begin{tightitemize}
+  \item \code{+ - * /} \;\; integer division (Lua 5.3+): \code{//}
+  \item Mod: \code{\%} \;\; Power: \code{\^{}} 
+\end{tightitemize}
+
+\shdr{Comparison}
+\begin{tightitemize}
+  \item \code{== ~= < <= > >=}
+  \item Tables compare by reference (identity), not deep-equal
+\end{tightitemize}
+
+\shdr{Logic}
+\begin{tightitemize}
+  \item \code{and}, \code{or}, \code{not}
+  \item Return operands (not strict booleans): \code{a or b}
+\end{tightitemize}
+
+\shdr{Concatenation}
+\begin{tightitemize}
+  \item \code{..} (strings)
+\end{tightitemize}
+
+\sep
+
+\hdr{Control Flow}
+\shdr{If / elseif / else}
+\code{if x > 0 then}
+\code{  print("pos")}
+\code{elseif x < 0 then}
+\code{  print("neg")}
+\code{else}
+\code{  print("zero")}
+\code{end}
+\vspace{2pt}
+
+\shdr{While / repeat}
+\begin{tightitemize}
+  \item \code{while cond do ... end}
+  \item \code{repeat ... until cond} (runs at least once)
+\end{tightitemize}
+
+\shdr{For loops}
+\begin{tightitemize}
+  \item Numeric: \code{for i=1,10,2 do ... end} (step optional)
+  \item Generic: \code{for k,v in pairs(t) do ... end}
+\end{tightitemize}
+
+\shdr{Break}
+\begin{tightitemize}
+  \item \code{break} exits nearest loop
+\end{tightitemize}
+
+\sep
+
+\hdr{Functions \& Closures}
+\shdr{Definitions}
+\begin{tightitemize}
+  \item \code{local function add(a,b) return a+b end}
+  \item Sugar: \code{function add(a,b) return a+b end} (global)
+\end{tightitemize}
+
+\shdr{Anonymous functions}
+\begin{tightitemize}
+  \item \code{local f = function(x) return x*2 end}
+\end{tightitemize}
+
+\shdr{Multiple returns}
+\begin{tightitemize}
+  \item \code{return a, b, c}
+  \item Assignment: \code{local x,y = f()}
+  \item Only last expr expands in lists: \code{g(f())} vs \code{g((f()))}
+\end{tightitemize}
+
+\shdr{Varargs}
+\begin{tightitemize}
+  \item \code{function f(...) local args=\{...\} end}
+\end{tightitemize}
+
+\sep
+
+\hdr{Tables (The One Data Structure)}
+\shdr{Literals}
+\begin{tightitemize}
+  \item Array-ish: \code{local xs = \{10, 20, 30\}}
+  \item Map-ish: \code{local m = \{a=1, b=2\}}
+  \item Mixed: \code{\{[1]="x", key="y"\}}
+\end{tightitemize}
+
+\shdr{Indexing}
+\begin{tightitemize}
+  \item \code{t[k]} \;\; field sugar for string keys: \code{t.key == t["key"]}
+  \item Set: \code{t[k] = v} \;\; delete: \code{t[k] = nil}
+\end{tightitemize}
+
+\shdr{Length}
+\begin{tightitemize}
+  \item \code{\#t} (works reliably for sequences; undefined for ``holes'')
+\end{tightitemize}
+
+\shdr{Iteration}
+\begin{tightitemize}
+  \item \code{pairs(t)} for all keys
+  \item \code{ipairs(t)} for array part 1..n (Lua 5.1/5.2; 5.3+ still exists but less emphasized)
+\end{tightitemize}
+
+\shdr{Standard table funcs}
+\begin{tightitemize}
+  \item \code{table.insert}, \code{table.remove}
+  \item \code{table.sort(xs)}
+  \item \code{table.concat(xs, ",")}
+\end{tightitemize}
+
+\sep
+
+\hdr{Strings}
+\shdr{Basics}
+\begin{tightitemize}
+  \item Immutable
+  \item Concatenate: \code{"a" .. "b"}
+  \item Length: \code{\#s}
+\end{tightitemize}
+
+\shdr{Patterns (not full regex)}
+\begin{tightitemize}
+  \item Match: \code{string.match(s, "patt")}
+  \item Find: \code{string.find(s, "patt")}
+  \item Replace: \code{string.gsub(s, "patt", "repl")}
+\end{tightitemize}
+
+\shdr{Format}
+\begin{tightitemize}
+  \item \code{string.format("x=\%d", x)}
+\end{tightitemize}
+
+\sep
+
+\hdr{Modules \& Requires}
+\shdr{Module pattern}
+\code{local M = \{\}}
+\code{function M.hello() return "hi" end}
+\code{return M}
+\vspace{2pt}
+
+\shdr{Require}
+\begin{tightitemize}
+  \item \code{local M = require("mymod")}
+  \item Cached in \code{package.loaded}
+  \item Search paths: \code{package.path}, \code{package.cpath}
+\end{tightitemize}
+
+\sep
+
+\hdr{Metatables (Power Feature)}
+\shdr{Basics}
+\begin{tightitemize}
+  \item Attach behavior: \code{setmetatable(t, mt)}
+  \item Read: \code{getmetatable(t)}
+\end{tightitemize}
+
+\shdr{Common metamethods}
+\begin{tightitemize}
+  \item \code{\_\_index}: fallback lookup (inheritance/prototypes)
+  \item \code{\_\_newindex}: intercept writes
+  \item \code{\_\_call}: make table callable
+  \item \code{\_\_tostring}: stringify
+  \item Arithmetic: \code{\_\_add}, etc.
+\end{tightitemize}
+
+\shdr{Prototype OO sketch}
+\code{local Vec = \{\}}
+\code{Vec.\_\_index = Vec}
+\code{function Vec.new(x,y) return setmetatable(\{x=x,y=y\}, Vec) end}
+\code{function Vec:len() return math.sqrt(self.x*self.x + self.y*self.y) end}
+\vspace{2pt}
+
+\sep
+
+\hdr{OOP-ish Patterns}
+\shdr{Colon sugar}
+\begin{tightitemize}
+  \item Define: \code{function T:m(x) ... end}
+  \item Call: \code{obj:m(1)} equals \code{obj.m(obj, 1)}
+\end{tightitemize}
+
+\shdr{Class-like}
+\begin{tightitemize}
+  \item Constructor returns table with metatable to methods table
+  \item Use \code{\_\_index} for method lookup
+\end{tightitemize}
+
+\sep
+
+\hdr{Errors \& Protected Calls}
+\shdr{Error}
+\begin{tightitemize}
+  \item Throw: \code{error("bad")}
+  \item Assert: \code{assert(x, "msg")}
+\end{tightitemize}
+
+\shdr{pcall / xpcall}
+\begin{tightitemize}
+  \item \code{local ok, res = pcall(f, arg)}
+  \item \code{xpcall(f, debug.traceback)} for stack traces
+\end{tightitemize}
+
+\shdr{Common pattern}
+\begin{tightitemize}
+  \item Return \code{nil, err} instead of raising for expected failures
+\end{tightitemize}
+
+\sep
+
+\hdr{Coroutines (Lua Threads)}
+\shdr{Basics}
+\begin{tightitemize}
+  \item Create: \code{co = coroutine.create(f)}
+  \item Resume: \code{coroutine.resume(co, ...)}
+  \item Yield: \code{coroutine.yield(v)}
+  \item Status: \code{coroutine.status(co)}
+\end{tightitemize}
+
+\shdr{Typical use}
+\begin{tightitemize}
+  \item Cooperative multitasking; game loops, async-ish flows
+\end{tightitemize}
+
+\sep
+
+\hdr{Testing \& Style}
+\shdr{Formatting / lint}
+\begin{tightitemize}
+  \item Stylua (formatter), Luacheck (linter) (external)
+  \item Lua language server for diagnostics (LSP)
+\end{tightitemize}
+
+\shdr{Unit tests}
+\begin{tightitemize}
+  \item Busted (common), LuaUnit
+\end{tightitemize}
+
+\sep
+
+\hdr{Common Idioms (Quick Recipes)}
+\shdr{Default values}
+\begin{tightitemize}
+  \item \code{x = x or 10} (works because \code{nil/false} are falsey)
+\end{tightitemize}
+
+\shdr{Safe nested access}
+\begin{tightitemize}
+  \item \code{local v = t and t.a and t.a.b}
+\end{tightitemize}
+
+\shdr{Copy table (shallow)}
+\begin{tightitemize}
+  \item \code{local c = \{\}; for k,v in pairs(t) do c[k]=v end}
+\end{tightitemize}
+
+\shdr{Avoid globals}
+\begin{tightitemize}
+  \item Use \code{local}; consider \code{local \_ENV = ...} patterns in modules
+\end{tightitemize}
+
+\sep
+
+\hdr{Mini Reference}
+\begin{tightitemize}
+  \item Only falsey: \code{false}, \code{nil}
+  \item \code{..} concat; \code{\#} length; \code{\~=} not equal
+  \item Tables are references; copying needs manual work
+  \item Metatables enable operator overloading / prototypes
+\end{tightitemize}
+
+\end{multicols}
+
+\end{document}

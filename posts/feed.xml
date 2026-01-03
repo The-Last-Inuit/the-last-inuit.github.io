@@ -9,9 +9,36 @@
 	
 	<id>https://idunnowhatiamdoing.engineering/posts/feed.xml</id>
 	<entry xml:lang="en">
-		<title>Cheatsheets</title>
+		<title>GLOG: Guns, Lots Of Guns</title>
 		<published>2026-01-03T00:00:00+00:00</published>
 		<updated>2026-01-03T00:00:00+00:00</updated>
+		<link rel="alternate" type="text/html" href="https://idunnowhatiamdoing.engineering/posts/glog/"/>
+		<id>https://idunnowhatiamdoing.engineering/posts/glog/</id>
+    
+		<content type="html" xml:base="https://idunnowhatiamdoing.engineering/posts/glog/">&lt;p&gt;A few days ago, I started working on GLOG, a simple multiplayer shooter. I needed a project that:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;lets me use Elixir for the server&lt;&#x2F;li&gt;
+&lt;li&gt;is a game for our studio&lt;&#x2F;li&gt;
+&lt;li&gt;is fun rather than… professional 😅&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash z-code&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;glog&#x2F;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;  &lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;glog-cli&#x2F;     &lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt; Lua, löve2D engine&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;  &lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;glog-server&#x2F;  &lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt; Elixir&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;So far, I have &lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;app.radicle.xyz&#x2F;nodes&#x2F;seed.radicle.garden&#x2F;rad%3Az2PiX58ZYwoqG3QXMyCKsuKDztKsS&quot;&gt;multiplayer working&lt;&#x2F;a&gt;, no assets yet, and lots of functionality still pending but it runs smoothly.&lt;&#x2F;p&gt;
+&lt;p&gt;And from that, a handy cheatsheet:&lt;&#x2F;p&gt;
+&lt;object data=&quot;&#x2F;lua-cs.pdf&quot; type=&quot;application&#x2F;pdf&quot; style=&quot;width:100%; height:100vh;&quot;&gt;
+  &lt;p&gt;
+    Your browser can’t display PDFs inline.
+    &lt;a href=&quot;&#x2F;lua-cs.pdf&quot;&gt;Open the PDF&lt;&#x2F;a&gt;
+  &lt;&#x2F;p&gt;
+&lt;&#x2F;object&gt;
+</content>
+	</entry>
+	<entry xml:lang="en">
+		<title>Cheatsheets</title>
+		<published>2026-01-02T00:00:00+00:00</published>
+		<updated>2026-01-02T00:00:00+00:00</updated>
 		<link rel="alternate" type="text/html" href="https://idunnowhatiamdoing.engineering/posts/cheatsheets/"/>
 		<id>https://idunnowhatiamdoing.engineering/posts/cheatsheets/</id>
     

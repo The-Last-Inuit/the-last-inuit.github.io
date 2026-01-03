@@ -1,6 +1,6 @@
 +++
 title = "Cheatsheets"
-date = 2026-01-03
+date = 2026-01-02
 +++
 
 With the rise of AI, I've come to appreciate how easy it is to generate cheat sheets and code snippets, provided the prompt is well written.

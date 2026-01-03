@@ -1,0 +1,409 @@
+\documentclass[10pt]{article}
+
+\usepackage[margin=0.6in]{geometry}
+\usepackage{multicol}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{amsmath}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+
+\newcommand{\hdr}[1]{\vspace{4pt}\textbf{\large #1}\vspace{2pt}}
+\newcommand{\shdr}[1]{\vspace{3pt}\textbf{#1}\vspace{1pt}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\sep}{\vspace{4pt}\hrule\vspace{4pt}}
+
+\newenvironment{tightitemize}{
+  \begin{itemize}[leftmargin=*, itemsep=1pt, topsep=2pt, parsep=0pt, partopsep=0pt]
+}{
+  \end{itemize}
+}
+
+\newenvironment{tightenum}{
+  \begin{enumerate}[leftmargin=*, itemsep=1pt, topsep=2pt, parsep=0pt, partopsep=0pt]
+}{
+  \end{enumerate}
+}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE \textbf{Go Cheatsheet}}\\
+  \vspace{2pt}
+\end{center}
+
+\begin{multicols}{2}
+
+\hdr{Tooling \& Layout}
+\shdr{Commands}
+\begin{tightitemize}
+  \item Init module: \code{go mod init example.com/myapp}
+  \item Run/build: \code{go run .} \;\; \code{go build ./...}
+  \item Test: \code{go test ./...} \;\; Verbose: \code{-v}
+  \item Format: \code{gofmt -w .} \;\; Imports: \code{goimports -w .} (external)
+  \item Vet: \code{go vet ./...}
+  \item Race: \code{go test -race ./...}
+  \item Benchmark: \code{go test -bench=. ./pkg}
+\end{tightitemize}
+
+\shdr{Project structure (typical)}
+\begin{tightitemize}
+  \item \code{cmd/myapp/main.go} entry point
+  \item \code{internal/} private packages (recommended)
+  \item \code{pkg/} public-ish reusable packages (optional)
+\end{tightitemize}
+
+\sep
+
+\hdr{Basics: Packages, Vars, Types}
+\shdr{Hello}
+\code{package main}
+\code{import "fmt"}
+\code{func main() \{ fmt.Println("Hello") \}}
+\vspace{2pt}
+
+\shdr{Declarations}
+\begin{tightitemize}
+  \item \code{var x int = 1}
+  \item Type inference: \code{var x = 1}
+  \item Short declare (inside funcs): \code{x := 1}
+  \item Constants: \code{const Pi = 3.14159}
+  \item Multiple: \code{var (a int; b string)}
+\end{tightitemize}
+
+\shdr{Common types}
+\begin{tightitemize}
+  \item \code{bool, string}
+  \item Integers: \code{int, int64, uint, uintptr}
+  \item Floats: \code{float32, float64}
+  \item Byte/rune: \code{byte} (alias \code{uint8}), \code{rune} (alias \code{int32})
+\end{tightitemize}
+
+\shdr{Zero values}
+\begin{tightitemize}
+  \item \code{0}, \code{0.0}, \code{false}, \code{""}, \code{nil} (pointers/slices/maps/chans/funcs/interfaces)
+\end{tightitemize}
+
+\sep
+
+\hdr{Control Flow}
+\shdr{If}
+\begin{tightitemize}
+  \item \code{if x > 0 \{...\} else \{...\}}
+  \item With init: \code{if v := f(); v > 0 \{...\}}
+\end{tightitemize}
+
+\shdr{For (only loop keyword)}
+\begin{tightitemize}
+  \item While-ish: \code{for cond \{...\}}
+  \item Classic: \code{for i := 0; i < n; i++ \{...\}}
+  \item Infinite: \code{for \{...\}}
+  \item Range: \code{for i, v := range xs \{...\}}
+\end{tightitemize}
+
+\shdr{Switch}
+\begin{tightitemize}
+  \item \code{switch x \{ case 1: ...; default: ... \}}
+  \item Expressionless: \code{switch \{ case x>0: ... \}}
+  \item Type switch:
+\end{tightitemize}
+\code{switch v := any.(type) \{ case string: ...; case int: ... \}}
+\vspace{2pt}
+
+\sep
+
+\hdr{Functions \& Multiple Returns}
+\shdr{Signatures}
+\begin{tightitemize}
+  \item \code{func add(a, b int) int \{ return a + b \}}
+  \item Named return: \code{func f() (n int) \{ n=1; return \}}
+\end{tightitemize}
+
+\shdr{Multiple returns + error}
+\begin{tightitemize}
+  \item \code{v, err := parse(s)}
+  \item Check: \code{if err != nil \{ return 0, err \}}
+\end{tightitemize}
+
+\shdr{Defer}
+\begin{tightitemize}
+  \item Runs at function exit: \code{defer f.Close()}
+  \item Common for unlock/cleanup/metrics
+\end{tightitemize}
+
+\sep
+
+\hdr{Pointers \& Values}
+\shdr{Pointers}
+\begin{tightitemize}
+  \item Address: \code{\&x} \;\; Deref: \code{*p}
+  \item \code{new(T)} allocates zeroed \code{*T}
+\end{tightitemize}
+
+\shdr{Receiver methods}
+\begin{tightitemize}
+  \item Value receiver: \code{func (t T) M() \{...\}}
+  \item Pointer receiver (mutates / avoids copying): \code{func (t *T) M() \{...\}}
+\end{tightitemize}
+
+\shdr{When to use pointer receivers}
+\begin{tightitemize}
+  \item Method needs to mutate receiver
+  \item Receiver is large (avoid copies)
+  \item Consistency across methods
+\end{tightitemize}
+
+\sep
+
+\hdr{Structs, Tags, Constructors}
+\shdr{Structs}
+\begin{tightitemize}
+  \item \code{type User struct \{ ID int; Name string \}}
+  \item Literal: \code{u := User\{ID:1, Name:"A"\}}
+  \item Pointer literal: \code{u := \&User\{...\}}
+\end{tightitemize}
+
+\shdr{Tags (common for json/db)}
+\code{type U struct \{ Name string `json:"name"` \}}
+\vspace{2pt}
+
+\shdr{Constructor style}
+\begin{tightitemize}
+  \item \code{func NewUser(name string) *User \{ return \&User\{Name:name\} \}}
+\end{tightitemize}
+
+\sep
+
+\hdr{Arrays, Slices, Maps}
+\shdr{Arrays (fixed length)}
+\begin{tightitemize}
+  \item \code{var a [3]int}
+  \item \code{a := [3]int\{1,2,3\}}
+\end{tightitemize}
+
+\shdr{Slices (dynamic view)}
+\begin{tightitemize}
+  \item \code{xs := []int\{1,2,3\}}
+  \item Length/cap: \code{len(xs)}, \code{cap(xs)}
+  \item Append: \code{xs = append(xs, 4)}
+  \item Subslice: \code{xs[1:3]}
+\end{tightitemize}
+
+\shdr{Copy \& delete (slice)}
+\begin{tightitemize}
+  \item Copy: \code{n := copy(dst, src)}
+  \item Delete i:
+\end{tightitemize}
+\code{xs = append(xs[:i], xs[i+1:]...)}
+\vspace{2pt}
+
+\shdr{Maps}
+\begin{tightitemize}
+  \item Make: \code{m := make(map[string]int)}
+  \item Literal: \code{m := map[string]int\{"a":1\}}
+  \item Lookup w/ ok: \code{v, ok := m["k"]}
+  \item Delete: \code{delete(m, "k")}
+\end{tightitemize}
+
+\sep
+
+\hdr{Strings \& Runes}
+\shdr{UTF-8 reality}
+\begin{tightitemize}
+  \item \code{string} is bytes (UTF-8 by convention)
+  \item \code{for i, r := range s \{...\}} iterates runes
+\end{tightitemize}
+
+\shdr{Common ops}
+\begin{tightitemize}
+  \item Format: \code{fmt.Sprintf("\%d", n)}
+  \item Convert: \code{[]byte(s)} \; \code{string(b)}
+  \item Builder: \code{var b strings.Builder; b.WriteString("x")}
+\end{tightitemize}
+
+\sep
+
+\hdr{Interfaces \& Errors}
+\shdr{Interface}
+\begin{tightitemize}
+  \item Implicit satisfaction (no \code{implements})
+  \item Prefer small interfaces (1--3 methods)
+\end{tightitemize}
+
+\shdr{Example}
+\code{type Reader interface \{ Read(p []byte) (int, error) \}}
+\vspace{2pt}
+
+\shdr{Errors}
+\begin{tightitemize}
+  \item Sentinel: \code{var ErrNotFound = errors.New("not found")}
+  \item Wrap: \code{fmt.Errorf("load: \%w", err)}
+  \item Check: \code{errors.Is(err, ErrNotFound)}
+  \item Typed: \code{errors.As(err, \&target)}
+\end{tightitemize}
+
+\shdr{Panic vs error}
+\begin{tightitemize}
+  \item Panic for programmer bugs / impossible states
+  \item Errors for expected failures (IO, network, validation)
+\end{tightitemize}
+
+\sep
+
+\hdr{Generics (Go 1.18+)}
+\shdr{Basic}
+\begin{tightitemize}
+  \item \code{func Map[T any, U any](in []T, f func(T) U) []U \{...\}}
+  \item Constraint:
+\end{tightitemize}
+\code{type Number interface \{ ~int | ~int64 | ~float64 \}}
+\vspace{2pt}
+
+\shdr{When to use}
+\begin{tightitemize}
+  \item Data structures/utilities (sets, queues)
+  \item Avoid for simple one-off code; keep APIs readable
+\end{tightitemize}
+
+\sep
+
+\hdr{Concurrency Core}
+\shdr{Goroutines}
+\begin{tightitemize}
+  \item Start: \code{go f()}
+  \item Avoid leaks: have a stop signal or context
+\end{tightitemize}
+
+\shdr{Channels}
+\begin{tightitemize}
+  \item \code{ch := make(chan T)} unbuffered
+  \item \code{ch := make(chan T, n)} buffered
+  \item Send/recv: \code{ch <- v} \;\; \code{v := <-ch}
+  \item Close: \code{close(ch)} (sender closes)
+  \item Range until closed: \code{for v := range ch \{...\}}
+\end{tightitemize}
+
+\shdr{Select}
+\begin{tightitemize}
+  \item Multiplex:
+\end{tightitemize}
+\code{select \{ case v := <-ch: ...; case <-ctx.Done(): ...; default: ... \}}
+\vspace{2pt}
+
+\shdr{Sync primitives}
+\begin{tightitemize}
+  \item \code{sync.Mutex}, \code{sync.RWMutex}
+  \item \code{sync.WaitGroup} for joining goroutines
+  \item \code{sync.Once} init once
+  \item \code{sync/atomic} for hot counters/flags
+\end{tightitemize}
+
+\sep
+
+\hdr{Context Pattern (Standard)}
+\shdr{Pass context everywhere}
+\begin{tightitemize}
+  \item \code{func (s *Svc) Handle(ctx context.Context, ...) error}
+  \item Derive: \code{ctx, cancel := context.WithTimeout(ctx, d); defer cancel()}
+  \item Check: \code{select \{ case <-ctx.Done(): return ctx.Err(); default: \}}
+\end{tightitemize}
+
+\sep
+
+\hdr{HTTP \& JSON (Minimal)}
+\shdr{HTTP server}
+\begin{tightitemize}
+  \item \code{http.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request)\{...\})}
+  \item \code{http.ListenAndServe(":8080", nil)}
+\end{tightitemize}
+
+\shdr{JSON encode/decode}
+\begin{tightitemize}
+  \item Encode: \code{json.NewEncoder(w).Encode(v)}
+  \item Decode: \code{json.NewDecoder(r.Body).Decode(\&v)}
+\end{tightitemize}
+
+\shdr{Time outs (important)}
+\begin{tightitemize}
+  \item Set \code{http.Server\{ReadTimeout, WriteTimeout, IdleTimeout\}}
+  \item Use \code{http.Client\{Timeout: ...\}} or request contexts
+\end{tightitemize}
+
+\sep
+
+\hdr{Testing \& Benchmarks}
+\shdr{Unit tests}
+\begin{tightitemize}
+  \item File: \code{x\_test.go}
+  \item \code{func TestX(t *testing.T) \{ t.Fatal(...)\}}
+  \item Table-driven:
+\end{tightitemize}
+\code{for \_, tc := range tests \{ t.Run(tc.name, func(t *testing.T)\{...\}) \}}
+\vspace{2pt}
+
+\shdr{Benchmarks}
+\begin{tightitemize}
+  \item \code{func BenchmarkX(b *testing.B) \{ for i:=0; i<b.N; i++ \{...\}\}}
+\end{tightitemize}
+
+\shdr{Common helpers}
+\begin{tightitemize}
+  \item \code{t.Helper()}
+  \item Subtests: \code{t.Run}
+  \item Temp dirs: \code{t.TempDir()}
+\end{tightitemize}
+
+\sep
+
+\hdr{Common Idioms (Quick Recipes)}
+\shdr{Error-first returns}
+\code{v, err := f(); if err != nil \{ return err \}}
+\vspace{2pt}
+
+\shdr{Cancel goroutines} \\ 
+\code{ctx, cancel := context.WithCancel(ctx); \\ defer cancel()}
+\vspace{2pt}
+
+\shdr{Worker pool sketch}
+\begin{tightitemize}
+  \item Jobs channel + N workers + WaitGroup
+  \item Close jobs when done producing; workers range over jobs
+\end{tightitemize}
+
+\shdr{Functional options (pattern)}
+\begin{tightitemize}
+  \item \code{type Option func(*Cfg)}
+  \item \code{func WithTimeout(d time.Duration) Option \{ return func(c *Cfg)\{...\}\}}
+\end{tightitemize}
+
+\shdr{Avoid nil maps/slices surprises}
+\begin{tightitemize}
+  \item Nil slice is OK to \code{len}/\code{range}/\code{append}
+  \item Nil map panics on write; initialize with \code{make}
+\end{tightitemize}
+
+\sep
+
+\hdr{Mini Reference}
+\begin{tightitemize}
+  \item Exported: identifiers starting with capital letter
+  \item \code{:=} declares new vars; at least one must be new in scope
+  \item Receiver naming: short (\code{s}, \code{r}); be consistent
+  \item Prefer \code{context.Context} as first param
+  \item Keep goroutine ownership clear (who closes channel?)
+\end{tightitemize}
+
+\end{multicols}
+
+\end{document}

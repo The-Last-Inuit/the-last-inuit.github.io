@@ -1,0 +1,324 @@
+\documentclass[10pt]{article}
+
+\usepackage[margin=0.6in]{geometry}
+\usepackage{multicol}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{amsmath}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+
+\newcommand{\hdr}[1]{\vspace{4pt}\textbf{\large #1}\vspace{2pt}}
+\newcommand{\shdr}[1]{\vspace{3pt}\textbf{#1}\vspace{1pt}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\sep}{\vspace{4pt}\hrule\vspace{4pt}}
+
+\newenvironment{tightitemize}{
+  \begin{itemize}[leftmargin=*, itemsep=1pt, topsep=2pt, parsep=0pt, partopsep=0pt]
+}{
+  \end{itemize}
+}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE \textbf{Elixir Cheatsheet}}\\
+  \vspace{2pt}
+\end{center}
+
+\begin{multicols}{2}
+
+\hdr{Tooling \& Project Basics}
+\shdr{Mix commands}
+\begin{tightitemize}
+  \item New project: \code{mix new my\_app}
+  \item Run: \code{iex -S mix} \;\; \code{mix run}
+  \item Compile: \code{mix compile}
+  \item Tests: \code{mix test}
+  \item Format: \code{mix format}
+  \item Deps: \code{mix deps.get}, \code{mix deps.update}
+\end{tightitemize}
+
+\shdr{Project layout}
+\begin{tightitemize}
+  \item \code{lib/} application code
+  \item \code{test/} tests
+  \item \code{mix.exs} project config
+\end{tightitemize}
+
+\sep
+
+\hdr{Basics: Modules, Values, Types}
+\shdr{Hello}
+\code{IO.puts("Hello, Elixir")}
+\vspace{2pt}
+
+\shdr{Modules}
+\code{defmodule MyMod do}
+\code{  def hello, do: "hi"}
+\code{end}
+\vspace{2pt}
+
+\shdr{Bindings}
+\begin{tightitemize}
+  \item Immutable: \code{x = 1}
+  \item Rebinding allowed (new value): \code{x = x + 1}
+  \item Pattern match: \code{\{a, b\} = \{1, 2\}}
+\end{tightitemize}
+
+\shdr{Common types}
+\begin{tightitemize}
+  \item Numbers: \code{1}, \code{1.0}
+  \item Atoms: \code{:ok}, \code{:error}
+  \item Strings (UTF-8): \code{"hi"}
+  \item Lists: \code{[1, 2, 3]}
+  \item Tuples: \code{\{1, 2\}}
+  \item Maps: \code{\%{a: 1}}
+\end{tightitemize}
+
+\sep
+
+\hdr{Pattern Matching (Core Feature)}
+\shdr{Assignment is match}
+\begin{tightitemize}
+  \item \code{\{:ok, v\} = f()}
+  \item Pin operator: \code{\^x = expr}
+\end{tightitemize}
+
+\shdr{Function heads}
+\code{def f(\{:ok, v\}), do: v}
+\code{def f(\{:error, \_\}), do: nil}
+\vspace{2pt}
+
+\shdr{Case}
+\code{case x do}
+\code{  \{:ok, v\} -> v}
+\code{  \_ -> :error}
+\code{end}
+\vspace{2pt}
+
+\sep
+
+\hdr{Control Flow}
+\shdr{If / unless}
+\begin{tightitemize}
+  \item \code{if cond, do: a, else: b}
+  \item \code{unless cond, do: a}
+\end{tightitemize}
+
+\shdr{Cond}
+\code{cond do}
+\code{  x > 0 -> :pos}
+\code{  x < 0 -> :neg}
+\code{  true -> :zero}
+\code{end}
+\vspace{2pt}
+
+\shdr{With (happy path)}
+\code{with \{:ok, a\} <- fa(),}
+\code{     \{:ok, b\} <- fb(a) do}
+\code{  \{:ok, a + b\}}
+\code{end}
+\vspace{2pt}
+
+\sep
+
+\hdr{Functions \& Pipelines}
+\shdr{Functions}
+\begin{tightitemize}
+  \item \code{def add(a, b), do: a + b}
+  \item Private: \code{defp hidden()}
+\end{tightitemize}
+
+\shdr{Anonymous}
+\begin{tightitemize}
+  \item \code{fn x -> x + 1 end}
+  \item Capture: \code{\&\(&1 + 1\)}
+\end{tightitemize}
+
+\shdr{Pipeline operator}
+\begin{tightitemize}
+  \item \code{x |> f() |> g()}
+  \item First arg threaded
+\end{tightitemize}
+
+\sep
+
+\hdr{Collections \& Enum}
+\shdr{List ops}
+\begin{tightitemize}
+  \item Prepend: \code{[0 | xs]}
+  \item Concat: \code{xs ++ ys}
+\end{tightitemize}
+
+\shdr{Enum (eager)}
+\begin{tightitemize}
+  \item \code{Enum.map(xs, \&\(&1 * 2\))}
+  \item \code{Enum.filter(xs, \&\(&1 > 0\))}
+  \item \code{Enum.reduce(xs, 0, \&+/2)}
+\end{tightitemize}
+
+\shdr{Stream (lazy)}
+\begin{tightitemize}
+  \item \code{Stream.map(xs, ...)}
+  \item Realize with \code{Enum.to\_list}
+\end{tightitemize}
+
+\sep
+
+\hdr{Maps, Structs}
+\shdr{Maps}
+\begin{tightitemize}
+  \item Access: \code{m[:a]}, \code{m.a} (atoms only)
+  \item Update: \code{\%{m | a: 2}}
+  \item Put: \code{Map.put(m, :b, 3)}
+\end{tightitemize}
+
+\shdr{Structs}
+\code{defmodule User do}
+\code{  defstruct [:id, :name]}
+\code{end}
+\code{u = \%User\{id: 1, name: "A"\}}
+\vspace{2pt}
+
+\sep
+
+\hdr{Option-like Patterns}
+\shdr{Atoms + tuples}
+\begin{tightitemize}
+  \item \code{:ok}, \code{:error}
+  \item \code{\{:ok, v\}}, \code{\{:error, reason\}}
+\end{tightitemize}
+
+\shdr{Nil}
+\begin{tightitemize}
+  \item Absence of value
+  \item Only \code{false} and \code{nil} are falsey
+\end{tightitemize}
+
+\sep
+
+\hdr{Concurrency (BEAM Model)}
+\shdr{Processes}
+\begin{tightitemize}
+  \item Lightweight, isolated
+  \item Communicate via messages
+\end{tightitemize}
+
+\shdr{Spawn \& send}
+\code{pid = spawn(fn -> loop() end)}
+\code{send(pid, :ping)}
+\vspace{2pt}
+
+\shdr{Receive}
+\code{receive do}
+\code{  :ping -> IO.puts("pong")}
+\code{after 1000 -> :timeout}
+\code{end}
+\vspace{2pt}
+
+\sep
+
+\hdr{OTP Basics}
+\shdr{GenServer}
+\begin{tightitemize}
+  \item Standard behavior for stateful processes
+  \item Call vs cast vs info
+\end{tightitemize}
+
+\shdr{Skeleton}
+\code{defmodule MySrv do}
+\code{  use GenServer}
+\code{  def start\_link(s), do: GenServer.start\_link(\_\_MODULE\_\_, s)}
+\code{  def init(s), do: \{:ok, s\}}
+\code{end}
+\vspace{2pt}
+
+\shdr{Supervision}
+\begin{tightitemize}
+  \item Let it crash
+  \item Restart strategies: \code{:one\_for\_one}, etc.
+\end{tightitemize}
+
+\sep
+
+\hdr{Protocols \& Polymorphism}
+\shdr{Protocol}
+\code{defprotocol Size do}
+\code{  def size(x)}
+\code{end}
+\vspace{2pt}
+
+\shdr{Implementation}
+\code{defimpl Size, for: List do}
+\code{  def size(xs), do: length(xs)}
+\code{end}
+\vspace{2pt}
+
+\sep
+
+\hdr{Error Handling}
+\shdr{Errors vs exceptions}
+\begin{tightitemize}
+  \item Prefer \code{\{:ok, v\} | \{:error, r\}}
+  \item Exceptions for truly exceptional cases
+\end{tightitemize}
+
+\shdr{Try/rescue}
+\code{try do}
+\code{  risky()}
+\code{rescue}
+\code{  e in RuntimeError -> e}
+\code{end}
+\vspace{2pt}
+
+\sep
+
+\hdr{Testing}
+\shdr{ExUnit}
+\begin{tightitemize}
+  \item \code{mix test}
+  \item \code{use ExUnit.Case}
+  \item Assertions: \code{assert}, \code{refute}
+\end{tightitemize}
+
+\shdr{Example}
+\code{test "add" do}
+\code{  assert add(1, 1) == 2}
+\code{end}
+\vspace{2pt}
+
+\sep
+
+\hdr{Common Idioms}
+\begin{tightitemize}
+  \item Happy-path with \code{with}
+  \item Pattern match on return values
+  \item Keep processes small and supervised
+  \item Push side effects to boundaries
+\end{tightitemize}
+
+\sep
+
+\hdr{Mini Reference}
+\begin{tightitemize}
+  \item \code{|>} pipeline
+  \item \code{=} is match, not assignment
+  \item Immutability everywhere
+  \item Prefer messages over shared state
+\end{tightitemize}
+
+\end{multicols}
+
+\end{document}

@@ -1,0 +1,439 @@
+\documentclass[10pt]{article}
+
+\usepackage[margin=0.6in]{geometry}
+\usepackage{multicol}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{listings}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue
+} 
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+
+\newcommand{\hdr}[1]{\vspace{4pt}\textbf{\large #1}\vspace{2pt}}
+\newcommand{\shdr}[1]{\vspace{3pt}\textbf{#1}\vspace{1pt}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\sep}{\vspace{4pt}\hrule\vspace{4pt}}
+
+\newenvironment{tightitemize}{
+  \begin{itemize}[leftmargin=*, itemsep=1pt, topsep=2pt, parsep=0pt, partopsep=0pt]
+}{
+  \end{itemize}
+}
+
+\newenvironment{tightenum}{
+  \begin{enumerate}[leftmargin=*, itemsep=1pt, topsep=2pt, parsep=0pt, partopsep=0pt]
+}{
+  \end{enumerate}
+}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE \textbf{Rust Cheatsheet}}\\
+  \vspace{2pt}
+\end{center}
+
+\begin{multicols}{2}
+
+\hdr{Project Layout \& Tooling}
+\shdr{Cargo essentials}
+\begin{tightitemize}
+  \item Create: \code{cargo new myproj} \;\; (or \code{--lib})
+  \item Build/Run: \code{cargo build}, \code{cargo run}
+  \item Check fast: \code{cargo check}
+  \item Tests: \code{cargo test}
+  \item Format/Lint: \code{cargo fmt}, \code{cargo clippy}
+  \item Docs: \code{cargo doc --open}
+\end{tightitemize}
+
+\shdr{Common files}
+\begin{tightitemize}
+  \item \code{Cargo.toml}: deps, features, metadata
+  \item \code{src/main.rs}: binary entry
+  \item \code{src/lib.rs}: library root
+  \item \code{mod.rs}: older module layout (still seen)
+\end{tightitemize}
+
+\sep
+
+\hdr{Hello, Types, Variables}
+\shdr{Hello}
+\code{fn main() \{ println!("Hello"); \}}
+\vspace{2pt}
+
+\shdr{Bindings}
+\begin{tightitemize}
+  \item Immutable by default: \code{let x = 5;}
+  \item Mutable: \code{let mut x = 5; x += 1;}
+  \item Constants: \code{const MAX: u32 = 100;}
+  \item Shadowing: \code{let x = x + 1; let x = "now str";}
+\end{tightitemize}
+
+\shdr{Primitive types}
+\begin{tightitemize}
+  \item Integers: \code{i8 i16 i32 i64 i128 isize}, \code{u*}
+  \item Floats: \code{f32 f64}
+  \item Bool: \code{bool}; Char (Unicode scalar): \code{char}
+  \item Unit: \code{()} \; (empty tuple)
+\end{tightitemize}
+
+\shdr{Tuples \& arrays}
+\begin{tightitemize}
+  \item Tuple: \code{let t: (i32, \&str) = (1,"a"); let a = t.1;}
+  \item Array (fixed): \code{let a = [1,2,3]; let z = [0; 10];}
+\end{tightitemize}
+
+\sep
+
+\hdr{Functions \& Control Flow}
+\shdr{Functions}
+\begin{tightitemize}
+  \item Signature: \code{fn add(a: i32, b: i32) -> i32 \{ a + b \}}
+  \item Last expr returns; \code{return} optional
+\end{tightitemize}
+
+\shdr{If as expression}
+\code{let x = if cond \{ 1 \} else \{ 2 \};}
+\vspace{2pt}
+
+\shdr{Loops}
+\begin{tightitemize}
+  \item \code{loop \{ ... break; \}}
+  \item \code{while cond \{ ... \}}
+  \item \code{for x in iter \{ ... \}}
+  \item Break with value: \code{let v = loop \{ break 42; \};}
+\end{tightitemize}
+
+\shdr{Match}
+\begin{tightitemize}
+  \item Exhaustive: \code{match x \{ 0 => ..., 1|2 => ..., _ => ... \}}
+  \item Guards: \code{n if n > 10 => ...}
+  \item Destructure: tuples/structs/enums
+\end{tightitemize}
+
+\sep
+
+\hdr{Ownership, Borrowing, Lifetimes}
+\shdr{Ownership quick rules}
+\begin{tightitemize}
+  \item Values have a single owner; drop at scope end
+  \item Move by default for non-\code{Copy} types (e.g., \code{String}, \code{Vec})
+  \item Borrow with references: \code{\&T} (shared), \code{\&mut T} (exclusive)
+\end{tightitemize}
+
+\shdr{Move vs Copy}
+\begin{tightitemize}
+  \item \code{Copy}: small stack types (ints, bool, char, tuples of Copy)
+  \item \code{let a = 5; let b = a;} OK (Copy)
+  \item \code{let s = String::from("hi"); let t = s;} move; \code{s} invalid
+\end{tightitemize}
+
+\shdr{Borrowing}
+\begin{tightitemize}
+  \item Shared: many \code{\&T} at once
+  \item Mutable: only one \code{\&mut T} at a time
+  \item No mutable+shared overlap for same value
+\end{tightitemize}
+
+\shdr{Slices}
+\begin{tightitemize}
+  \item \code{\&[T]} from arrays/vectors
+  \item \code{\&str} is a string slice
+  \item \code{let s = \&string[0..3];} (careful with UTF-8 boundaries)
+\end{tightitemize}
+
+\shdr{Lifetimes (practical)}
+\begin{tightitemize}
+  \item Usually inferred
+  \item When returning refs: \code{fn first<'a>(s: &'a str) -> &'a str \{ ... \}}
+  \item Struct holding refs: \code{struct S<'a>\{ r: &'a str \}}
+\end{tightitemize}
+
+\sep
+
+\hdr{Strings, Collections}
+\shdr{String vs \&str}
+\begin{tightitemize}
+  \item \code{\&str}: borrowed view
+  \item \code{String}: owned, growable
+\end{tightitemize}
+
+\shdr{Common string ops}
+\begin{tightitemize}
+  \item Make: \code{let s = String::from("hi");}
+  \item Push: \code{s.push('!'); s.push_str(" there");}
+  \item Format: \code{let x = format!("{}\_{}", a, b);}
+  \item Iterate chars: \code{for c in s.chars() \{...\}}
+  \item Bytes: \code{s.as_bytes()}
+\end{tightitemize}
+
+\shdr{Vec}
+\begin{tightitemize}
+  \item \code{let mut v = vec![1,2,3]; v.push(4);}
+  \item Index (panics if OOB): \code{v[0]}
+  \item Safe get: \code{v.get(0)} returns \code{Option<\&T>}
+  \item Iterate: \code{for x in \&v \{...\}} / \code{for x in v \{...\}} (moves)
+\end{tightitemize}
+
+\shdr{HashMap}
+\begin{tightitemize}
+  \item \code{use std::collections::HashMap;}
+  \item \code{let mut m = HashMap::new(); m.insert("k", 1);}
+  \item Entry API: \code{*m.entry(k).or_insert(0) += 1;}
+\end{tightitemize}
+
+\sep
+
+\hdr{Structs, Enums, Pattern Matching}
+\shdr{Struct}
+\begin{tightitemize}
+  \item \code{struct User \{ id: u64, name: String \}}
+  \item Init: \code{User \{ id, name \}}
+  \item Update: \code{User \{ name, ..u \}} (moves fields)
+\end{tightitemize}
+
+\shdr{Impl blocks}
+\begin{tightitemize}
+  \item \code{impl User \{ fn new(id:u64)->Self \{ ... \} \}}
+  \item Methods: \code{fn rename(\&mut self, n:String) \{ self.name=n; \}}
+\end{tightitemize}
+
+\shdr{Enum}
+\begin{tightitemize}
+  \item \code{enum Msg \{ Quit, Move\{x:i32,y:i32\}, Text(String)\}}
+  \item Match destructure:
+\end{tightitemize}
+\code{match m \{ Msg::Quit => ..., Msg::Move\{x,y\} => ..., Msg::Text(s) => ... \}}
+\vspace{2pt}
+
+\shdr{Option \& Result}
+\begin{tightitemize}
+  \item \code{Option<T>}: \code{Some(T)} or \code{None}
+  \item \code{Result<T,E>}: \code{Ok(T)} or \code{Err(E)}
+\end{tightitemize}
+
+\shdr{Useful combinators}
+\begin{tightitemize}
+  \item Option: \code{map}, \code{and\_then}, \code{unwrap\_or}, \code{ok\_or}
+  \item Result: \code{map}, \code{map\_err}, \code{and\_then}, \code{unwrap\_or\_else}
+\end{tightitemize}
+
+\sep
+
+\hdr{Error Handling Patterns}
+\shdr{\code{?} operator}
+\begin{tightitemize}
+  \item Propagates errors: \code{fn f() -> Result<T,E> \{ let x = g()?; Ok(x)\}}
+  \item Also works for \code{Option}: returns \code{None} early
+\end{tightitemize}
+
+\shdr{Custom error (simple)}
+\begin{tightitemize}
+  \item \code{enum MyErr \{ Io(std::io::Error), BadInput \}}
+  \item Convert: \code{From} impl or manual mapping with \code{map\_err}
+\end{tightitemize}
+
+\shdr{Crash vs handle}
+\begin{tightitemize}
+  \item \code{unwrap()/expect()} for prototypes/tests or when truly impossible
+  \item Prefer returning \code{Result} in libs and fallible code paths
+\end{tightitemize}
+
+\sep
+
+\hdr{Traits, Generics, Common Bounds}
+\shdr{Generics}
+\begin{tightitemize}
+  \item \code{fn id<T>(x:T)->T \{ x \}}
+  \item Struct: \code{struct Boxed<T>(T);}
+\end{tightitemize}
+
+\shdr{Trait bounds}
+\begin{tightitemize}
+  \item \code{fn f<T: Clone + Debug>(t: T) \{...\}}
+  \item Where clause:
+\end{tightitemize}
+\code{fn f<T>(t:T) where T: Clone + std::fmt::Debug \{...\}}
+\vspace{2pt}
+
+\shdr{Common traits}
+\begin{tightitemize}
+  \item \code{Debug} (\code{\#[derive(Debug)]}) for printing with \code{\{:?\}}
+  \item \code{Clone} vs \code{Copy}
+  \item \code{Eq/PartialEq}, \code{Ord/PartialOrd}, \code{Hash}
+  \item \code{Default}, \code{From/Into}, \code{AsRef}
+  \item \code{Send/Sync} (thread safety markers)
+\end{tightitemize}
+
+\shdr{Trait objects (dynamic dispatch)}
+\begin{tightitemize}
+  \item \code{Box<dyn Trait>} for heterogenous collections / plugin-y design
+  \item Often needs \code{Trait + Send + Sync + 'static} in async/concurrency
+\end{tightitemize}
+
+\sep
+
+\hdr{Modules, Visibility, Imports}
+\shdr{Modules}
+\begin{tightitemize}
+  \item Declare: \code{mod foo;} \; (loads \code{foo.rs} or \code{foo/mod.rs})
+  \item Public: \code{pub} items; re-export: \code{pub use path::Item;}
+\end{tightitemize}
+
+\shdr{Use paths}
+\begin{tightitemize}
+  \item \code{use crate::foo::Bar;}
+  \item \code{use std::io::{self, Read};}
+  \item Alias: \code{use long::path as lp;}
+\end{tightitemize}
+
+\sep
+
+\hdr{Closures, Iterators, Common FP-ish Patterns}
+\shdr{Closures}
+\begin{tightitemize}
+  \item \code{|x| x + 1}
+  \item Capture by ref/mut/move: \code{move |x| ...}
+\end{tightitemize}
+
+\shdr{Iterator pipeline}
+\begin{tightitemize}
+  \item \code{v.iter().map(...).filter(...).collect::<Vec<_>>();}
+  \item \code{iter()} borrows, \code{into\_iter()} moves, \code{iter\_mut()} mutable refs
+\end{tightitemize}
+
+\shdr{Useful iterator methods}
+\begin{tightitemize}
+  \item \code{map}, \code{filter}, \code{filter\_map}, \code{flat\_map}
+  \item \code{fold}, \code{reduce}
+  \item \code{any}, \code{all}, \code{find}, \code{position}
+  \item \code{enumerate}, \code{zip}, \code{chain}
+\end{tightitemize}
+
+\sep
+
+\hdr{Smart Pointers \& Interior Mutability}
+\shdr{\code{Box}}
+\begin{tightitemize}
+  \item Heap allocation; recursive types
+\end{tightitemize}
+
+\shdr{\code{Rc}/\code{Arc}}
+\begin{tightitemize}
+  \item Shared ownership (ref counting)
+  \item \code{Rc} single-thread; \code{Arc} thread-safe
+\end{tightitemize}
+
+\shdr{\code{RefCell}/\code{Mutex}}
+\begin{tightitemize}
+  \item Interior mutability with runtime checks: \code{RefCell<T>}
+  \item Shared mutable across threads: \code{Arc<Mutex<T>>}
+\end{tightitemize}
+
+\shdr{Typical combos}
+\begin{tightitemize}
+  \item Single-thread graph: \code{Rc<RefCell<Node>>}
+  \item Multithread shared state: \code{Arc<Mutex<State>>} (or \code{RwLock})
+\end{tightitemize}
+
+\sep
+
+\hdr{Concurrency (Std) \& Async Notes}
+\shdr{Threads}
+\begin{tightitemize}
+  \item \code{std::thread::spawn(|| \{ ... \})}
+  \item Join: \code{let h = spawn(...); h.join().unwrap();}
+\end{tightitemize}
+
+\shdr{Channels}
+\begin{tightitemize}
+  \item \code{use std::sync::mpsc;}
+  \item \code{let (tx, rx) = mpsc::channel();}
+  \item \code{tx.send(val).unwrap(); let v = rx.recv().unwrap();}
+\end{tightitemize}
+
+\shdr{Async (ecosystem)}
+\begin{tightitemize}
+  \item Needs runtime (often Tokio/async-std)
+  \item \code{async fn f() -> Result<T,E>}
+  \item \code{.await} waits a future
+\end{tightitemize}
+
+\sep
+
+\hdr{Macros, Attributes, Testing}
+\shdr{Macros}
+\begin{tightitemize}
+  \item Common: \code{println!}, \code{format!}, \code{vec!}, \code{dbg!}
+  \item Derive: \code{\#[derive(Debug, Clone, PartialEq)]}
+\end{tightitemize}
+
+\shdr{Attributes}
+\begin{tightitemize}
+  \item \code{\#[allow(dead\_code)]}, \code{\#[cfg(test)]}, \code{\#[cfg(feature="x")]}
+\end{tightitemize}
+
+\shdr{Testing}
+\begin{tightitemize}
+  \item \code{\#[test] fn it\_works() \{ assert\_eq!(2+2,4); \}}
+  \item Panic test: \code{\#[should\_panic]}
+  \item Result test: \code{fn t() -> Result<(),E> \{ ...; Ok(()) \}}
+\end{tightitemize}
+
+\sep
+
+\hdr{Common Idioms (Quick Recipes)}
+\shdr{Builder-ish struct init}
+\code{let cfg = Cfg \{ a:1, ..Default::default() \};}
+\vspace{2pt}
+
+\shdr{Early return with match}
+\code{let v = match opt \{ Some(x)=>x, None=>return \};}
+\vspace{2pt}
+
+\shdr{Borrow then mutate (pattern)}
+\begin{tightitemize}
+  \item Use scopes to end borrows before mutation
+  \item Or clone small data; or use \code{split\_at\_mut} for slices
+\end{tightitemize}
+
+\shdr{Parse string}
+\code{let n: i32 = s.parse()?;}
+\vspace{2pt}
+
+\shdr{Read file (simple)}
+\code{let txt = std::fs::read\_to\_string("a.txt")?;}
+\vspace{2pt}
+
+\shdr{Serde (common crate)}
+\begin{tightitemize}
+  \item \code{\#[derive(Serialize, Deserialize)]}
+  \item JSON: \code{serde\_json::to\_string(\&v)?;}
+\end{tightitemize}
+
+\sep
+
+\hdr{Mini Reference}
+\begin{tightitemize}
+  \item Print debug: \code{println!("{:?}", x);}
+  \item Pattern \code{if let}: \code{if let Some(x)=opt \{...\}}
+  \item \code{while let}: \code{while let Some(x)=iter.next() \{...\}}
+  \item Ranges: \code{0..n}, \code{0..=n}
+  \item Ownership hint: prefer passing \code{\&T} unless you need to take ownership
+\end{tightitemize}
+
+\end{multicols}
+
+\end{document}

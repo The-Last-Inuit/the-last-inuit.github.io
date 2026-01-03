@@ -1,0 +1,317 @@
+\documentclass[10pt]{article}
+
+\usepackage[margin=0.6in]{geometry}
+\usepackage{multicol}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{amsmath}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+
+\newcommand{\hdr}[1]{\vspace{4pt}\textbf{\large #1}\vspace{2pt}}
+\newcommand{\shdr}[1]{\vspace{3pt}\textbf{#1}\vspace{1pt}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\sep}{\vspace{4pt}\hrule\vspace{4pt}}
+
+\newenvironment{tightitemize}{
+  \begin{itemize}[leftmargin=*, itemsep=1pt, topsep=2pt, parsep=0pt, partopsep=0pt]
+}{
+  \end{itemize}
+}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE \textbf{Haskell Cheatsheet}}\\
+  \vspace{2pt}
+\end{center}
+
+\begin{multicols}{2}
+
+\hdr{Tooling \& Project Basics}
+\shdr{GHC / REPL}
+\begin{tightitemize}
+  \item Compile: \code{ghc Main.hs}
+  \item Run: \code{runghc Main.hs}
+  \item REPL: \code{ghci} \; (reload: \code{:r}, quit: \code{:q})
+  \item Type of expr: \code{:t expr} \;\; Info: \code{:i Name}
+\end{tightitemize}
+
+\shdr{Cabal / Stack}
+\begin{tightitemize}
+  \item Cabal init/build: \code{cabal init}, \code{cabal build}, \code{cabal run}
+  \item Stack: \code{stack new}, \code{stack build}, \code{stack run}, \code{stack ghci}
+\end{tightitemize}
+
+\sep
+
+\hdr{Basics: Values, Types, Bindings}
+\shdr{Hello}
+\code{main :: IO ()}
+\code{main = putStrLn "Hello"}
+\vspace{2pt}
+
+\shdr{Bindings}
+\begin{tightitemize}
+  \item Immutable by default: \code{x = 42}
+  \item Local: \code{let x = 1 in x + 2}
+  \item Where: \code{f x = y + 1 where y = x * 2}
+\end{tightitemize}
+
+\shdr{Type annotations}
+\begin{tightitemize}
+  \item \code{x :: Int}
+  \item Functions: \code{add :: Int -> Int -> Int}
+  \item Polymorphic: \code{id :: a -> a}
+\end{tightitemize}
+
+\shdr{Common types}
+\begin{tightitemize}
+  \item \code{Int, Integer, Float, Double}
+  \item \code{Bool, Char, String} (\code{String = [Char]})
+  \item Lists: \code{[a]} \;\; Tuples: \code{(a,b)}
+  \item \code{Maybe a}, \code{Either e a}
+\end{tightitemize}
+
+\shdr{Operators \& precedence}
+\begin{tightitemize}
+  \item Function application has high precedence: \code{f x y}
+  \item \code{($)} lowers precedence: \code{f $ g x}
+  \item Compose: \code{(.)}: \code{(f . g) x == f (g x)}
+\end{tightitemize}
+
+\sep
+
+\hdr{Lists \& Strings}
+\shdr{List literals}
+\begin{tightitemize}
+  \item \code{xs = [1,2,3]}
+  \item Cons: \code{1 : [2,3]}  (\code{:} prepends)
+  \item Concat: \code{xs ++ ys}
+  \item Ranges: \code{[1..10]}, \code{[0,2..10]}
+\end{tightitemize}
+
+\shdr{Common list funcs (Prelude)}
+\begin{tightitemize}
+  \item \code{head, tail, init, last} (partial; can crash)
+  \item \code{length, null, reverse, take, drop}
+  \item \code{map, filter, foldr, foldl'}
+  \item \code{zip, unzip, any, all, elem}
+\end{tightitemize}
+
+\shdr{List comprehension}
+\code{[x*x | x <- [1..10], even x]}
+\vspace{2pt}
+
+\shdr{Strings}
+\begin{tightitemize}
+  \item String is \code{[Char]}: list ops work
+  \item Better perf: \code{Text} (package \code{text}), \code{ByteString} (\code{bytestring})
+\end{tightitemize}
+
+\sep
+
+\hdr{Functions \& Pattern Matching}
+\shdr{Definitions}
+\begin{tightitemize}
+  \item \code{add x y = x + y}
+  \item Guards:
+\end{tightitemize}
+\code{abs' x | x >= 0 = x | otherwise = -x}
+\vspace{2pt}
+
+\shdr{Pattern matching}
+\begin{tightitemize}
+  \item On args:
+\end{tightitemize}
+\code{len [] = 0}
+\code{len (\_:\,xs) = 1 + len xs}
+\vspace{2pt}
+
+\shdr{Case}
+\code{case xs of [] -> 0; (y:_) -> y}
+\vspace{2pt}
+
+\shdr{Lambda}
+\begin{tightitemize}
+  \item \code{\textbackslash x -> x + 1}
+  \item Sections: \code{(+1)}, \code{(1+)}
+\end{tightitemize}
+
+\shdr{Let / where}
+\begin{tightitemize}
+  \item \code{let a = 1; b = 2 in a + b}
+  \item \code{f x = g x where g y = y + 1}
+\end{tightitemize}
+
+\sep
+
+\hdr{Algebraic Data Types (ADT)}
+\shdr{Data}
+\code{data Color = Red | Green | Blue}
+\vspace{2pt}
+
+\shdr{Parametric types}
+\code{data Box a = Box a}
+\vspace{2pt}
+
+\shdr{Record syntax}
+\code{data User = User \{ userId :: Int, name :: String \}}
+\vspace{2pt}
+
+\shdr{Type synonyms vs newtypes}
+\begin{tightitemize}
+  \item Alias: \code{type UserId = Int} (no runtime distinction)
+  \item Newtype: \code{newtype UserId = UserId Int} (distinct type, zero-cost)
+\end{tightitemize}
+
+\shdr{Deriving}
+\begin{tightitemize}
+  \item \code{deriving (Eq, Ord, Show, Read)}
+\end{tightitemize}
+
+\sep
+
+\hdr{Typeclasses \& Instances}
+\shdr{Typeclass idea}
+\begin{tightitemize}
+  \item ``Interface'' of functions with laws (informal but important)
+  \item Examples: \code{Eq}, \code{Ord}, \code{Show}, \code{Functor}, \code{Monad}
+\end{tightitemize}
+
+\shdr{Define a typeclass}
+\code{class Pretty a where pretty :: a -> String}
+\vspace{2pt}
+
+\shdr{Instance}
+\code{instance Pretty Color where}
+\code{  pretty Red = "red"}
+\vspace{2pt}
+
+\shdr{Common typeclasses}
+\begin{tightitemize}
+  \item \code{Semigroup} (\code{<>}), \code{Monoid} (\code{mempty})
+  \item \code{Functor} (\code{fmap}), \code{Applicative} (\code{<*>}), \code{Monad} (\code{>>=})
+  \item \code{Foldable}, \code{Traversable}
+\end{tightitemize}
+
+\sep
+
+\hdr{Maybe, Either, Error-ish Patterns}
+\shdr{Maybe}
+\begin{tightitemize}
+  \item \code{data Maybe a = Nothing | Just a}
+  \item Safe lookup: \code{lookup k xs :: Maybe v}
+\end{tightitemize}
+
+\shdr{Either}
+\begin{tightitemize}
+  \item \code{data Either e a = Left e | Right a}
+  \item Great for error messages: \code{Either String a}
+\end{tightitemize}
+
+\shdr{Working with them}
+\begin{tightitemize}
+  \item \code{maybe def f mx}
+  \item \code{either fe fa ex}
+  \item \code{fmap} maps inside \code{Maybe}/\code{Either}
+\end{tightitemize}
+
+\sep
+
+\hdr{Do-Notation \& Monads}
+\shdr{IO basics}
+\begin{tightitemize}
+  \item \code{getLine :: IO String}
+  \item \code{putStrLn :: String -> IO ()}
+\end{tightitemize}
+
+\shdr{Do-notation (sequence)}
+\code{main = do}
+\code{  s <- getLine}
+\code{  putStrLn ("You: " ++ s)}
+\vspace{2pt}
+
+\shdr{Maybe in do}
+\begin{tightitemize}
+  \item \code{do} works with any \code{Monad}: \code{Maybe}, \code{Either e}, lists, etc.
+\end{tightitemize}
+
+\shdr{Bind vs fmap}
+\begin{tightitemize}
+  \item \code{fmap :: (a->b) -> m a -> m b}
+  \item \code{(>>=) :: m a -> (a -> m b) -> m b}
+\end{tightitemize}
+
+\sep
+
+\hdr{Higher-Order Patterns}
+\shdr{Pointfree-ish}
+\begin{tightitemize}
+  \item \code{sumSquares = sum . map (^2)}
+  \item Use sparingly; readability matters
+\end{tightitemize}
+
+\shdr{Folds}
+\begin{tightitemize}
+  \item \code{foldr} good for lists / laziness
+  \item \code{foldl'} (from \code{Data.List}) strict left fold (avoid space leaks)
+\end{tightitemize}
+
+\shdr{Strictness (practical)}
+\begin{tightitemize}
+  \item Haskell is lazy; can build thunks (memory)
+  \item Use \code{foldl'} / strict fields / \code{seq} when needed
+\end{tightitemize}
+
+\sep
+
+\hdr{Modules \& Imports}
+\shdr{Module header}
+\code{module My.Mod (foo, Bar(..)) where}
+\vspace{2pt}
+
+\shdr{Imports}
+\begin{tightitemize}
+  \item \code{import Data.List (sort, nub)}
+  \item Qualified: \code{import qualified Data.Map as M}
+  \item Hide: \code{import Prelude hiding (lookup)}
+\end{tightitemize}
+
+\sep
+
+\hdr{Common Libraries (Ecosystem)}
+\begin{tightitemize}
+  \item Text: \code{text} (\code{Data.Text})
+  \item Bytes: \code{bytestring}
+  \item Maps/Sets: \code{containers} (\code{Data.Map}, \code{Data.Set})
+  \item JSON: \code{aeson}
+  \item Parsing: \code{megaparsec} / \code{attoparsec}
+  \item Testing: \code{hspec}, \code{tasty}, property tests: \code{QuickCheck}
+\end{tightitemize}
+
+\sep
+
+\hdr{Mini Reference}
+\begin{tightitemize}
+  \item \code{::} ``has type'' \;\; \code{->} function type \;\; \code{=>} constraints
+  \item \code{()} unit \;\; \code{[]} empty list \;\; \code{(:)} cons \;\; \code{(++)} concat
+  \item \code{<$>} is \code{fmap}; \code{<*>} applicative apply; \code{>>=} monadic bind
+  \item Prefer total functions; avoid \code{head}/\code{!!} unless you prove safety
+\end{tightitemize}
+
+\end{multicols}
+
+\end{document}

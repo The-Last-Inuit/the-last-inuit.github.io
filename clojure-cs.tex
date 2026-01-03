@@ -1,0 +1,368 @@
+\documentclass[10pt]{article}
+
+\usepackage[margin=0.6in]{geometry}
+\usepackage{multicol}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{amsmath}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+
+\newcommand{\hdr}[1]{\vspace{4pt}\textbf{\large #1}\vspace{2pt}}
+\newcommand{\shdr}[1]{\vspace{3pt}\textbf{#1}\vspace{1pt}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\sep}{\vspace{4pt}\hrule\vspace{4pt}}
+
+\newenvironment{tightitemize}{
+  \begin{itemize}[leftmargin=*, itemsep=1pt, topsep=2pt, parsep=0pt, partopsep=0pt]
+}{
+  \end{itemize}
+}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE \textbf{Clojure Cheatsheet}}\\
+  \vspace{2pt}
+\end{center}
+
+\begin{multicols}{2}
+
+\hdr{Tooling \& REPL}
+\shdr{CLI (deps.edn)}
+\begin{tightitemize}
+  \item Start REPL: \code{clj}
+  \item Run main: \code{clj -M -m my.ns}
+  \item Add alias: \code{clj -M:dev} (defined in \code{deps.edn})
+\end{tightitemize}
+
+\shdr{Leiningen (older/common)}
+\begin{tightitemize}
+  \item \code{lein repl}, \code{lein test}, \code{lein run}
+\end{tightitemize}
+
+\shdr{Namespace skeleton}
+\code{(ns my.ns}
+\code{  (:require [clojure.string :as str]))}
+\vspace{2pt}
+
+\sep
+
+\hdr{Syntax \& Evaluation}
+\shdr{Forms}
+\begin{tightitemize}
+  \item Everything is a form; lists evaluate as calls: \code{(f a b)}
+  \item \code{'(1 2 3)} quote (do not eval)
+  \item \code{`(a ~x)} syntax-quote + unquote
+\end{tightitemize}
+
+\shdr{Literals}
+\begin{tightitemize}
+  \item Numbers: \code{42}, \code{3.14}, ratios \code{1/3}
+  \item Strings: \code{"hi"} \;\; Chars: \code{\textbackslash a}
+  \item Keywords: \code{:name} \;\; Symbols: \code{foo}
+  \item Regex: \code{\#"\textbackslash d+"}
+\end{tightitemize}
+
+\shdr{Comments}
+\begin{tightitemize}
+  \item Line: \code{; ...}
+  \item Form: \code{\#\_(+ 1 2)} (skips next form)
+\end{tightitemize}
+
+\sep
+
+\hdr{Bindings \& Definitions}
+\shdr{Global defs}
+\begin{tightitemize}
+  \item \code{(def x 10)}
+  \item \code{(defn add [a b] (+ a b))}
+  \item Docstring: \code{(defn f "doc" [x] ...)}
+\end{tightitemize}
+
+\shdr{Local bindings}
+\begin{tightitemize}
+  \item \code{(let [x 1 y 2] (+ x y))}
+  \item Destructuring supported in \code{let}/args
+\end{tightitemize}
+
+\shdr{Anonymous functions}
+\begin{tightitemize}
+  \item \code{(fn [x] (+ x 1))}
+  \item Shorthand: \code{\#(+ \% 1)} \;\; multi-args: \code{\#(+ \%1 \%2)}
+\end{tightitemize}
+
+\sep
+
+\hdr{Core Data Structures (Immutable)}
+\shdr{List, Vector, Map, Set}
+\begin{tightitemize}
+  \item List: \code{'(1 2 3)} \;\; (linked list; great for seq ops)
+  \item Vector: \code{[1 2 3]} \;\; (indexed)
+  \item Map: \code{\{:a 1 :b 2\}}
+  \item Set: \code{\#\{1 2 3\}}
+\end{tightitemize}
+
+\shdr{Common ops}
+\begin{tightitemize}
+  \item Get: \code{(get m :a)}; keywords are fns: \code{(:a m)}
+  \item Assoc/dissoc: \code{(assoc m :c 3)}, \code{(dissoc m :b)}
+  \item Update: \code{(update m :a inc)}
+  \item Conj: \code{(conj [1 2] 3)}; \code{(conj '(1 2) 0)} (diff semantics)
+  \item Contains? (keys for maps): \code{(contains? m :a)}
+\end{tightitemize}
+
+\shdr{Nested updates}
+\begin{tightitemize}
+  \item \code{(assoc-in m [:a :b] 1)}
+  \item \code{(update-in m [:a :b] inc)}
+  \item \code{(get-in m [:a :b])}
+\end{tightitemize}
+
+\sep
+
+\hdr{Seqs \& Collection Processing}
+\shdr{Seq model}
+\begin{tightitemize}
+  \item Many collections produce a sequence view via \code{seq}
+  \item Seq ops are lazy (often); realize with \code{doall} if needed
+\end{tightitemize}
+
+\shdr{Bread \& butter}
+\begin{tightitemize}
+  \item \code{map}, \code{filter}, \code{remove}
+  \item \code{reduce}, \code{into}
+  \item \code{take}, \code{drop}, \code{partition}, \code{group-by}
+  \item \code{some}, \code{every?}, \code{not-any?}
+\end{tightitemize}
+
+\shdr{Threading macros (pipeline)}
+\begin{tightitemize}
+  \item Thread-first: \code{(-> x f (g 1) h)}
+  \item Thread-last: \code{(->> xs (map f) (filter p) (take 10))}
+\end{tightitemize}
+
+\shdr{Comprehension}
+\code{(for [x (range 5) :when (odd? x)] (* x x))}
+\vspace{2pt}
+
+\sep
+
+\hdr{Conditionals \& Control}
+\shdr{If / when}
+\begin{tightitemize}
+  \item \code{(if cond then else)}
+  \item \code{(when cond ...)} (no else; returns nil if false)
+\end{tightitemize}
+
+\shdr{Cond / case}
+\begin{tightitemize}
+  \item \code{(cond p1 e1 p2 e2 :else e)}
+  \item \code{(case x 1 "one" 2 "two" "other")} (constants only)
+\end{tightitemize}
+
+\shdr{Short-circuit}
+\begin{tightitemize}
+  \item \code{(and a b c)} \;\; \code{(or a b c)}
+\end{tightitemize}
+
+\shdr{Loops}
+\begin{tightitemize}
+  \item Recursion: \code{recur} (tail-call to loop/fn)
+\end{tightitemize}
+\code{(loop [i 0 acc 0]}
+\code{  (if (= i 10) acc (recur (inc i) (+ acc i))))}
+\vspace{2pt}
+
+\sep
+
+\hdr{Destructuring (Very Useful)}
+\shdr{Vector destructuring}
+\begin{tightitemize}
+  \item \code{(let [[a b \& rest] [1 2 3 4]] ...)}
+  \item \code{(let [[x \_ y] [1 2 3]] ...)} (ignore)
+\end{tightitemize}
+
+\shdr{Map destructuring}
+\begin{tightitemize}
+  \item \code{(let [\{:keys [a b]\} \{:a 1 :b 2\}] ...)}
+  \item Rename: \code{(let [\{:keys [a] :as m\} ...] ...)}
+  \item With defaults: \code{(let [\{:keys [a] :or \{a 0\}\} ...] ...)}
+\end{tightitemize}
+
+\sep
+
+\hdr{Functions \& Higher-Order Patterns}
+\shdr{Arity \& variadic}
+\begin{tightitemize}
+  \item Multi-arity:
+\end{tightitemize}
+\code{(defn f ([x] (f x 0)) ([x y] (+ x y)))}
+\vspace{2pt}
+
+\begin{tightitemize}
+  \item Variadic: \code{(defn sum [\& xs] (reduce + xs))}
+  \item Apply: \code{(apply + [1 2 3])}
+  \item Partial: \code{(partial + 10)}
+  \item Complement: \code{(complement pred)}
+\end{tightitemize}
+
+\shdr{Memoization}
+\begin{tightitemize}
+  \item \code{(def fast-f (memoize slow-f))}
+\end{tightitemize}
+
+\sep
+
+\hdr{State \& Concurrency Primitives}
+\shdr{Atoms (sync, independent state)}
+\begin{tightitemize}
+  \item \code{(def a (atom 0))}
+  \item Read: \code{@a} \;\; Set: \code{(reset! a 1)}
+  \item Update: \code{(swap! a inc)}
+\end{tightitemize}
+
+\shdr{Refs + STM (coordinated state)}
+\begin{tightitemize}
+  \item \code{(def r (ref 0))}
+  \item In transaction: \code{(dosync (alter r inc))}
+\end{tightitemize}
+
+\shdr{Agents (async updates)}
+\begin{tightitemize}
+  \item \code{(def ag (agent 0))}
+  \item \code{(send ag inc)}; await: \code{(await ag)}
+\end{tightitemize}
+
+\shdr{Futures / Promises / Delays}
+\begin{tightitemize}
+  \item \code{(future (do-work))} then \code{@f}
+  \item \code{(promise)} + \code{(deliver p v)} then \code{@p}
+  \item \code{(delay expr)} then \code{(force d)}
+\end{tightitemize}
+
+\shdr{core.async (library)}
+\begin{tightitemize}
+  \item CSP-style channels + \code{go} blocks; great for pipelines
+\end{tightitemize}
+
+\sep
+
+\hdr{Interop \& Exceptions}
+\shdr{Java interop}
+\begin{tightitemize}
+  \item Construct: \code{(java.util.Date.)}
+  \item Call method: \code{(.toString d)}
+  \item Static: \code{(Math/sqrt 9)}
+  \item Field: \code{(.-x obj)}
+  \item Doto:
+\end{tightitemize}
+\code{(doto (java.util.ArrayList.) (.add 1) (.add 2))}
+\vspace{2pt}
+
+\shdr{Exceptions}
+\begin{tightitemize}
+  \item Throw: \code{(throw (ex-info "bad" \{:x 1\}))}
+  \item Try/catch/finally:
+\end{tightitemize}
+\code{(try ... (catch Exception e ...) (finally ...))}
+\vspace{2pt}
+
+\shdr{Common pattern}
+\begin{tightitemize}
+  \item Prefer \code{ex-info} for structured data; use \code{ex-data} to read it
+\end{tightitemize}
+
+\sep
+
+\hdr{Macros (Basics)}
+\shdr{What macros are}
+\begin{tightitemize}
+  \item Code that transforms code (compile-time-ish)
+  \item Use functions first; macros when you need control over evaluation
+\end{tightitemize}
+
+\shdr{Define macro}
+\code{(defmacro unless [pred \& body]}
+\code{  `(if (not ~pred) (do ~@body) nil))}
+\vspace{2pt}
+
+\shdr{Inspect expansion}
+\begin{tightitemize}
+  \item \code{(macroexpand-1 '(-> x f))}
+\end{tightitemize}
+
+\sep
+
+\hdr{Spec, Tests, Common Libs}
+\shdr{Spec (clojure.spec.alpha)}
+\begin{tightitemize}
+  \item \code{(s/def ::id int?)}
+  \item Validate: \code{(s/valid? ::id 1)}
+  \item Explain: \code{(s/explain ::id "x")}
+\end{tightitemize}
+
+\shdr{Testing}
+\begin{tightitemize}
+  \item \code{clojure.test}: \code{(deftest ... (is (= 2 (+ 1 1))))}
+  \item Run: via \code{clj -X:test} (depends on setup) or Lein
+\end{tightitemize}
+
+\shdr{Ecosystem staples}
+\begin{tightitemize}
+  \item \code{clojure.string}, \code{clojure.set}
+  \item EDN: \code{clojure.edn}
+  \item Data transforms: \code{transducers}
+  \item Web: Ring/Compojure/Reitit
+  \item Data: next.jdbc, honeysql
+\end{tightitemize}
+
+\sep
+
+\hdr{Common Idioms (Quick Recipes)}
+\shdr{Nil-punning (be explicit)}
+\begin{tightitemize}
+  \item \code{nil} means ``no value'' and is falsey
+  \item Prefer \code{some?} if you mean ``not nil''
+\end{tightitemize}
+
+\shdr{Use maps as configs}
+\begin{tightitemize}
+  \item Functions often take an options map: \code{(f x \{:timeout 100\})}
+\end{tightitemize}
+
+\shdr{Transducer sketch}
+\begin{tightitemize}
+  \item \code{(into [] (comp (filter p) (map f)) xs)}
+  \item Avoid intermediate collections
+\end{tightitemize}
+
+\shdr{Prefer pure core + small boundary}
+\begin{tightitemize}
+  \item Keep business logic pure; push IO/DB to edges
+\end{tightitemize}
+
+\sep
+
+\hdr{Mini Reference}
+\begin{tightitemize}
+  \item Truthiness: only \code{nil} and \code{false} are falsey
+  \item Keywords as fns: \code{(:k m)} and maps as fns: \code{(m :k)}
+  \item Equality: \code{=} value equality; \code{identical?} reference
+  \item Common print: \code{pr-str} (readable), \code{println} (human)
+\end{tightitemize}
+
+\end{multicols}
+
+\end{document}

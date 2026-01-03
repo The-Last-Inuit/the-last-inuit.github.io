@@ -1,0 +1,308 @@
+\documentclass[10pt]{article}
+
+\usepackage[margin=0.6in]{geometry}
+\usepackage{multicol}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{amsmath}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+
+\newcommand{\hdr}[1]{\vspace{4pt}\textbf{\large #1}\vspace{2pt}}
+\newcommand{\shdr}[1]{\vspace{3pt}\textbf{#1}\vspace{1pt}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\sep}{\vspace{4pt}\hrule\vspace{4pt}}
+
+\newenvironment{tightitemize}{
+  \begin{itemize}[leftmargin=*, itemsep=1pt, topsep=2pt, parsep=0pt, partopsep=0pt]
+}{
+  \end{itemize}
+}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE \textbf{Gleam Cheatsheet}}\\
+  \vspace{2pt}
+\end{center}
+
+\begin{multicols}{2}
+
+\hdr{Tooling \& Project Basics}
+\shdr{Commands}
+\begin{tightitemize}
+  \item New project: \code{gleam new my\_app}
+  \item Run: \code{gleam run}
+  \item Test: \code{gleam test}
+  \item Format: \code{gleam format}
+  \item Build: \code{gleam build}
+\end{tightitemize}
+
+\shdr{Targets}
+\begin{tightitemize}
+  \item Erlang/BEAM target (default) and JavaScript target
+  \item Dependencies via Hex packages (\code{gleam.toml})
+\end{tightitemize}
+
+\shdr{Project layout}
+\begin{tightitemize}
+  \item \code{src/} Gleam code
+  \item \code{test/} tests
+  \item \code{gleam.toml} project config
+\end{tightitemize}
+
+\sep
+
+\hdr{Basics: Modules, Values, Types}
+\shdr{Module + main}
+\code{import gleam/io}
+\code{}
+\code{pub fn main() \{}
+\code{  io.println("Hello, Gleam!")}
+\code{\}}
+\vspace{2pt}
+
+\shdr{Bindings}
+\begin{tightitemize}
+  \item Immutable: \code{let x = 1}
+  \item Shadowing is allowed: \code{let x = x + 1}
+\end{tightitemize}
+
+\shdr{Common types (conceptual)}
+\begin{tightitemize}
+  \item \code{Int, Float, Bool, String}
+  \item \code{List(a)}, \code{Option(a)}, \code{Result(a, e)}
+  \item Tuples: \code{#(a, b)}
+\end{tightitemize}
+
+\sep
+
+\hdr{Functions}
+\shdr{Signatures}
+\begin{tightitemize}
+  \item \code{fn add(a: Int, b: Int) -> Int \{ a + b \}}
+  \item Public: \code{pub fn ...}
+\end{tightitemize}
+
+\shdr{Anonymous functions}
+\begin{tightitemize}
+  \item \code{fn(x) \{ x + 1 \}}
+\end{tightitemize}
+
+\shdr{Pipelines (very common)}
+\begin{tightitemize}
+  \item \code{x |> f |> g}
+  \item With args: \code{x |> map(with: fn(a) \{ ... \})}
+\end{tightitemize}
+
+\sep
+
+\hdr{Algebraic Data Types \& Pattern Matching}
+\shdr{Custom types}
+\code{pub type Color \{ Red Green Blue \}}
+\vspace{2pt}
+
+\shdr{Parameterized types}
+\code{pub type Box(a) \{ Box(a) \}}
+\vspace{2pt}
+
+\shdr{Pattern match}
+\code{pub fn to\_rgb(c: Color) -> #(Int, Int, Int) \{}
+\code{  case c \{}
+\code{    Red -> #(255, 0, 0)}
+\code{    Green -> #(0, 255, 0)}
+\code{    Blue -> #(0, 0, 255)}
+\code{  \}}
+\code{\}}
+\vspace{2pt}
+
+\shdr{Guards (when available)}
+\begin{tightitemize}
+  \item \code{case x \{ n if n > 10 -> ...; \_ -> ... \}}
+\end{tightitemize}
+
+\sep
+
+\hdr{Option \& Result (Everyday Error Handling)}
+\shdr{Option}
+\begin{tightitemize}
+  \item \code{pub type Option(a) \{ Some(a) None \}} (conceptually)
+  \item Match:
+\end{tightitemize}
+\code{case maybe \{ Some(x) -> x None -> 0 \}}
+\vspace{2pt}
+
+\shdr{Result}
+\begin{tightitemize}
+  \item \code{Result(a, e)}: \code{Ok(a)} or \code{Error(e)}
+  \item Propagate-ish via helpers + pipeline
+\end{tightitemize}
+
+\shdr{Typical pattern (pipeline)}
+\begin{tightitemize}
+  \item \code{result |> result.map(fn(x) \{...\})}
+  \item \code{result |> result.then(fn(x) \{ ... return Result ... \})}
+\end{tightitemize}
+
+\sep
+
+\hdr{Lists \& Common Data Work}
+\shdr{List basics}
+\begin{tightitemize}
+  \item Literal: \code{[1, 2, 3]}
+  \item Prepend: \code{[0, ..xs]} (spread syntax)
+  \item Concatenate: \code{xs ++ ys}
+\end{tightitemize}
+
+\shdr{Map/filter/fold}
+\begin{tightitemize}
+  \item Usually from \code{gleam/list}:
+  \item \code{list.map(xs, fn(x) \{...\})}
+  \item \code{list.filter(xs, fn(x) \{...\})}
+  \item \code{list.fold(xs, init, fn(acc, x) \{...\})}
+\end{tightitemize}
+
+\shdr{Common pipeline style}
+\code{xs}
+\code{  |> list.filter(fn(x) \{ x > 0 \})}
+\code{  |> list.map(fn(x) \{ x * 2 \})}
+\vspace{2pt}
+
+\sep
+
+\hdr{Strings}
+\shdr{String notes}
+\begin{tightitemize}
+  \item Strings are UTF-8
+  \item Common ops via \code{gleam/string}
+\end{tightitemize}
+
+\shdr{Examples}
+\begin{tightitemize}
+  \item \code{string.length("hi")}
+  \item \code{string.contains("hello", "ell")}
+  \item \code{string.split("a,b", ",")}
+\end{tightitemize}
+
+\sep
+
+\hdr{Records, Tuples, Destructuring}
+\shdr{Tuples}
+\begin{tightitemize}
+  \item Make: \code{let pair = #(1, "a")}
+  \item Destructure: \code{let #(a, b) = pair}
+\end{tightitemize}
+
+\shdr{Records (custom types)}
+\begin{tightitemize}
+  \item ADT constructors often act like records:
+\end{tightitemize}
+\code{pub type User \{ User(id: Int, name: String) \}}
+\code{let u = User(id: 1, name: "A")}
+\vspace{2pt}
+
+\shdr{Update (conceptual)}
+\begin{tightitemize}
+  \item Pattern match + rebuild (immutable)
+\end{tightitemize}
+
+\sep
+
+\hdr{Modules, Imports, Visibility}
+\shdr{Imports}
+\begin{tightitemize}
+  \item \code{import gleam/io}
+  \item \code{import gleam/list}
+  \item Alias: \code{import gleam/string as str}
+\end{tightitemize}
+
+\shdr{Public API}
+\begin{tightitemize}
+  \item \code{pub} exposes functions/types
+  \item Keep constructors private to enforce invariants (API design pattern)
+\end{tightitemize}
+
+\sep
+
+\hdr{Interop \& Targets (BEAM / JS)}
+\shdr{External functions}
+\begin{tightitemize}
+  \item Use \code{@external} to bind to Erlang/JS implementations
+  \item Keeps Gleam code typed while using platform libs
+\end{tightitemize}
+
+\shdr{BEAM notes}
+\begin{tightitemize}
+  \item Interop with Erlang/Elixir ecosystems
+  \item Concurrency via BEAM processes (typically through libraries)
+\end{tightitemize}
+
+\shdr{JS notes}
+\begin{tightitemize}
+  \item Good for frontend/tooling; interop with JS via externals
+\end{tightitemize}
+
+\sep
+
+\hdr{Testing \& Formatting}
+\shdr{Tests}
+\begin{tightitemize}
+  \item \code{gleam test}
+  \item Tests live under \code{test/}
+  \item Assertions via test libraries (\code{gleeunit} is common)
+\end{tightitemize}
+
+\shdr{Style}
+\begin{tightitemize}
+  \item \code{gleam format} (use it; makes diffs sane)
+\end{tightitemize}
+
+\sep
+
+\hdr{Common Idioms (Quick Recipes)}
+\shdr{Parse / validate with Result}
+\begin{tightitemize}
+  \item Keep functions total: return \code{Result} instead of throwing
+  \item Build pipelines of \code{result.then} steps
+\end{tightitemize}
+
+\shdr{Keep IO at the edge}
+\begin{tightitemize}
+  \item Pure functions for logic, \code{main} for wiring/printing
+\end{tightitemize}
+
+\shdr{Prefer ADTs over booleans}
+\begin{tightitemize}
+  \item Replace \code{Bool} flags with a \code{type Mode \{ ... \}}
+\end{tightitemize}
+
+\shdr{Make illegal states unrepresentable}
+\begin{tightitemize}
+  \item Use private constructors + smart constructors returning \code{Result}
+\end{tightitemize}
+
+\sep
+
+\hdr{Mini Reference}
+\begin{tightitemize}
+  \item \code{let} for binding; immutable by default
+  \item \code{pub} to export; \code{import} to use modules
+  \item \code{case} for pattern matching
+  \item \code{|>} pipeline for readable transforms
+  \item Prefer \code{Option}/\code{Result} over nulls/exceptions
+\end{tightitemize}
+
+\end{multicols}
+
+\end{document}

@@ -372,3 +372,12 @@ def handle_call(:fetch, _from, state) do
   {:reply, results, state}
 end
 ```
+
+###### Go Cheatsheet
+
+<object data="/go-cs.pdf" type="application/pdf" style="width:100%; height:100vh;">
+  <p>
+    Your browser can’t display PDFs inline.
+    <a href="/go-cs.pdf">Open the PDF</a>
+  </p>
+</object>

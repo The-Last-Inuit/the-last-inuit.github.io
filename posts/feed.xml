@@ -482,6 +482,14 @@
 &lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-elixir&quot;&gt;  &lt;span class=&quot;z-meta z-sequence z-tuple z-elixir&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-sequence z-begin z-elixir&quot;&gt;{&lt;&#x2F;span&gt;&lt;span class=&quot;z-constant z-other z-symbol z-elixir&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-constant z-elixir&quot;&gt;:&lt;&#x2F;span&gt;reply&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-separator z-sequence z-elixir&quot;&gt;,&lt;&#x2F;span&gt; results&lt;span class=&quot;z-punctuation z-separator z-sequence z-elixir&quot;&gt;,&lt;&#x2F;span&gt; state&lt;span class=&quot;z-punctuation z-section z-sequence z-end z-elixir&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-elixir&quot;&gt;&lt;span class=&quot;z-keyword z-control z-elixir&quot;&gt;end&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h6 id=&quot;go-cheatsheet&quot;&gt;Go Cheatsheet&lt;a class=&quot;zola-anchor&quot; href=&quot;#go-cheatsheet&quot; aria-label=&quot;Anchor link for: go-cheatsheet&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h6&gt;
+&lt;object data=&quot;&#x2F;go-cs.pdf&quot; type=&quot;application&#x2F;pdf&quot; style=&quot;width:100%; height:100vh;&quot;&gt;
+  &lt;p&gt;
+    Your browser can’t display PDFs inline.
+    &lt;a href=&quot;&#x2F;go-cs.pdf&quot;&gt;Open the PDF&lt;&#x2F;a&gt;
+  &lt;&#x2F;p&gt;
+&lt;&#x2F;object&gt;
 </content>
 	</entry>
 	<entry xml:lang="en">

@@ -5,9 +5,43 @@
 	<link rel="self" type="application/atom+xml" href="https://idunnowhatiamdoing.engineering/posts/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://idunnowhatiamdoing.engineering/posts/"/>
   
-	<updated>2026-01-04T00:00:00+00:00</updated>
+	<updated>2026-01-05T00:00:00+00:00</updated>
 	
 	<id>https://idunnowhatiamdoing.engineering/posts/feed.xml</id>
+	<entry xml:lang="en">
+		<title>program writer</title>
+		<published>2026-01-05T00:00:00+00:00</published>
+		<updated>2026-01-05T00:00:00+00:00</updated>
+		<link rel="alternate" type="text/html" href="https://idunnowhatiamdoing.engineering/posts/program-writer/"/>
+		<id>https://idunnowhatiamdoing.engineering/posts/program-writer/</id>
+    
+		<content type="html" xml:base="https://idunnowhatiamdoing.engineering/posts/program-writer/">&lt;p&gt;I majored in theoretical physics. It was a conscious decision, even though it pissed off my dad. He wanted me to major in computer science because he thought I&#x27;d end up as a professor. Why did he think that was bad? I dunno, it baffles me to this day.&lt;&#x2F;p&gt;
+&lt;p&gt;Anyway, I usually use the title &lt;strong&gt;Program Writer&lt;&#x2F;strong&gt; instead of &lt;em&gt;Software Engineer&lt;&#x2F;em&gt; because, well:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;I didn&#x27;t major in computer science.&lt;&#x2F;li&gt;
+&lt;li&gt;I didn&#x27;t want to disrespect those who put in the effort to major in that field.&lt;&#x2F;li&gt;
+&lt;li&gt;It just felt right.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;People have asked me why &lt;strong&gt;Program Writer&lt;&#x2F;strong&gt; instead of, say, &lt;em&gt;Software Developer&lt;&#x2F;em&gt;. Until a few days ago, I didn&#x27;t have a good answer. But now I think I do:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Programming is solving explicit problems in a verifiable manner.&lt;&#x2F;li&gt;
+&lt;li&gt;Coding is expressing a programming solution in a formal language.&lt;&#x2F;li&gt;
+&lt;li&gt;Software engineering is building a product for the real world.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;I&#x27;ve done all three, but I think programming suits me best—for a couple of reasons:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;I&#x27;m a physicist. We&#x27;re trained to approach things in a peculiar way, and our solutions are expected to be verifiable.&lt;&#x2F;li&gt;
+&lt;li&gt;Physicists enjoy solving problems, all kinds of problems, in many areas, even the ones beyond our reach.&lt;&#x2F;li&gt;
+&lt;li&gt;Physicists live with uncertainty. Maybe not love it, but we&#x27;re trained to stay functional in that uncomfortable state.&lt;&#x2F;li&gt;
+&lt;li&gt;Our formal language is science.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;So it kind of makes sense to call myself:&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;A Program Writer.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Q.E.D.&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+</content>
+	</entry>
 	<entry xml:lang="en">
 		<title>rusty</title>
 		<published>2026-01-04T00:00:00+00:00</published>

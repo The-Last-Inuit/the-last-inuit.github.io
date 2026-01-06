@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  
+  
+    
+  
+  <meta name="description" content="Software engineering à la Mexicana">
+
+  <title>12</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="https://idunnowhatiamdoing.engineering/img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://idunnowhatiamdoing.engineering/img/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://idunnowhatiamdoing.engineering/img/apple-touch-icon.png">
+  
+  <style>
+
+  /* light mode colors */
+  body {
+    --primary-color: #5871a2;
+    --primary-pale-color: #5871a233;
+    --primary-decoration-color: #5871a210;
+    --bg-color: #ffffff;
+    --text-color: #2f3030;
+    --text-pale-color: #767676;
+    --text-decoration-color: #a9a9a9;
+    --highlight-mark-color: #5f75b020;
+
+    --callout-note-color: #5871a2;
+    --callout-tip-color: #268556;
+    --callout-important-color: #885fc9;
+    --callout-warning-color: #ab6632;
+    --callout-caution-color: #c64e4e;
+  }
+
+  /* dark mode colors */
+  body.dark {
+    --primary-color: #6f8fd1;
+    --primary-pale-color: #6f8fd166;
+    --primary-decoration-color: #6f8fd112;
+    --bg-color: #1c1c1c;
+    --text-color: #c1c1c1;
+    --text-pale-color: #848484;
+    --text-decoration-color: #5f5f5f;
+    --highlight-mark-color: #8296cb3b;
+
+    --callout-note-color: #6f8fd1;
+    --callout-tip-color: #47976f;
+    --callout-important-color: #9776cd;
+    --callout-warning-color: #ad7a52;
+    --callout-caution-color: #d06161;
+  }
+
+  /* typography */
+  body {
+    --main-font: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --code-font: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    --homepage-max-width: 768px;
+    --main-max-width: 768px;
+    --avatar-size: 60px;
+    --font-size: 16px;
+    --line-height: 1.75;
+    --img-border-radius: 0px;
+    --detail-border-radius: 0px;
+    --dark-mode-img-brightness: 0.75;
+    --dark-mode-chart-brightness: 0.75;
+    --inline-code-border-radius: 2px;
+    --inline-code-bg-color: var(--primary-decoration-color);
+    --block-code-border-radius: 0px;
+    --block-code-border-color: var(--primary-color);
+    --detail-border-color: var(--primary-color);
+  }
+
+</style>
+
+  <link rel="stylesheet" href="https://idunnowhatiamdoing.engineering/main.css">
+  
+
+<link id="hl" rel="stylesheet" type="text/css" href="/hl-dark.css" />
+
+
+
+  
+</head>
+
+<body class="post dark">
+  
+  
+<div id="wrapper">
+  <div id="blank"></div>
+  <aside>
+    
+    
+    <nav>
+      <ul>
+        
+        <li>
+          <a class="h2" href="#12-factor-methology">12-Factor Methology</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#factor-i-codebase-one-codebase-many-deploys">Factor I — Codebase: one codebase, many deploys</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#factor-ii-dependencies-declare-and-isolate">Factor II — Dependencies: declare and isolate</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#factor-iii-config-store-config-in-the-environment">Factor III — Config: store config in the environment</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#factor-iv-backing-services-treat-them-as-attached-resources">Factor IV — Backing services: treat them as attached resources</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#factor-v-build-release-run-strictly-separate">Factor V — Build, release, run: strictly separate</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#factor-vi-processes-stateless-share-nothing">Factor VI — Processes: stateless, share-nothing</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#factor-vii-port-binding-export-services-via-a-port">Factor VII — Port binding: export services via a port</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#factor-viii-concurrency-scale-out-via-the-process-model">Factor VIII — Concurrency: scale out via the process model</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#factor-ix-disposability-fast-startup-graceful-shutdown">Factor IX — Disposability: fast startup, graceful shutdown</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#factor-x-dev-prod-parity-keep-them-similar">Factor X — Dev&#x2F;prod parity: keep them similar</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#factor-xi-logs-treat-logs-as-event-streams">Factor XI — Logs: treat logs as event streams</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#factor-xii-admin-processes-run-one-off-tasks-as-one-off-processes">Factor XII — Admin processes: run one-off tasks as one-off processes</a>
+          
+          <ul>
+            
+            <li>
+              <a class="h3" href="#sqlx-cli">sqlx-cli</a>
+            </li>
+            
+            <li>
+              <a class="h3" href="#a-dedicated-admin-binary">A dedicated admin binary</a>
+            </li>
+            
+          </ul>
+          
+        </li>
+        
+      </ul>
+    </nav>
+    
+    
+    <button id="back-to-top" aria-label="back to top">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+
+    </button>
+    
+  </aside>
+  <main>
+    
+<header>
+  <nav>
+    <a id="back-link" href="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts">← back</a>
+  </nav>
+</header>
+
+
+    <div>
+      
+      
+      
+      
+      <div id="copy-cfg" style="display: none;" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+"></div>
+      
+      <article class="prose">
+        <h1>12</h1>
+        <div id="post-info">
+          <div id="date">
+            <span id="publish">Oct 24, 2025</span>
+            </div>
+
+          
+        </div>
+
+        
+        
+
+        
+
+        <p>I'll be honest: I like order and organization as much as the next obsessive person. But sometimes I think we invent complexity just to justify... well, whatever.</p>
+<p>The same goes for jargon.</p>
+<p>Today, however, I won't complain about that. I find <a rel="nofollow noreferrer" href="https://12factor.net/">The Twelve-Factor methology</a> to hit the sweet spot (though the jargon bothers me).</p>
+<h4 id="12-factor-methology">12-Factor Methology<a class="zola-anchor" href="#12-factor-methology" aria-label="Anchor link for: 12-factor-methology" style="visibility: hidden;"></a>
+</h4>
+<p>It's a practical set of constraints for building services that deploy cleanly, scale predictably, and don't turn into <em>works on my laptop</em> folklore. The core ideas map extremely well to modern Rust services running in containers, Kubernetes, Nomad, systemd, or basically anything that can start a process and feed it environment variables.</p>
+<p>This post walks through all 12 factors with a concrete Rust shape: a small HTTP API using <code>axum</code>, <code>tokio</code>, and <code>sqlx</code>.</p>
+<p>A tiny service that:</p>
+<ul>
+<li>exposes HTTP on a port (<code>/healthz</code>, <code>/v1/echo</code>)</li>
+<li>connects to Postgres via <code>DATABASE_URL</code></li>
+<li>logs to <code>stdout</code></li>
+<li>supports graceful shutdown (<code>SIGTERM</code>)</li>
+<li>runs migrations as a one-off admin process</li>
+</ul>
+<h4 id="factor-i-codebase-one-codebase-many-deploys">Factor I — Codebase: one codebase, many deploys<a class="zola-anchor" href="#factor-i-codebase-one-codebase-many-deploys" aria-label="Anchor link for: factor-i-codebase-one-codebase-many-deploys" style="visibility: hidden;"></a>
+</h4>
+<p>One service = one codebase tracked in version control. If you have <em>multiple codebases for one app</em>, you're already in distributed-system territory; treat each component as its own app.</p>
+<p><strong>Rust fit</strong>: a single repo can still contain multiple binaries (like <code>server</code> + <code>migrate</code>) via <code>src/bin/*</code> and shared modules via <code>src/*</code>. That's still one codebase.</p>
+<h4 id="factor-ii-dependencies-declare-and-isolate">Factor II — Dependencies: declare and isolate<a class="zola-anchor" href="#factor-ii-dependencies-declare-and-isolate" aria-label="Anchor link for: factor-ii-dependencies-declare-and-isolate" style="visibility: hidden;"></a>
+</h4>
+<p>A twelve-factor app declares dependencies explicitly and avoids assuming system-wide packages exist.</p>
+<p><strong>Rust fit</strong>:</p>
+<ul>
+<li><code>Cargo.toml</code> declares dependencies</li>
+<li><code>Cargo.lock</code> pins versions for reproducible builds</li>
+<li>for native dependencies: prefer pure-Rust stacks when reasonable (e.g., <code>rustls</code> vs OpenSSL), or make system deps explicit in your build image.</li>
+</ul>
+<h4 id="factor-iii-config-store-config-in-the-environment">Factor III — Config: store config in the environment<a class="zola-anchor" href="#factor-iii-config-store-config-in-the-environment" aria-label="Anchor link for: factor-iii-config-store-config-in-the-environment" style="visibility: hidden;"></a>
+</h4>
+<p>Configuration that varies between deploys (ports, DB URLs, API keys) should come from environment variables.</p>
+<p>A practical Rust pattern: deserialize env into a typed <code>Settings</code> struct.</p>
+<p><code>src/config.rs</code>:</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-keyword z-other z-rust">use</span> <span class="z-meta z-path z-rust">serde<span class="z-punctuation z-accessor z-rust">::</span></span>Deserialize<span class="z-punctuation z-terminator z-rust">;</span>
+</span><span class="z-source z-rust">
+</span><span class="z-source z-rust"><span class="z-meta z-annotation z-rust"><span class="z-punctuation z-definition z-annotation z-rust">#</span><span class="z-punctuation z-section z-group z-begin z-rust">[</span><span class="z-variable z-annotation z-rust">derive</span><span class="z-meta z-annotation z-parameters z-rust"><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span></span><span class="z-meta z-annotation z-parameters z-rust"><span class="z-meta z-group z-rust">Clone<span class="z-punctuation z-separator z-rust">,</span> Debug<span class="z-punctuation z-separator z-rust">,</span> Deserialize</span></span><span class="z-meta z-annotation z-parameters z-rust"><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span></span><span class="z-punctuation z-section z-group z-end z-rust">]</span></span>
+</span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-storage z-modifier z-rust">pub</span> <span class="z-storage z-type z-struct z-rust">struct</span> </span><span class="z-meta z-struct z-rust"><span class="z-entity z-name z-struct z-rust">Settings</span> </span><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust">    <span class="z-storage z-modifier z-rust">pub</span> <span class="z-variable z-other z-member z-rust">host</span><span class="z-punctuation z-separator z-type z-rust">:</span> String,          <span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> e.g. &quot;0.0.0.0&quot;
+</span></span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust">    <span class="z-storage z-modifier z-rust">pub</span> <span class="z-variable z-other z-member z-rust">port</span><span class="z-punctuation z-separator z-type z-rust">:</span> <span class="z-storage z-type z-rust">u16</span>,             <span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> e.g. 3000
+</span></span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust">    <span class="z-storage z-modifier z-rust">pub</span> <span class="z-variable z-other z-member z-rust">database_url</span><span class="z-punctuation z-separator z-type z-rust">:</span> String,  <span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> e.g. postgres://...
+</span></span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust">    <span class="z-storage z-modifier z-rust">pub</span> <span class="z-variable z-other z-member z-rust">log_level</span><span class="z-punctuation z-separator z-type z-rust">:</span> String,     <span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> e.g. &quot;info&quot; / &quot;debug&quot;
+</span></span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span><span class="z-source z-rust">
+</span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-modifier z-rust">pub</span> <span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">from_env</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> <span class="z-meta z-function z-return-type z-rust"><span class="z-punctuation z-separator z-rust">-&gt;</span> <span class="z-meta z-path z-rust">anyhow<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-generic z-rust"><span class="z-support z-type z-rust">Result</span><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span>Settings<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span></span> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-storage z-type z-rust">let</span> cfg <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-meta z-path z-rust">config<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-path z-rust">Config<span class="z-punctuation z-accessor z-rust">::</span></span>builder<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">        <span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">add_source</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-meta z-path z-rust">config<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-path z-rust">Environment<span class="z-punctuation z-accessor z-rust">::</span></span>default<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">separator</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-string z-quoted z-double z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&quot;</span>__<span class="z-punctuation z-definition z-string z-end z-rust">&quot;</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">        <span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">build</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-keyword z-operator z-rust">?</span><span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-support z-type z-rust">Ok</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>cfg<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">try_deserialize</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-keyword z-operator z-rust">?</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></code></pre>
+<p>Local dev convenience: use a <code>.env</code> file <em>locally</em>, but treat it as developer tooling, not <em>the deployment system</em>.</p>
+<h4 id="factor-iv-backing-services-treat-them-as-attached-resources">Factor IV — Backing services: treat them as attached resources<a class="zola-anchor" href="#factor-iv-backing-services-treat-them-as-attached-resources" aria-label="Anchor link for: factor-iv-backing-services-treat-them-as-attached-resources" style="visibility: hidden;"></a>
+</h4>
+<p>Databases, caches, queues, and object storage are backing services and should be treated as swappable attached resources.</p>
+<p><strong>Rust fit</strong>:</p>
+<ul>
+<li>put <code>DATABASE_URL</code> in env</li>
+<li>connect via a pool</li>
+<li>don't bake <em>prod DB hostnames</em> into code</li>
+</ul>
+<p><code>src/db.rs</code>:</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-keyword z-other z-rust">use</span> <span class="z-meta z-path z-rust">sqlx<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span><span class="z-meta z-path z-rust">postgres<span class="z-punctuation z-accessor z-rust">::</span></span>PgPoolOptions<span class="z-punctuation z-separator z-rust">,</span> PgPool</span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+</span><span class="z-source z-rust"><span class="z-keyword z-other z-rust">use</span> <span class="z-meta z-path z-rust">std<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-path z-rust">time<span class="z-punctuation z-accessor z-rust">::</span></span>Duration<span class="z-punctuation z-terminator z-rust">;</span>
+</span><span class="z-source z-rust">
+</span><span class="z-source z-rust"><span class="z-storage z-modifier z-rust">pub</span> async <span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">connect</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span><span class="z-variable z-parameter z-rust">database_url</span><span class="z-punctuation z-separator z-rust">:</span> <span class="z-keyword z-operator z-rust">&amp;</span><span class="z-storage z-type z-rust">str</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> <span class="z-meta z-function z-return-type z-rust"><span class="z-punctuation z-separator z-rust">-&gt;</span> <span class="z-meta z-path z-rust">anyhow<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-generic z-rust"><span class="z-support z-type z-rust">Result</span><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span>PgPool<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span></span> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-storage z-type z-rust">let</span> pool <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-meta z-path z-rust">PgPoolOptions<span class="z-punctuation z-accessor z-rust">::</span></span>new<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">        <span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">acquire_timeout</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-meta z-path z-rust">Duration<span class="z-punctuation z-accessor z-rust">::</span></span>from_secs<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-constant z-numeric z-integer z-decimal z-rust">5</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">        <span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">max_connections</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-constant z-numeric z-integer z-decimal z-rust">10</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">        <span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">connect</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>database_url</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">        <span class="z-punctuation z-accessor z-dot z-rust">.</span>await<span class="z-keyword z-operator z-rust">?</span><span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-support z-type z-rust">Ok</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>pool</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></code></pre>
+<h4 id="factor-v-build-release-run-strictly-separate">Factor V — Build, release, run: strictly separate<a class="zola-anchor" href="#factor-v-build-release-run-strictly-separate" aria-label="Anchor link for: factor-v-build-release-run-strictly-separate" style="visibility: hidden;"></a>
+</h4>
+<p>The methodology wants strict separation between build, release, and run.</p>
+<p><strong>Rust fit</strong>:</p>
+<ul>
+<li>Build: compile a binary (<code>cargo build --release</code>)</li>
+<li>Release: package that build artifact + attach config (env vars, secrets, release metadata)</li>
+<li>Run: execute the same artifact with the release’s environment</li>
+</ul>
+<p>A simple container flow:</p>
+<ul>
+<li>build stage compiles <code>tiny-svc</code></li>
+<li>runtime stage runs <code>./tiny-svc</code> and receives env from orchestrator</li>
+</ul>
+<p>Key idea: no <em>SSH into prod and edit code</em>. If you changed code, you made a new build.</p>
+<h4 id="factor-vi-processes-stateless-share-nothing">Factor VI — Processes: stateless, share-nothing<a class="zola-anchor" href="#factor-vi-processes-stateless-share-nothing" aria-label="Anchor link for: factor-vi-processes-stateless-share-nothing" style="visibility: hidden;"></a>
+</h4>
+<p>Processes should be stateless and share-nothing; persistent state belongs in backing services.
+12factor</p>
+<p><strong>Rust fit</strong>:</p>
+<ul>
+<li>don't store sessions on disk</li>
+<li>don't rely on local filesystem as durable storage</li>
+<li>treat local memory as cache only (and disposable)</li>
+</ul>
+<p>If you need sessions, use Redis or the DB. If you need files, use object storage.</p>
+<h4 id="factor-vii-port-binding-export-services-via-a-port">Factor VII — Port binding: export services via a port<a class="zola-anchor" href="#factor-vii-port-binding-export-services-via-a-port" aria-label="Anchor link for: factor-vii-port-binding-export-services-via-a-port" style="visibility: hidden;"></a>
+</h4>
+<p>The app should be self-contained and bind to a port to serve requests.</p>
+<p><strong>Rust fit (axum)</strong>:</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-keyword z-other z-rust">use</span> <span class="z-meta z-path z-rust">axum<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span><span class="z-meta z-path z-rust">routing<span class="z-punctuation z-accessor z-rust">::</span></span>get<span class="z-punctuation z-separator z-rust">,</span> Router</span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+</span><span class="z-source z-rust"><span class="z-keyword z-other z-rust">use</span> <span class="z-meta z-path z-rust">std<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-path z-rust">net<span class="z-punctuation z-accessor z-rust">::</span></span>SocketAddr<span class="z-punctuation z-terminator z-rust">;</span>
+</span><span class="z-source z-rust"><span class="z-keyword z-other z-rust">use</span> <span class="z-meta z-path z-rust">tokio<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-path z-rust">net<span class="z-punctuation z-accessor z-rust">::</span></span>TcpListener<span class="z-punctuation z-terminator z-rust">;</span>
+</span><span class="z-source z-rust">
+</span><span class="z-source z-rust"><span class="z-storage z-modifier z-rust">pub</span> async <span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">serve</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span><span class="z-variable z-parameter z-rust">host</span><span class="z-punctuation z-separator z-rust">:</span> <span class="z-keyword z-operator z-rust">&amp;</span><span class="z-storage z-type z-rust">str</span>, <span class="z-variable z-parameter z-rust">port</span><span class="z-punctuation z-separator z-rust">:</span> <span class="z-storage z-type z-rust">u16</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> <span class="z-meta z-function z-return-type z-rust"><span class="z-punctuation z-separator z-rust">-&gt;</span> <span class="z-meta z-path z-rust">anyhow<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-generic z-rust"><span class="z-support z-type z-rust">Result</span><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-punctuation z-section z-group z-end z-rust">)</span><span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span></span> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-storage z-type z-rust">let</span> app <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-meta z-path z-rust">Router<span class="z-punctuation z-accessor z-rust">::</span></span>new<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">route</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-string z-quoted z-double z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&quot;</span>/healthz<span class="z-punctuation z-definition z-string z-end z-rust">&quot;</span></span><span class="z-punctuation z-separator z-rust">,</span> <span class="z-support z-function z-rust">get</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-meta z-function z-closure z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">|</span></span></span><span class="z-meta z-function z-closure z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">|</span></span> </span><span class="z-meta z-function z-closure z-rust">async <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span> <span class="z-string z-quoted z-double z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&quot;</span>ok<span class="z-constant z-character z-escape z-rust">\n</span><span class="z-punctuation z-definition z-string z-end z-rust">&quot;</span></span> </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-storage z-type z-rust">let</span> addr<span class="z-punctuation z-separator z-rust">:</span> SocketAddr <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-support z-macro z-rust">format!</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-string z-quoted z-double z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&quot;</span><span class="z-constant z-other z-placeholder z-rust">{host}</span>:<span class="z-constant z-other z-placeholder z-rust">{port}</span><span class="z-punctuation z-definition z-string z-end z-rust">&quot;</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">parse</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-keyword z-operator z-rust">?</span><span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-storage z-type z-rust">let</span> listener <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-meta z-path z-rust">TcpListener<span class="z-punctuation z-accessor z-rust">::</span></span>bind<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>addr</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-accessor z-dot z-rust">.</span>await<span class="z-keyword z-operator z-rust">?</span><span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-meta z-path z-rust">axum<span class="z-punctuation z-accessor z-rust">::</span></span>serve<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>listener<span class="z-punctuation z-separator z-rust">,</span> app</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-accessor z-dot z-rust">.</span>await<span class="z-keyword z-operator z-rust">?</span><span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-support z-type z-rust">Ok</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></code></pre>
+<h4 id="factor-viii-concurrency-scale-out-via-the-process-model">Factor VIII — Concurrency: scale out via the process model<a class="zola-anchor" href="#factor-viii-concurrency-scale-out-via-the-process-model" aria-label="Anchor link for: factor-viii-concurrency-scale-out-via-the-process-model" style="visibility: hidden;"></a>
+</h4>
+<p>The factor emphasizes scaling out by running more processes.</p>
+<p>Rust reality check: Rust async can handle high concurrency inside one process, but twelve-factor wants you to be able to scale horizontally anyway.</p>
+<p>So you do both:</p>
+<ul>
+<li>use async I/O for efficient per-process concurrency</li>
+<li>scale with more replicas when needed (N processes behind a load balancer)</li>
+</ul>
+<h4 id="factor-ix-disposability-fast-startup-graceful-shutdown">Factor IX — Disposability: fast startup, graceful shutdown<a class="zola-anchor" href="#factor-ix-disposability-fast-startup-graceful-shutdown" aria-label="Anchor link for: factor-ix-disposability-fast-startup-graceful-shutdown" style="visibility: hidden;"></a>
+</h4>
+<p>Processes should start quickly and shut down gracefully for resilience and rapid deploys.</p>
+<p><strong>Rust fit</strong>: handle <code>SIGTERM/CTRL-C</code> and allow in-flight requests to finish.</p>
+<p>Tokio provides guidance for graceful shutdown patterns.</p>
+<p>Axum includes a graceful shutdown example you can adapt.</p>
+<p><code>src/main.rs</code>:</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-keyword z-other z-rust">use</span> <span class="z-meta z-path z-rust">axum<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span><span class="z-meta z-path z-rust">routing<span class="z-punctuation z-accessor z-rust">::</span></span>get<span class="z-punctuation z-separator z-rust">,</span> Router</span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+</span><span class="z-source z-rust"><span class="z-keyword z-other z-rust">use</span> <span class="z-meta z-path z-rust">tokio<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span><span class="z-meta z-path z-rust">net<span class="z-punctuation z-accessor z-rust">::</span></span>TcpListener<span class="z-punctuation z-separator z-rust">,</span> signal</span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+</span><span class="z-source z-rust"><span class="z-keyword z-other z-rust">use</span> <span class="z-meta z-path z-rust">tracing_subscriber<span class="z-punctuation z-accessor z-rust">::</span></span>EnvFilter<span class="z-punctuation z-terminator z-rust">;</span>
+</span><span class="z-source z-rust">
+</span><span class="z-source z-rust"><span class="z-meta z-annotation z-rust"><span class="z-punctuation z-definition z-annotation z-rust">#</span><span class="z-punctuation z-section z-group z-begin z-rust">[</span><span class="z-variable z-annotation z-rust">tokio</span>::<span class="z-variable z-annotation z-rust">main</span><span class="z-punctuation z-section z-group z-end z-rust">]</span></span>
+</span><span class="z-source z-rust">async <span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">main</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> <span class="z-meta z-function z-return-type z-rust"><span class="z-punctuation z-separator z-rust">-&gt;</span> <span class="z-meta z-path z-rust">anyhow<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-generic z-rust"><span class="z-support z-type z-rust">Result</span><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-punctuation z-section z-group z-end z-rust">)</span><span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span></span> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-meta z-path z-rust">tracing_subscriber<span class="z-punctuation z-accessor z-rust">::</span></span>fmt<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">        <span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">with_env_filter</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-meta z-path z-rust">EnvFilter<span class="z-punctuation z-accessor z-rust">::</span></span>from_default_env<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">        <span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">json</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">        <span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">init</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-storage z-type z-rust">let</span> app <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-meta z-path z-rust">Router<span class="z-punctuation z-accessor z-rust">::</span></span>new<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">        <span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">route</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-string z-quoted z-double z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&quot;</span>/healthz<span class="z-punctuation z-definition z-string z-end z-rust">&quot;</span></span><span class="z-punctuation z-separator z-rust">,</span> <span class="z-support z-function z-rust">get</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-meta z-function z-closure z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">|</span></span></span><span class="z-meta z-function z-closure z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">|</span></span> </span><span class="z-meta z-function z-closure z-rust">async <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span> <span class="z-string z-quoted z-double z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&quot;</span>ok<span class="z-constant z-character z-escape z-rust">\n</span><span class="z-punctuation z-definition z-string z-end z-rust">&quot;</span></span> </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-storage z-type z-rust">let</span> listener <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-meta z-path z-rust">TcpListener<span class="z-punctuation z-accessor z-rust">::</span></span>bind<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-string z-quoted z-double z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&quot;</span>0.0.0.0:3000<span class="z-punctuation z-definition z-string z-end z-rust">&quot;</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-accessor z-dot z-rust">.</span>await<span class="z-keyword z-operator z-rust">?</span><span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-meta z-path z-rust">axum<span class="z-punctuation z-accessor z-rust">::</span></span>serve<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>listener<span class="z-punctuation z-separator z-rust">,</span> app</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">        <span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">with_graceful_shutdown</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-support z-function z-rust">shutdown_signal</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">        <span class="z-punctuation z-accessor z-dot z-rust">.</span>await<span class="z-keyword z-operator z-rust">?</span><span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-support z-type z-rust">Ok</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span><span class="z-source z-rust">
+</span><span class="z-source z-rust">async <span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">shutdown_signal</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-storage z-type z-rust">let</span> <span class="z-keyword z-operator z-rust">_</span> <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-meta z-path z-rust">signal<span class="z-punctuation z-accessor z-rust">::</span></span>ctrl_c<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-accessor z-dot z-rust">.</span>await<span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></code></pre>
+<p>In production you'll also want <code>SIGTERM</code> handling on Unix; the axum example shows the pattern.</p>
+<h4 id="factor-x-dev-prod-parity-keep-them-similar">Factor X — Dev/prod parity: keep them similar<a class="zola-anchor" href="#factor-x-dev-prod-parity-keep-them-similar" aria-label="Anchor link for: factor-x-dev-prod-parity-keep-them-similar" style="visibility: hidden;"></a>
+</h4>
+<p>Minimize gaps between dev/staging/prod; avoid <em>SQLite locally, Postgres in prod</em> surprises.</p>
+<p><strong>Rust fit</strong>:</p>
+<ul>
+<li>run the same DB engine locally via Docker Compose</li>
+<li>keep the same migration mechanism</li>
+<li>keep the same environment variable names</li>
+</ul>
+<p>Example <code>docker-compose.yml</code> idea:</p>
+<ul>
+<li><code>postgres:16</code></li>
+<li>tiny-svc with <code>DATABASE_URL=postgres://...</code></li>
+</ul>
+<h4 id="factor-xi-logs-treat-logs-as-event-streams">Factor XI — Logs: treat logs as event streams<a class="zola-anchor" href="#factor-xi-logs-treat-logs-as-event-streams" aria-label="Anchor link for: factor-xi-logs-treat-logs-as-event-streams" style="visibility: hidden;"></a>
+</h4>
+<p>A twelve-factor app should not manage log files, it writes its event stream to stdout and the environment routes/aggregates it.</p>
+<p><strong>Rust fit</strong>: <code>tracing</code> + <code>tracing-subscriber</code> with JSON to stdout.</p>
+<p><code>tracing-subscriber</code>'s <code>fmt</code> subscriber formats events and logs them to stdout.</p>
+<p>Good defaults:</p>
+<ul>
+<li>structured logs (JSON)</li>
+<li>log level from env (<code>RUST_LOG=info</code>)</li>
+</ul>
+<h4 id="factor-xii-admin-processes-run-one-off-tasks-as-one-off-processes">Factor XII — Admin processes: run one-off tasks as one-off processes<a class="zola-anchor" href="#factor-xii-admin-processes-run-one-off-tasks-as-one-off-processes" aria-label="Anchor link for: factor-xii-admin-processes-run-one-off-tasks-as-one-off-processes" style="visibility: hidden;"></a>
+</h4>
+<p>Migrations, data backfills, and maintenance tasks should run in the same environment (same code + config) as the app.</p>
+<p>Two common Rust approaches:</p>
+<h5 id="sqlx-cli"><code>sqlx-cli</code><a class="zola-anchor" href="#sqlx-cli" aria-label="Anchor link for: sqlx-cli" style="visibility: hidden;"></a>
+</h5>
+<p><code>sqlx migrate run</code> compares the DB migration history with <code>migrations/</code> and runs pending migrations.
+Docs.rs</p>
+<p>This is often perfect in CI/CD:</p>
+<ul>
+<li>run migrations as a job</li>
+<li>then deploy the app</li>
+</ul>
+<h5 id="a-dedicated-admin-binary">A dedicated admin binary<a class="zola-anchor" href="#a-dedicated-admin-binary" aria-label="Anchor link for: a-dedicated-admin-binary" style="visibility: hidden;"></a>
+</h5>
+<p><code>src/bin/migrate.rs</code>:</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-meta z-annotation z-rust"><span class="z-punctuation z-definition z-annotation z-rust">#</span><span class="z-punctuation z-section z-group z-begin z-rust">[</span><span class="z-variable z-annotation z-rust">tokio</span>::<span class="z-variable z-annotation z-rust">main</span><span class="z-punctuation z-section z-group z-end z-rust">]</span></span>
+</span><span class="z-source z-rust">async <span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">main</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> <span class="z-meta z-function z-return-type z-rust"><span class="z-punctuation z-separator z-rust">-&gt;</span> <span class="z-meta z-path z-rust">anyhow<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-generic z-rust"><span class="z-support z-type z-rust">Result</span><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-punctuation z-section z-group z-end z-rust">)</span><span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span></span> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-storage z-type z-rust">let</span> database_url <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-meta z-path z-rust">std<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-path z-rust">env<span class="z-punctuation z-accessor z-rust">::</span></span>var<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-string z-quoted z-double z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&quot;</span>DATABASE_URL<span class="z-punctuation z-definition z-string z-end z-rust">&quot;</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-keyword z-operator z-rust">?</span><span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-storage z-type z-rust">let</span> pool <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-meta z-path z-rust">sqlx<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-path z-rust">PgPool<span class="z-punctuation z-accessor z-rust">::</span></span>connect<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-keyword z-operator z-bitwise z-rust">&amp;</span>database_url</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-accessor z-dot z-rust">.</span>await<span class="z-keyword z-operator z-rust">?</span><span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-meta z-path z-rust">sqlx<span class="z-punctuation z-accessor z-rust">::</span></span>migrate<span class="z-keyword z-operator z-logical z-rust">!</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-string z-quoted z-double z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&quot;</span>./migrations<span class="z-punctuation z-definition z-string z-end z-rust">&quot;</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">run</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-keyword z-operator z-bitwise z-rust">&amp;</span>pool</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-accessor z-dot z-rust">.</span>await<span class="z-keyword z-operator z-rust">?</span><span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-support z-type z-rust">Ok</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></code></pre>
+<p>Run it as:</p>
+<pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">DATABASE_URL</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">...</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cargo</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>bin</span> migrate</span>
+</span></code></pre>
+<p>(And yes, <code>cargo run -- ...</code> passes args to your binary if you need them.)</p>
+<p>:tada:</p>
+
+      </article>
+
+      
+      
+
+      
+      
+    </div>
+
+    
+
+
+<footer>
+  <div class="left">
+    <div class="copyright">
+      ∅ 2026 n0um3n4
+      
+    </div>
+  </div>
+
+  <div class="right">
+    
+    
+      
+    
+    
+    <a id="rss-btn" href="https://idunnowhatiamdoing.engineering/posts/feed.xml">RSS</a>
+    
+    
+
+    
+  </div>
+</footer>
+
+
+
+
+<dialog id="rss-mask">
+  <div>
+    <a href="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml">https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml</a>
+    
+    
+    <button autofocus aria-label="copy" data-link="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+" >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z" fill="currentColor"></path></svg>
+
+    </button>
+  </div>
+</dialog>
+
+
+
+  </main>
+</div>
+
+  
+<script src="/js/lightense.min.js"></script>
+
+
+  <script src="https://idunnowhatiamdoing.engineering/js/main.js"></script>
+</body>
+
+</html>

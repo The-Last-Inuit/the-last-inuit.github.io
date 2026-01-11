@@ -7,6 +7,7 @@ rm -rf ./icon
 rm -rf ./img
 rm -rf ./js
 rm -rf ./posts
+rm -rf ./projects
 mv public/* .
 rm -rf public
 git add .

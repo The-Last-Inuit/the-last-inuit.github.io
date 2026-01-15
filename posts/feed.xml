@@ -5,9 +5,97 @@
 	<link rel="self" type="application/atom+xml" href="https://idunnowhatiamdoing.engineering/posts/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://idunnowhatiamdoing.engineering/posts/"/>
   
-	<updated>2026-01-14T00:00:00+00:00</updated>
+	<updated>2026-01-15T00:00:00+00:00</updated>
 	
 	<id>https://idunnowhatiamdoing.engineering/posts/feed.xml</id>
+	<entry xml:lang="en">
+		<title>World Of Noumena | Update</title>
+		<published>2026-01-15T00:00:00+00:00</published>
+		<updated>2026-01-15T00:00:00+00:00</updated>
+		<link rel="alternate" type="text/html" href="https://idunnowhatiamdoing.engineering/posts/won/"/>
+		<id>https://idunnowhatiamdoing.engineering/posts/won/</id>
+    
+		<content type="html" xml:base="https://idunnowhatiamdoing.engineering/posts/won/">&lt;p&gt;This release focused on pushing the MUD toward a scalable, multi-node architecture while
+adding in-world tools for lore and puzzle interaction. Below is a technical walkthrough of
+the main changes and how they fit together.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;distributed-zone-architecture&quot;&gt;Distributed Zone Architecture&lt;a class=&quot;zola-anchor&quot; href=&quot;#distributed-zone-architecture&quot; aria-label=&quot;Anchor link for: distributed-zone-architecture&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;Zones now shard across BEAM nodes using consistent hashing. The core changes:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;WorldOfNoumena.Cluster&lt;&#x2F;code&gt; computes a hash ring and assigns zone ownership.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;WorldOfNoumena.Zone&lt;&#x2F;code&gt; replaces the old global room-tracking GenServer; each zone process
+tracks occupants and broadcasts within its shard.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;WorldOfNoumena.ZoneManager&lt;&#x2F;code&gt; starts&#x2F;stops zone servers on each node as ownership changes.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;WorldOfNoumena.World&lt;&#x2F;code&gt; is now a facade that routes &lt;code&gt;enter&#x2F;leave&#x2F;say&#x2F;emote&#x2F;broadcast&lt;&#x2F;code&gt; to the
+appropriate zone process.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;player-process-migration&quot;&gt;Player Process Migration&lt;a class=&quot;zola-anchor&quot; href=&quot;#player-process-migration&quot; aria-label=&quot;Anchor link for: player-process-migration&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;p&gt;Players are now separate from socket connections:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;The TCP connection process handles login and forwards input&#x2F;output.&lt;&#x2F;li&gt;
+&lt;li&gt;The &lt;code&gt;Player&lt;&#x2F;code&gt; GenServer handles all commands, state, and room interactions.&lt;&#x2F;li&gt;
+&lt;li&gt;When moving across zone boundaries, the &lt;code&gt;Player&lt;&#x2F;code&gt; migrates to the owning node. The connection
+updates its tracked &lt;code&gt;player_pid&lt;&#x2F;code&gt; and continues streaming output.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;This isolates socket lifecycles from game state and makes cross-node movement explicit.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;npc-and-world-event-sharding&quot;&gt;NPC and World Event Sharding&lt;a class=&quot;zola-anchor&quot; href=&quot;#npc-and-world-event-sharding&quot; aria-label=&quot;Anchor link for: npc-and-world-event-sharding&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;NPCs and events now respect zone ownership:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;NPC.Manager&lt;&#x2F;code&gt; starts default NPCs only for locally owned zones and reacts to node up&#x2F;down.&lt;&#x2F;li&gt;
+&lt;li&gt;Admin spawn commands route to the zone owner for the target room.&lt;&#x2F;li&gt;
+&lt;li&gt;World events and room scripts are executed on nodes that own the relevant zone or are elected
+leader for global events.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;archive-terminals-and-log-indexing&quot;&gt;Archive Terminals and Log Indexing&lt;a class=&quot;zola-anchor&quot; href=&quot;#archive-terminals-and-log-indexing&quot; aria-label=&quot;Anchor link for: archive-terminals-and-log-indexing&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;The Archives are now a first-class interface:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Rooms tagged with &lt;code&gt;:archive&lt;&#x2F;code&gt; expose an &lt;code&gt;archive&lt;&#x2F;code&gt; command set.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;Archives.Log&lt;&#x2F;code&gt; captures global and zone-scoped broadcasts for later retrieval.&lt;&#x2F;li&gt;
+&lt;li&gt;Players can search and read lore with &lt;code&gt;archive search&lt;&#x2F;code&gt; and &lt;code&gt;archive read&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;Logs are accessible via &lt;code&gt;archive logs&lt;&#x2F;code&gt;, with zone-specific and global views.&lt;&#x2F;li&gt;
+&lt;li&gt;Optional external data can be loaded from JSON via &lt;code&gt;ARCHIVE_EXTERNAL_PATH&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;This gives the world a queryable memory without external tooling.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;puzzle-framework&quot;&gt;Puzzle Framework&lt;a class=&quot;zola-anchor&quot; href=&quot;#puzzle-framework&quot; aria-label=&quot;Anchor link for: puzzle-framework&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;Rooms tagged with &lt;code&gt;:puzzle&lt;&#x2F;code&gt; can host lattice-style symbol puzzles:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;WorldOfNoumena.Puzzles&lt;&#x2F;code&gt; defines room-bound puzzles with symbols, prompts, and solutions.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;puzzle enter &amp;lt;sequence&amp;gt;&lt;&#x2F;code&gt; checks the attempt and persists solved state in the player process.&lt;&#x2F;li&gt;
+&lt;li&gt;Successful solves can trigger emotes or unlock additional archive entries.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;The puzzle system is lightweight but designed to grow into multi-step or data-driven puzzles.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;tooling-and-operational-updates&quot;&gt;Tooling and Operational Updates&lt;a class=&quot;zola-anchor&quot; href=&quot;#tooling-and-operational-updates&quot; aria-label=&quot;Anchor link for: tooling-and-operational-updates&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;To make distribution testable locally:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;docker-compose.yml&lt;&#x2F;code&gt; brings up Postgres plus multiple BEAM nodes.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;Makefile&lt;&#x2F;code&gt; adds cluster run targets (&lt;code&gt;cluster-node1&lt;&#x2F;code&gt;, &lt;code&gt;cluster-node2&lt;&#x2F;code&gt;, &lt;code&gt;cluster-node3&lt;&#x2F;code&gt;).&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;TELNET_PORT&lt;&#x2F;code&gt; and &lt;code&gt;GATEWAY_PORT&lt;&#x2F;code&gt; can be configured at runtime per node.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;code-quality-and-maintenance&quot;&gt;Code Quality and Maintenance&lt;a class=&quot;zola-anchor&quot; href=&quot;#code-quality-and-maintenance&quot; aria-label=&quot;Anchor link for: code-quality-and-maintenance&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;Several refactors landed to reduce complexity and Credo warnings:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Flattened nested conditionals in player&#x2F;admin flows.&lt;&#x2F;li&gt;
+&lt;li&gt;Refactored BFS pathfinding in &lt;code&gt;Room&lt;&#x2F;code&gt; for readability.&lt;&#x2F;li&gt;
+&lt;li&gt;Simplified storage transaction flow for character creation.&lt;&#x2F;li&gt;
+&lt;li&gt;Updated map&#x2F;join patterns to use &lt;code&gt;Enum.map_join&#x2F;3&lt;&#x2F;code&gt; where appropriate.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;next-steps&quot;&gt;Next Steps&lt;a class=&quot;zola-anchor&quot; href=&quot;#next-steps&quot; aria-label=&quot;Anchor link for: next-steps&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;Immediate follow-ups:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;Persist puzzle progress per character instead of process memory.&lt;&#x2F;li&gt;
+&lt;li&gt;Add richer archive ingestion (structured metadata, indexed search).&lt;&#x2F;li&gt;
+&lt;li&gt;Expand puzzles into multi-room sequences with stateful progression.&lt;&#x2F;li&gt;
+&lt;li&gt;Introduce zone-aware item persistence across nodes.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+</content>
+	</entry>
 	<entry xml:lang="en">
 		<title>solënna</title>
 		<published>2026-01-14T00:00:00+00:00</published>

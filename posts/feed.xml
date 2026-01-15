@@ -102,6 +102,66 @@
 </content>
 	</entry>
 	<entry xml:lang="en">
+		<title>kai-rem</title>
+		<published>2026-01-12T00:00:00+00:00</published>
+		<updated>2026-01-12T00:00:00+00:00</updated>
+		<link rel="alternate" type="text/html" href="https://idunnowhatiamdoing.engineering/posts/kai-rem/"/>
+		<id>https://idunnowhatiamdoing.engineering/posts/kai-rem/</id>
+    
+		<content type="html" xml:base="https://idunnowhatiamdoing.engineering/posts/kai-rem/">&lt;p&gt;&lt;img src=&quot;&#x2F;img&#x2F;kai-rem.png&quot; alt=&quot;solënna&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Lately I have been working on &lt;code&gt;kai-rem&lt;&#x2F;code&gt;, a realtime synth engine with a minimalist UI. The goal this week: add more sound engines, bolt on per-channel FX, and keep the interface simple enough to play without a manual.&lt;&#x2F;p&gt;
+&lt;p&gt;Below is a quick, casual tour of what I changed, what worked, and a few gotchas I tripped over.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;the-short-version&quot;&gt;The short version&lt;a class=&quot;zola-anchor&quot; href=&quot;#the-short-version&quot; aria-label=&quot;Anchor link for: the-short-version&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Added four engines: Supersaw, Ring Mod, Pluck (Karplus), Formant.&lt;&#x2F;li&gt;
+&lt;li&gt;Added per-channel FX modules: Drive, Delay, Chorus, Crush.&lt;&#x2F;li&gt;
+&lt;li&gt;Kept the UI compact: each channel gets a dropdown + amount slider.&lt;&#x2F;li&gt;
+&lt;li&gt;Routed keyboard input to the selected channel for easy auditioning.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;The original synth had the basics (subtractive, wavetable, FM, pulse, noise). Great for testing, but I wanted more contrast:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Supersaw&lt;&#x2F;strong&gt; for that classic wide, buzzy pad.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Ring Mod&lt;&#x2F;strong&gt; for metallic and alien textures.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Pluck&#x2F;Karplus&lt;&#x2F;strong&gt; for instant “stringy” sounds.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Formant&lt;&#x2F;strong&gt; to get vowel-ish timbres without a full filter bank.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;The nice part about these is that they share a lot of code. Once the oscillator and filter plumbing is in place, new engines are mostly different signal paths.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;per-channel-fx&quot;&gt;Per-channel FX&lt;a class=&quot;zola-anchor&quot; href=&quot;#per-channel-fx&quot; aria-label=&quot;Anchor link for: per-channel-fx&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;I went with a single FX slot per channel:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;None&lt;&#x2F;strong&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Drive&lt;&#x2F;strong&gt; (tanh saturation)&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Delay&lt;&#x2F;strong&gt; (simple feedback delay)&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Chorus&lt;&#x2F;strong&gt; (modulated delay line)&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Crush&lt;&#x2F;strong&gt; (bit + sample rate reduction)&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;ui-tweaks-small-but-important&quot;&gt;UI tweaks: small but important&lt;a class=&quot;zola-anchor&quot; href=&quot;#ui-tweaks-small-but-important&quot; aria-label=&quot;Anchor link for: ui-tweaks-small-but-important&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;The channel rack now shows:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Track select, mute, solo&lt;&#x2F;li&gt;
+&lt;li&gt;Pan slider&lt;&#x2F;li&gt;
+&lt;li&gt;FX dropdown&lt;&#x2F;li&gt;
+&lt;li&gt;FX amount slider&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;I nudged the left column width to make room. The big UX improvement was simple: &lt;strong&gt;keyboard notes now go to the selected channel&lt;&#x2F;strong&gt;, not just channel 1. That makes testing per-channel FX feel immediate.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;implementation-notes&quot;&gt;Implementation notes&lt;a class=&quot;zola-anchor&quot; href=&quot;#implementation-notes&quot; aria-label=&quot;Anchor link for: implementation-notes&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;A few things worth mentioning:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Audio thread is sacred.&lt;&#x2F;strong&gt; All UI updates go through a ring buffer to avoid blocking.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;FX are in the mixer, not in the voice.&lt;&#x2F;strong&gt; This keeps engines clean and lets FX act on the mixed channel signal.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Formant uses bandpass filters.&lt;&#x2F;strong&gt; I added a bandpass output to the SVF for this.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Karplus gets a tiny delay buffer per voice.&lt;&#x2F;strong&gt; Cheap, cheerful, and good enough for the vibe.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash z-code&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;cargo&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; run&lt;span class=&quot;z-variable z-parameter z-option z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-parameter z-shell&quot;&gt; --&lt;&#x2F;span&gt;release&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-end-of-options z-shell&quot;&gt; --&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; --poly 8 --mode supersaw --midi virtual&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;And yes, you can play notes with the keyboard when you do not have MIDI.&lt;&#x2F;p&gt;
+</content>
+	</entry>
+	<entry xml:lang="en">
 		<title>program writer</title>
 		<published>2026-01-05T00:00:00+00:00</published>
 		<updated>2026-01-05T00:00:00+00:00</updated>

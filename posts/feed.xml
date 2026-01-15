@@ -5,9 +5,102 @@
 	<link rel="self" type="application/atom+xml" href="https://idunnowhatiamdoing.engineering/posts/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://idunnowhatiamdoing.engineering/posts/"/>
   
-	<updated>2026-01-05T00:00:00+00:00</updated>
+	<updated>2026-01-14T00:00:00+00:00</updated>
 	
 	<id>https://idunnowhatiamdoing.engineering/posts/feed.xml</id>
+	<entry xml:lang="en">
+		<title>solënna</title>
+		<published>2026-01-14T00:00:00+00:00</published>
+		<updated>2026-01-14T00:00:00+00:00</updated>
+		<link rel="alternate" type="text/html" href="https://idunnowhatiamdoing.engineering/posts/solenna/"/>
+		<id>https://idunnowhatiamdoing.engineering/posts/solenna/</id>
+    
+		<content type="html" xml:base="https://idunnowhatiamdoing.engineering/posts/solenna/">&lt;p&gt;&lt;img src=&quot;&#x2F;img&#x2F;sol%C3%ABnna.png&quot; alt=&quot;solënna&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;solenna-building-a-compact-libp2p-node-for-geotagged-data&quot;&gt;solënna: building a compact libp2p node for geotagged data&lt;a class=&quot;zola-anchor&quot; href=&quot;#solenna-building-a-compact-libp2p-node-for-geotagged-data&quot; aria-label=&quot;Anchor link for: solenna-building-a-compact-libp2p-node-for-geotagged-data&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h1&gt;
+&lt;p&gt;Here is a quick tour of the engineering choices behind solënna, a small libp2p node that publishes and browses signed, geotagged datapoints. My goals were simple: keep the stack small, ship a usable UI fast, and still survive on a public network without turning into a spam magnet.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;problem-framing&quot;&gt;Problem framing&lt;a class=&quot;zola-anchor&quot; href=&quot;#problem-framing&quot; aria-label=&quot;Anchor link for: problem-framing&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;Location-based systems tend to be either centralized and easy, or decentralized and hard to operate. I wanted a node that felt like a single binary you can run on a laptop, but that still federates into a public P2P network without needing a dedicated ops stack. That led me to a few constraints:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Storage needed to be local and simple.&lt;&#x2F;li&gt;
+&lt;li&gt;The UI had to ship with the node.&lt;&#x2F;li&gt;
+&lt;li&gt;The protocol had to verify authorship without central authority.&lt;&#x2F;li&gt;
+&lt;li&gt;The network had to defend itself from trivial write abuse.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;architecture-overview&quot;&gt;Architecture overview&lt;a class=&quot;zola-anchor&quot; href=&quot;#architecture-overview&quot; aria-label=&quot;Anchor link for: architecture-overview&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;At a high level, the node is a libp2p swarm loop plus a local SQLite store and an HTTP server. The &lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;app.radicle.xyz&#x2F;nodes&#x2F;seed.radicle.garden&#x2F;rad:zhzsX3bknxQhN6wbTY2QoxPhGbzp&quot;&gt;repo&lt;&#x2F;a&gt; mirrors that split:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;src&#x2F;main.rs&lt;&#x2F;code&gt; is the swarm loop and CLI wiring.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;src&#x2F;protocol.rs&lt;&#x2F;code&gt; defines the signed object format and request&#x2F;response types.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;src&#x2F;store.rs&lt;&#x2F;code&gt; implements persistence and geohash indexing.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;src&#x2F;http.rs&lt;&#x2F;code&gt; hosts both the LiveView UI and a JSON API.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;Keeping it this way means one process, one data directory, and a much simpler mental model when you are debugging or deploying.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;data-model-signed-objects-with-location-metadata&quot;&gt;Data model: signed objects with location metadata&lt;a class=&quot;zola-anchor&quot; href=&quot;#data-model-signed-objects-with-location-metadata&quot; aria-label=&quot;Anchor link for: data-model-signed-objects-with-location-metadata&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;I went with content-addressed objects that are signed by an author keypair. That gives me a few nice properties:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;IDs are derived from content, so the same object is globally stable.&lt;&#x2F;li&gt;
+&lt;li&gt;Signatures are verified at ingest, so provenance is embedded in the data itself.&lt;&#x2F;li&gt;
+&lt;li&gt;Objects can be replicated without a centralized database.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;For the UI and API, the core field is location. A point maps to a geohash cell, which is a compact way to partition the earth into hierarchical grid buckets.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;storage-and-queries-why-geohash-indexing-works-well-here&quot;&gt;Storage and queries: why geohash indexing works well here&lt;a class=&quot;zola-anchor&quot; href=&quot;#storage-and-queries-why-geohash-indexing-works-well-here&quot; aria-label=&quot;Anchor link for: storage-and-queries-why-geohash-indexing-works-well-here&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;The hot path is &lt;strong&gt;what objects are in this viewport&lt;&#x2F;strong&gt;. I did not want to pull in a heavy spatial index or do full-table scans with bounding boxes. Instead, the store indexes by geohash cell. The query becomes “enumerate the geohash cells that cover this viewport, then fetch objects per cell.”&lt;&#x2F;p&gt;
+&lt;p&gt;It is a practical tradeoff:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Geohash prefix lookups are cheap in SQLite.&lt;&#x2F;li&gt;
+&lt;li&gt;The index is stable and deterministic across nodes.&lt;&#x2F;li&gt;
+&lt;li&gt;It keeps the API simple (&lt;code&gt;GET &#x2F;geocell&lt;&#x2F;code&gt;, &lt;code&gt;GET &#x2F;viewport&lt;&#x2F;code&gt;).&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;It is not as precise as a proper spatial index, but it is more than enough for fast, map-like browsing.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;anti-spam-pow-rate-limits-instead-of-trust&quot;&gt;Anti-spam: PoW + rate limits instead of trust&lt;a class=&quot;zola-anchor&quot; href=&quot;#anti-spam-pow-rate-limits-instead-of-trust&quot; aria-label=&quot;Anchor link for: anti-spam-pow-rate-limits-instead-of-trust&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;Public P2P networks need backpressure. I did not want to build a full trust system, I just wanted to make abuse expensive. solënna uses a few levers in &lt;code&gt;src&#x2F;anti_spam.rs&lt;&#x2F;code&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Proof-of-work gating for write requests.&lt;&#x2F;li&gt;
+&lt;li&gt;Rate limits to dampen bursts.&lt;&#x2F;li&gt;
+&lt;li&gt;Optional allowlist for closed networks.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;This is intentionally lightweight: it does not try to solve trust, only to make abuse expensive enough that it is not the default behavior.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;ui-in-the-same-process-dioxus-liveview&quot;&gt;UI in the same process: Dioxus LiveView&lt;a class=&quot;zola-anchor&quot; href=&quot;#ui-in-the-same-process-dioxus-liveview&quot; aria-label=&quot;Anchor link for: ui-in-the-same-process-dioxus-liveview&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;The HTTP server embeds a Dioxus LiveView UI. I wanted the node to be useful immediately after &lt;code&gt;cargo run&lt;&#x2F;code&gt; without a separate frontend build or extra processes. That gives you:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;One binary that serves both UI and JSON API.&lt;&#x2F;li&gt;
+&lt;li&gt;Fewer deployment knobs and fewer moving parts.&lt;&#x2F;li&gt;
+&lt;li&gt;A quick feedback loop for experimenting with protocol changes.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;For engineering velocity, this mattered more than having a fully decoupled frontend.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;real-world-networking-relay-support&quot;&gt;Real-world networking: relay support&lt;a class=&quot;zola-anchor&quot; href=&quot;#real-world-networking-relay-support&quot; aria-label=&quot;Anchor link for: real-world-networking-relay-support&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;Most peers sit behind NAT, so Solenna ships a circuit-relay v2 binary (&lt;code&gt;src&#x2F;bin&#x2F;solenna-relay.rs&lt;&#x2F;code&gt;) and a relay manager (&lt;code&gt;src&#x2F;relay_mgr.rs&lt;&#x2F;code&gt;). This solves the practical &lt;strong&gt;I cannot accept inbound TCP&lt;&#x2F;strong&gt; problem without needing to punch a dozen firewall holes. It also lets you run a public relay if you want to improve connectivity for the network.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;operational-shape&quot;&gt;Operational shape&lt;a class=&quot;zola-anchor&quot; href=&quot;#operational-shape&quot; aria-label=&quot;Anchor link for: operational-shape&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;The project is designed to deploy simply:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Docker and Docker Compose for fast local runs.&lt;&#x2F;li&gt;
+&lt;li&gt;systemd units for traditional hosts.&lt;&#x2F;li&gt;
+&lt;li&gt;Fly.io config for quick cloud launches.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;The node&#x27;s surface area is small: a libp2p TCP port and an HTTP port.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;what-i-would-explore-next&quot;&gt;What I would explore next&lt;a class=&quot;zola-anchor&quot; href=&quot;#what-i-would-explore-next&quot; aria-label=&quot;Anchor link for: what-i-would-explore-next&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;A few ideas are on the roadmap:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Better edit conflict resolution for high-latency networks.&lt;&#x2F;li&gt;
+&lt;li&gt;Richer queries (tags, author trust, time windows).&lt;&#x2F;li&gt;
+&lt;li&gt;More granular spam controls for mixed public&#x2F;private clusters.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;closing-thoughts&quot;&gt;Closing thoughts&lt;a class=&quot;zola-anchor&quot; href=&quot;#closing-thoughts&quot; aria-label=&quot;Anchor link for: closing-thoughts&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;solënna is intentionally small (i dislike complexity as a justification for whatever). The goal was to prove out a minimal, usable P2P node that handles real network constraints and still feels like a developer-friendly tool. If you want to explore further, start in &lt;code&gt;src&#x2F;store.rs&lt;&#x2F;code&gt; or &lt;code&gt;src&#x2F;http.rs&lt;&#x2F;code&gt; and keep the loop tight: change a thing, run the node, open the UI, repeat.&lt;&#x2F;p&gt;
+&lt;p&gt;For a quick run command and endpoint list, the README has the minimal setup.&lt;&#x2F;p&gt;
+</content>
+	</entry>
 	<entry xml:lang="en">
 		<title>program writer</title>
 		<published>2026-01-05T00:00:00+00:00</published>

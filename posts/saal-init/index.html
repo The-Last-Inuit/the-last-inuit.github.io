@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  
+  
+    
+  
+  <meta name="description" content="Software engineering à la Mexicana">
+
+  <title>sääl | wiring up the core</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="https://idunnowhatiamdoing.engineering/img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://idunnowhatiamdoing.engineering/img/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://idunnowhatiamdoing.engineering/img/apple-touch-icon.png">
+  
+  <style>
+  @import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
+
+  /* light mode colors */
+  body {
+    --primary-color: #5871a2;
+    --primary-pale-color: #5871a233;
+    --primary-decoration-color: #5871a210;
+    --bg-color: #ffffff;
+    --text-color: #2f3030;
+    --text-pale-color: #767676;
+    --text-decoration-color: #a9a9a9;
+    --highlight-mark-color: #5f75b020;
+
+    --callout-note-color: #5871a2;
+    --callout-tip-color: #268556;
+    --callout-important-color: #885fc9;
+    --callout-warning-color: #ab6632;
+    --callout-caution-color: #c64e4e;
+  }
+
+  /* dark mode colors */
+  body.dark {
+    --primary-color: #6f8fd1;
+    --primary-pale-color: #6f8fd166;
+    --primary-decoration-color: #6f8fd112;
+    --bg-color: #1c1c1c;
+    --text-color: #c1c1c1;
+    --text-pale-color: #848484;
+    --text-decoration-color: #5f5f5f;
+    --highlight-mark-color: #8296cb3b;
+
+    --callout-note-color: #6f8fd1;
+    --callout-tip-color: #47976f;
+    --callout-important-color: #9776cd;
+    --callout-warning-color: #ad7a52;
+    --callout-caution-color: #d06161;
+  }
+
+  /* typography */
+  body {
+    --main-font: "Share Tech Mono", monospace;
+    --code-font: "Share Tech Mono", monospace;
+    --homepage-max-width: 81ch;
+    --main-max-width: 81ch;
+    --avatar-size: 60px;
+    --font-size: 16px;
+    --line-height: 1.75;
+    --img-border-radius: 0px;
+    --detail-border-radius: 0px;
+    --dark-mode-img-brightness: 0.75;
+    --dark-mode-chart-brightness: 0.75;
+    --inline-code-border-radius: 2px;
+    --inline-code-bg-color: var(--primary-decoration-color);
+    --block-code-border-radius: 0px;
+    --block-code-border-color: var(--primary-color);
+    --detail-border-color: var(--primary-color);
+  }
+</style>
+
+  <link rel="stylesheet" href="https://idunnowhatiamdoing.engineering/main.css">
+  
+
+<link id="hl" rel="stylesheet" type="text/css" href="/hl-light.css" />
+
+
+
+  
+</head>
+
+<body class="post">
+  
+  
+<div id="wrapper">
+  <div id="blank"></div>
+  <aside>
+    
+    
+    <nav>
+      <ul>
+        
+        <li>
+          <a class="h2" href="#so-far">So far</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#current-limits">Current limits</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#what-s-next">What’s next</a>
+          
+        </li>
+        
+      </ul>
+    </nav>
+    
+    
+    <button id="back-to-top" aria-label="back to top">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+
+    </button>
+    
+  </aside>
+  <main>
+    
+<header>
+  <nav>
+    <a id="back-link" href="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts">← back</a>
+  </nav>
+</header>
+
+
+    <div>
+      
+      
+      
+      
+      <div id="copy-cfg" style="display: none;" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+"></div>
+      
+      <article class="prose">
+        <h1>sääl | wiring up the core</h1>
+        <div id="post-info">
+          <div id="date">
+            <span id="publish">Jan 9, 2026</span>
+            </div>
+
+          
+        </div>
+
+        
+        
+
+        
+
+        <p>Quick update on sääl’s engineering progress. I’ve been focused on getting the wire-level core in place first, so there’s a solid, deterministic foundation before anything network-y or storage-y lands.</p>
+<h2 id="so-far">So far<a class="zola-anchor" href="#so-far" aria-label="Anchor link for: so-far" style="visibility: hidden;"></a>
+</h2>
+<p>The repo now has a <code>saal-core</code> crate that’s basically the minimal spec-compliant kernel:</p>
+<ul>
+<li><strong>Canonical CBOR encoding</strong> for unsigned objects so every node hashes the same bytes.</li>
+<li><strong>ObjectId</strong> as BLAKE3-256 over canonical CBOR of the unsigned envelope.</li>
+<li><strong>Ed25519 signatures</strong> over the ObjectId, plus verification helpers.</li>
+<li><strong>Typed payloads</strong> for the v0.1 wire spec: <code>Profile</code>, <code>Post</code>, <code>Reaction</code>, <code>Follow</code>, <code>MediaBlob</code>, and <code>LogEntry</code>.</li>
+<li><strong>Tests</strong> for deterministic IDs, sign/verify round-trips, and canonical CBOR stability.</li>
+</ul>
+<p>There’s also a draft wire spec (<code>wire-spec-v0.1.md</code>) in the repo that mirrors what the code is doing. The idea is to keep spec and code aligned while the protocol is still fluid.</p>
+<p>This is intentionally boring in a good way:</p>
+<ul>
+<li><strong>CBOR + canonical ordering</strong> gives compact payloads and deterministic hashes. No “same data, different bytes” surprises.</li>
+<li><strong>BLAKE3</strong> is fast, well-designed, and gives a clean 32‑byte content ID.</li>
+<li><strong>Ed25519</strong> is small, standard, and has good ecosystem support. Keys/signatures stay compact, which matters for a p2p social protocol.</li>
+<li><strong>Explicit typed payloads</strong> keep the wire schema readable and let me evolve each object type without tangled dynamic maps everywhere.</li>
+</ul>
+<p>The goal is to keep the cryptographic and serialization layer boringly correct. Everything else can be built on top of that with confidence.</p>
+<h2 id="current-limits">Current limits<a class="zola-anchor" href="#current-limits" aria-label="Anchor link for: current-limits" style="visibility: hidden;"></a>
+</h2>
+<p>This is still v0.1 groundwork:</p>
+<ul>
+<li>No networking yet.</li>
+<li>No storage/indexing layer.</li>
+<li>No event log or feed processing pipeline.</li>
+<li>Just enough error handling to make the core usable without hiding failures.</li>
+</ul>
+<p>That’s deliberate. I want the “object = canonical bytes + signature + deterministic ID” story to be rock-solid before the rest of the system starts depending on it.</p>
+<h2 id="what-s-next">What’s next<a class="zola-anchor" href="#what-s-next" aria-label="Anchor link for: what-s-next" style="visibility: hidden;"></a>
+</h2>
+<p>The next steps are about turning the core into something people can run and poke:</p>
+<ul>
+<li><strong>Storage + indexing</strong>: persist objects, resolve by <code>ObjectId</code>, and build lightweight views.</li>
+<li><strong>Networking protocol</strong>: define how peers exchange objects and log entries (likely built on libp2p).</li>
+<li><strong>Tooling</strong>: a small CLI for creating/signing objects and inspecting CBOR bytes.</li>
+<li><strong>Interoperability tests</strong>: fixtures to prove that different implementations serialize and hash the same bytes.</li>
+</ul>
+<p>If you’re curious, the <code>saal-core</code> crate is the best place to look right now. It’s intentionally tight and focused, so it should be easy to follow and extend.</p>
+
+      </article>
+
+      
+      
+
+      
+      
+    </div>
+
+    
+
+
+<footer>
+  <div class="left">
+    <div class="copyright">
+      ∅ 2026 n0um3n4
+      
+    </div>
+  </div>
+
+  <div class="right">
+    
+    
+      
+    
+    
+    <a id="rss-btn" href="https://idunnowhatiamdoing.engineering/posts/feed.xml">RSS</a>
+    
+    
+
+    
+  </div>
+</footer>
+
+
+
+
+<dialog id="rss-mask">
+  <div>
+    <a href="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml">https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml</a>
+    
+    
+    <button autofocus aria-label="copy" data-link="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+" >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z" fill="currentColor"></path></svg>
+
+    </button>
+  </div>
+</dialog>
+
+
+
+  </main>
+</div>
+
+  
+<script src="/js/lightense.min.js"></script>
+
+
+  <script src="https://idunnowhatiamdoing.engineering/js/main.js"></script>
+</body>
+
+</html>

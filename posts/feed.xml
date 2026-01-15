@@ -162,6 +162,102 @@
 </content>
 	</entry>
 	<entry xml:lang="en">
+		<title>sääl | core polish + proto + in-memory store</title>
+		<published>2026-01-10T00:00:00+00:00</published>
+		<updated>2026-01-10T00:00:00+00:00</updated>
+		<link rel="alternate" type="text/html" href="https://idunnowhatiamdoing.engineering/posts/saal-changes-001/"/>
+		<id>https://idunnowhatiamdoing.engineering/posts/saal-changes-001/</id>
+    
+		<content type="html" xml:base="https://idunnowhatiamdoing.engineering/posts/saal-changes-001/">&lt;p&gt;Quick engineering log for sääl. The current round of changes is mostly about tightening the core types, making canonical encoding boringly deterministic, and putting a thin protocol + storage layer around it so the rest of the system has something real to plug into.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;updates&quot;&gt;Updates&lt;a class=&quot;zola-anchor&quot; href=&quot;#updates&quot; aria-label=&quot;Anchor link for: updates&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;code&gt;saal-core&lt;&#x2F;code&gt; got a few practical fixes and clarifications:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Canonical CBOR is now explicit&lt;&#x2F;strong&gt;: serialization goes through &lt;code&gt;serde_cbor::value::to_value&lt;&#x2F;code&gt; so map key ordering is deterministic before hashing.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Signature plumbing cleaned up&lt;&#x2F;strong&gt;: the Ed25519 &lt;code&gt;Signer&lt;&#x2F;code&gt; trait is in scope, and signature decoding uses explicit length errors instead of ambiguous &lt;code&gt;?&lt;&#x2F;code&gt; behavior.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Dependency hygiene&lt;&#x2F;strong&gt;: &lt;code&gt;serde_bytes&lt;&#x2F;code&gt; is in place anywhere we use &lt;code&gt;#[serde(with = &quot;serde_bytes&quot;)]&lt;&#x2F;code&gt; for byte arrays.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;Net result: &lt;code&gt;ObjectId&lt;&#x2F;code&gt; hashing is stable, and the sign&#x2F;verify path is a little harder to trip over.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;protocol-surface-saal-proto&quot;&gt;Protocol surface (saal-proto)&lt;a class=&quot;zola-anchor&quot; href=&quot;#protocol-surface-saal-proto&quot; aria-label=&quot;Anchor link for: protocol-surface-saal-proto&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;I added a small &lt;code&gt;saal-proto&lt;&#x2F;code&gt; crate that just defines message shapes and CBOR codecs:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;GetObject&lt;&#x2F;code&gt; request&#x2F;response (fetch by &lt;code&gt;ObjectId&lt;&#x2F;code&gt;).&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;GetAuthorLog&lt;&#x2F;code&gt; request&#x2F;response (seq-based author log paging).&lt;&#x2F;li&gt;
+&lt;li&gt;A tiny &lt;code&gt;PingPolicy&lt;&#x2F;code&gt; message for capability negotiation.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;Everything is encoded&#x2F;decoded via canonical CBOR so the wire format stays consistent across implementations.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;in-memory-store-saal-store-mem&quot;&gt;In-memory store (saal-store-mem)&lt;a class=&quot;zola-anchor&quot; href=&quot;#in-memory-store-saal-store-mem&quot; aria-label=&quot;Anchor link for: in-memory-store-saal-store-mem&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;There’s now a minimal in-memory store to make the protocol testable:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Objects are stored as canonical CBOR bytes of signed &lt;code&gt;Object&lt;&#x2F;code&gt;s.&lt;&#x2F;li&gt;
+&lt;li&gt;Author logs are indexed by seq using a &lt;code&gt;BTreeMap&lt;&#x2F;code&gt;, so paging is deterministic.&lt;&#x2F;li&gt;
+&lt;li&gt;Tests exercise round-trip decode + signature verification on stored entries.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;It’s intentionally simple, but it’s already enough to test end-to-end flows without a real database.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;tooling-cleanup&quot;&gt;Tooling cleanup&lt;a class=&quot;zola-anchor&quot; href=&quot;#tooling-cleanup&quot; aria-label=&quot;Anchor link for: tooling-cleanup&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;I dropped in a basic &lt;code&gt;Makefile&lt;&#x2F;code&gt; and &lt;code&gt;.gitignore&lt;&#x2F;code&gt; so the workflow is less repetitive, plus a few small dependency nudges to keep the workspace compiling cleanly.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;next&quot;&gt;Next&lt;a class=&quot;zola-anchor&quot; href=&quot;#next&quot; aria-label=&quot;Anchor link for: next&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;A storage trait so the in-memory store can be swapped out cleanly.&lt;&#x2F;li&gt;
+&lt;li&gt;Wire-level integration tests with CBOR fixtures.&lt;&#x2F;li&gt;
+&lt;li&gt;A tiny CLI for creating and inspecting objects during development.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+	</entry>
+	<entry xml:lang="en">
+		<title>sääl | wiring up the core</title>
+		<published>2026-01-09T00:00:00+00:00</published>
+		<updated>2026-01-09T00:00:00+00:00</updated>
+		<link rel="alternate" type="text/html" href="https://idunnowhatiamdoing.engineering/posts/saal-init/"/>
+		<id>https://idunnowhatiamdoing.engineering/posts/saal-init/</id>
+    
+		<content type="html" xml:base="https://idunnowhatiamdoing.engineering/posts/saal-init/">&lt;p&gt;Quick update on sääl’s engineering progress. I’ve been focused on getting the wire-level core in place first, so there’s a solid, deterministic foundation before anything network-y or storage-y lands.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;so-far&quot;&gt;So far&lt;a class=&quot;zola-anchor&quot; href=&quot;#so-far&quot; aria-label=&quot;Anchor link for: so-far&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;The repo now has a &lt;code&gt;saal-core&lt;&#x2F;code&gt; crate that’s basically the minimal spec-compliant kernel:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Canonical CBOR encoding&lt;&#x2F;strong&gt; for unsigned objects so every node hashes the same bytes.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;ObjectId&lt;&#x2F;strong&gt; as BLAKE3-256 over canonical CBOR of the unsigned envelope.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Ed25519 signatures&lt;&#x2F;strong&gt; over the ObjectId, plus verification helpers.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Typed payloads&lt;&#x2F;strong&gt; for the v0.1 wire spec: &lt;code&gt;Profile&lt;&#x2F;code&gt;, &lt;code&gt;Post&lt;&#x2F;code&gt;, &lt;code&gt;Reaction&lt;&#x2F;code&gt;, &lt;code&gt;Follow&lt;&#x2F;code&gt;, &lt;code&gt;MediaBlob&lt;&#x2F;code&gt;, and &lt;code&gt;LogEntry&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Tests&lt;&#x2F;strong&gt; for deterministic IDs, sign&#x2F;verify round-trips, and canonical CBOR stability.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;There’s also a draft wire spec (&lt;code&gt;wire-spec-v0.1.md&lt;&#x2F;code&gt;) in the repo that mirrors what the code is doing. The idea is to keep spec and code aligned while the protocol is still fluid.&lt;&#x2F;p&gt;
+&lt;p&gt;This is intentionally boring in a good way:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;CBOR + canonical ordering&lt;&#x2F;strong&gt; gives compact payloads and deterministic hashes. No “same data, different bytes” surprises.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;BLAKE3&lt;&#x2F;strong&gt; is fast, well-designed, and gives a clean 32‑byte content ID.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Ed25519&lt;&#x2F;strong&gt; is small, standard, and has good ecosystem support. Keys&#x2F;signatures stay compact, which matters for a p2p social protocol.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Explicit typed payloads&lt;&#x2F;strong&gt; keep the wire schema readable and let me evolve each object type without tangled dynamic maps everywhere.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;The goal is to keep the cryptographic and serialization layer boringly correct. Everything else can be built on top of that with confidence.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;current-limits&quot;&gt;Current limits&lt;a class=&quot;zola-anchor&quot; href=&quot;#current-limits&quot; aria-label=&quot;Anchor link for: current-limits&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;This is still v0.1 groundwork:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;No networking yet.&lt;&#x2F;li&gt;
+&lt;li&gt;No storage&#x2F;indexing layer.&lt;&#x2F;li&gt;
+&lt;li&gt;No event log or feed processing pipeline.&lt;&#x2F;li&gt;
+&lt;li&gt;Just enough error handling to make the core usable without hiding failures.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;That’s deliberate. I want the “object = canonical bytes + signature + deterministic ID” story to be rock-solid before the rest of the system starts depending on it.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;what-s-next&quot;&gt;What’s next&lt;a class=&quot;zola-anchor&quot; href=&quot;#what-s-next&quot; aria-label=&quot;Anchor link for: what-s-next&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;The next steps are about turning the core into something people can run and poke:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Storage + indexing&lt;&#x2F;strong&gt;: persist objects, resolve by &lt;code&gt;ObjectId&lt;&#x2F;code&gt;, and build lightweight views.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Networking protocol&lt;&#x2F;strong&gt;: define how peers exchange objects and log entries (likely built on libp2p).&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Tooling&lt;&#x2F;strong&gt;: a small CLI for creating&#x2F;signing objects and inspecting CBOR bytes.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Interoperability tests&lt;&#x2F;strong&gt;: fixtures to prove that different implementations serialize and hash the same bytes.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;If you’re curious, the &lt;code&gt;saal-core&lt;&#x2F;code&gt; crate is the best place to look right now. It’s intentionally tight and focused, so it should be easy to follow and extend.&lt;&#x2F;p&gt;
+</content>
+	</entry>
+	<entry xml:lang="en">
 		<title>program writer</title>
 		<published>2026-01-05T00:00:00+00:00</published>
 		<updated>2026-01-05T00:00:00+00:00</updated>
@@ -2305,23 +2401,6 @@
 &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-rust&quot;&gt;&lt;span class=&quot;z-meta z-function z-rust&quot;&gt;&lt;span class=&quot;z-meta z-block z-rust&quot;&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-block z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-end z-rust&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;:tada!&lt;&#x2F;p&gt;
-</content>
-	</entry>
-	<entry xml:lang="en">
-		<title>Systems Engineering | More Projects To Come</title>
-		<published>2025-11-24T00:00:00+00:00</published>
-		<updated>2025-11-24T00:00:00+00:00</updated>
-		<link rel="alternate" type="text/html" href="https://idunnowhatiamdoing.engineering/posts/system-engineering-more-projects/"/>
-		<id>https://idunnowhatiamdoing.engineering/posts/system-engineering-more-projects/</id>
-    
-		<content type="html" xml:base="https://idunnowhatiamdoing.engineering/posts/system-engineering-more-projects/">&lt;p&gt;I&#x27;ve working on different projects:&lt;&#x2F;p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;app.radicle.xyz&#x2F;nodes&#x2F;seed.radicle.garden&#x2F;rad%3Az495xC9kAmknk1a82ut4S5PdFCDPT&quot;&gt;röyksopp&lt;&#x2F;a&gt;: an OTP-ish rust library&lt;&#x2F;li&gt;
-&lt;li&gt;&lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;app.radicle.xyz&#x2F;nodes&#x2F;seed.radicle.garden&#x2F;rad%3Az2B9uB1VpP7E4HvP1YWLAPAzy71GL&quot;&gt;öö&lt;&#x2F;a&gt;: whitelabel card issuer platform made with elixir&lt;&#x2F;li&gt;
-&lt;li&gt;&lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;app.radicle.xyz&#x2F;nodes&#x2F;seed.radicle.garden&#x2F;rad%3Az2KyxMowY9C7UXEpJJfDMy2Tiv7Zg&quot;&gt;phenomena&lt;&#x2F;a&gt;: a elixir fediverse app.&lt;&#x2F;li&gt;
-&lt;li&gt;&lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;app.radicle.xyz&#x2F;nodes&#x2F;seed.radicle.garden&#x2F;rad%3Az4ET4urR26yT3zxfNchZZkdspZ1sT&quot;&gt;myelos&lt;&#x2F;a&gt;: an experimental blockchain made with elixir&lt;&#x2F;li&gt;
-&lt;&#x2F;ul&gt;
-&lt;p&gt;None of them are meant to be production-ready products of course. Juat great ideas to fail, break and learn.&lt;&#x2F;p&gt;
 </content>
 	</entry>
 	<entry xml:lang="en">

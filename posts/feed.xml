@@ -5,9 +5,151 @@
 	<link rel="self" type="application/atom+xml" href="https://idunnowhatiamdoing.engineering/posts/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://idunnowhatiamdoing.engineering/posts/"/>
   
-	<updated>2026-01-16T00:00:00+00:00</updated>
+	<updated>2026-01-17T00:00:00+00:00</updated>
 	
 	<id>https://idunnowhatiamdoing.engineering/posts/feed.xml</id>
+	<entry xml:lang="en">
+		<title>röyksopp | Update</title>
+		<published>2026-01-17T00:00:00+00:00</published>
+		<updated>2026-01-17T00:00:00+00:00</updated>
+		<link rel="alternate" type="text/html" href="https://idunnowhatiamdoing.engineering/posts/phenomena-updates-copy/"/>
+		<id>https://idunnowhatiamdoing.engineering/posts/phenomena-updates-copy/</id>
+    
+		<content type="html" xml:base="https://idunnowhatiamdoing.engineering/posts/phenomena-updates-copy/">&lt;p&gt;It started as an OTP-flavored actor runtime with a toy TCP mesh, and now it has a minimal blockchain node layered on top.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;tl-dr&quot;&gt;TL;DR&lt;a class=&quot;zola-anchor&quot; href=&quot;#tl-dr&quot; aria-label=&quot;Anchor link for: tl-dr&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Added a minimal blockchain pipeline with persistence, mempool rules, and round-robin consensus.&lt;&#x2F;li&gt;
+&lt;li&gt;Introduced compact block propagation and batched sync.&lt;&#x2F;li&gt;
+&lt;li&gt;Added CLI tools and scripts to spin up a local cluster and play with it.&lt;&#x2F;li&gt;
+&lt;li&gt;Expanded docs, tests, and fuzzing so the system is easier to reason about.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;what-changed&quot;&gt;What changed&lt;a class=&quot;zola-anchor&quot; href=&quot;#what-changed&quot; aria-label=&quot;Anchor link for: what-changed&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;persistence-and-recovery&quot;&gt;Persistence and recovery&lt;a class=&quot;zola-anchor&quot; href=&quot;#persistence-and-recovery&quot; aria-label=&quot;Anchor link for: persistence-and-recovery&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;BlockStore&lt;&#x2F;strong&gt; is still append-only, but the &lt;strong&gt;StateStore&lt;&#x2F;strong&gt; now uses snapshot + WAL (write-ahead log).&lt;&#x2F;li&gt;
+&lt;li&gt;On startup, state can &lt;strong&gt;recover by replaying the WAL&lt;&#x2F;strong&gt; and verifying against the block store tip.&lt;&#x2F;li&gt;
+&lt;li&gt;This gives a simple durability story without a full DB.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;mempool-rules&quot;&gt;Mempool rules&lt;a class=&quot;zola-anchor&quot; href=&quot;#mempool-rules&quot; aria-label=&quot;Anchor link for: mempool-rules&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Mempool now validates txs:
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;size limit&lt;&#x2F;strong&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;minimum fee&lt;&#x2F;strong&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;duplicate detection&lt;&#x2F;strong&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;Ordering is &lt;strong&gt;fee-first&lt;&#x2F;strong&gt; when assembling blocks.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;Tx&lt;&#x2F;code&gt; now includes a &lt;code&gt;fee&lt;&#x2F;code&gt; field and stable &lt;code&gt;id&lt;&#x2F;code&gt; hash.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;consensus-hardening&quot;&gt;Consensus hardening&lt;a class=&quot;zola-anchor&quot; href=&quot;#consensus-hardening&quot; aria-label=&quot;Anchor link for: consensus-hardening&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Consensus is still &lt;strong&gt;round-robin leader&lt;&#x2F;strong&gt;, but now includes &lt;strong&gt;view timeouts&lt;&#x2F;strong&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;A node bumps its &lt;strong&gt;view&lt;&#x2F;strong&gt; when it times out and broadcasts a &lt;code&gt;ViewChange&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;Blocks include the &lt;strong&gt;view&lt;&#x2F;strong&gt; in the header.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;block-propagation&quot;&gt;Block propagation&lt;a class=&quot;zola-anchor&quot; href=&quot;#block-propagation&quot; aria-label=&quot;Anchor link for: block-propagation&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Added &lt;strong&gt;compact block announcements&lt;&#x2F;strong&gt;:
+&lt;ul&gt;
+&lt;li&gt;Nodes announce headers + tx IDs.&lt;&#x2F;li&gt;
+&lt;li&gt;Peers reconstruct if they already have the txs.&lt;&#x2F;li&gt;
+&lt;li&gt;Otherwise they fetch the full block by height.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;Added &lt;strong&gt;batched block sync&lt;&#x2F;strong&gt; to reduce RPC chatter.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;tooling-and-scripts&quot;&gt;Tooling and scripts&lt;a class=&quot;zola-anchor&quot; href=&quot;#tooling-and-scripts&quot; aria-label=&quot;Anchor link for: tooling-and-scripts&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;cli-binaries&quot;&gt;CLI binaries&lt;a class=&quot;zola-anchor&quot; href=&quot;#cli-binaries&quot; aria-label=&quot;Anchor link for: cli-binaries&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;royksopp&lt;&#x2F;code&gt; - run a node from config.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;royksopp_keys&lt;&#x2F;code&gt; - generate&#x2F;read keypair and print pubkey hex.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;royksopp_play&lt;&#x2F;code&gt; - interactive playground (local or attached).&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;scripts&quot;&gt;Scripts&lt;a class=&quot;zola-anchor&quot; href=&quot;#scripts&quot; aria-label=&quot;Anchor link for: scripts&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;scripts&#x2F;run_nodes.sh&lt;&#x2F;code&gt; - spin up N nodes and write configs&#x2F;logs.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;scripts&#x2F;play.sh&lt;&#x2F;code&gt; - interactive client (in-process by default).&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;scripts&#x2F;demo.sh&lt;&#x2F;code&gt; - full demo: start nodes + attach client.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;make-targets&quot;&gt;Make targets&lt;a class=&quot;zola-anchor&quot; href=&quot;#make-targets&quot; aria-label=&quot;Anchor link for: make-targets&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash z-code&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;make&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; demo      &lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt; nodes + interactive client&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;make&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; play      &lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt; in-process playground&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;make&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; nodes     &lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt; run nodes only&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;make&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; test      &lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt; all tests&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;make&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; clippy    &lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt; lint&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;api-usage&quot;&gt;API usage&lt;a class=&quot;zola-anchor&quot; href=&quot;#api-usage&quot; aria-label=&quot;Anchor link for: api-usage&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;In-process submission:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust z-code&quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;z-source z-rust&quot;&gt;&lt;span class=&quot;z-storage z-type z-rust&quot;&gt;let&lt;&#x2F;span&gt; tx &lt;span class=&quot;z-keyword z-operator z-assignment z-rust&quot;&gt;=&lt;&#x2F;span&gt; Tx &lt;span class=&quot;z-meta z-block z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-begin z-rust&quot;&gt;{&lt;&#x2F;span&gt; key&lt;span class=&quot;z-punctuation z-separator z-rust&quot;&gt;:&lt;&#x2F;span&gt; &lt;span class=&quot;z-string z-quoted z-double z-rust&quot;&gt;&lt;span class=&quot;z-storage z-type z-string z-rust&quot;&gt;b&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-definition z-string z-begin z-rust&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;foo&lt;span class=&quot;z-punctuation z-definition z-string z-end z-rust&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-accessor z-dot z-rust&quot;&gt;.&lt;&#x2F;span&gt;&lt;span class=&quot;z-support z-function z-rust&quot;&gt;to_vec&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-rust&quot;&gt;(&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-rust&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-separator z-rust&quot;&gt;,&lt;&#x2F;span&gt; value&lt;span class=&quot;z-punctuation z-separator z-rust&quot;&gt;:&lt;&#x2F;span&gt; &lt;span class=&quot;z-string z-quoted z-double z-rust&quot;&gt;&lt;span class=&quot;z-storage z-type z-string z-rust&quot;&gt;b&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-definition z-string z-begin z-rust&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;bar&lt;span class=&quot;z-punctuation z-definition z-string z-end z-rust&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-accessor z-dot z-rust&quot;&gt;.&lt;&#x2F;span&gt;&lt;span class=&quot;z-support z-function z-rust&quot;&gt;to_vec&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-rust&quot;&gt;(&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-rust&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-separator z-rust&quot;&gt;,&lt;&#x2F;span&gt; fee&lt;span class=&quot;z-punctuation z-separator z-rust&quot;&gt;:&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-numeric z-integer z-decimal z-rust&quot;&gt;1&lt;&#x2F;span&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-block z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-end z-rust&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-rust&quot;&gt;;&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-rust&quot;&gt;runtime&lt;span class=&quot;z-punctuation z-accessor z-dot z-rust&quot;&gt;.&lt;&#x2F;span&gt;chain&lt;span class=&quot;z-punctuation z-accessor z-dot z-rust&quot;&gt;.&lt;&#x2F;span&gt;&lt;span class=&quot;z-support z-function z-rust&quot;&gt;submit_tx&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-rust&quot;&gt;(&lt;&#x2F;span&gt;tx&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-rust&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-accessor z-dot z-rust&quot;&gt;.&lt;&#x2F;span&gt;await&lt;span class=&quot;z-keyword z-operator z-rust&quot;&gt;?&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-rust&quot;&gt;;&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;RPC submission:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust z-code&quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;z-source z-rust&quot;&gt;&lt;span class=&quot;z-storage z-type z-rust&quot;&gt;let&lt;&#x2F;span&gt; req &lt;span class=&quot;z-keyword z-operator z-assignment z-rust&quot;&gt;=&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-path z-rust&quot;&gt;ChainRequest&lt;span class=&quot;z-punctuation z-accessor z-rust&quot;&gt;::&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;SubmitTx &lt;span class=&quot;z-meta z-block z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-begin z-rust&quot;&gt;{&lt;&#x2F;span&gt; tx &lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-block z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-end z-rust&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-rust&quot;&gt;;&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-rust&quot;&gt;&lt;span class=&quot;z-storage z-type z-rust&quot;&gt;let&lt;&#x2F;span&gt; bytes &lt;span class=&quot;z-keyword z-operator z-assignment z-rust&quot;&gt;=&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-path z-rust&quot;&gt;bincode&lt;span class=&quot;z-punctuation z-accessor z-rust&quot;&gt;::&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;serialize&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-rust&quot;&gt;(&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-bitwise z-rust&quot;&gt;&amp;amp;&lt;&#x2F;span&gt;req&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-rust&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-rust&quot;&gt;?&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-rust&quot;&gt;;&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-rust&quot;&gt;&lt;span class=&quot;z-storage z-type z-rust&quot;&gt;let&lt;&#x2F;span&gt; resp_bytes &lt;span class=&quot;z-keyword z-operator z-assignment z-rust&quot;&gt;=&lt;&#x2F;span&gt; net&lt;span class=&quot;z-punctuation z-accessor z-dot z-rust&quot;&gt;.&lt;&#x2F;span&gt;&lt;span class=&quot;z-support z-function z-rust&quot;&gt;request&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-rust&quot;&gt;(&lt;&#x2F;span&gt;peer_id&lt;span class=&quot;z-punctuation z-separator z-rust&quot;&gt;,&lt;&#x2F;span&gt; &lt;span class=&quot;z-string z-quoted z-double z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-string z-begin z-rust&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;chain&lt;span class=&quot;z-punctuation z-definition z-string z-end z-rust&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-separator z-rust&quot;&gt;,&lt;&#x2F;span&gt; bytes&lt;span class=&quot;z-punctuation z-separator z-rust&quot;&gt;,&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-path z-rust&quot;&gt;Duration&lt;span class=&quot;z-punctuation z-accessor z-rust&quot;&gt;::&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;from_secs&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-rust&quot;&gt;(&lt;&#x2F;span&gt;&lt;span class=&quot;z-constant z-numeric z-integer z-decimal z-rust&quot;&gt;2&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-rust&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-rust&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-accessor z-dot z-rust&quot;&gt;.&lt;&#x2F;span&gt;await&lt;span class=&quot;z-keyword z-operator z-rust&quot;&gt;?&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-rust&quot;&gt;;&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;wire-protocol-short-version&quot;&gt;Wire protocol (short version)&lt;a class=&quot;zola-anchor&quot; href=&quot;#wire-protocol-short-version&quot; aria-label=&quot;Anchor link for: wire-protocol-short-version&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;All frames are &lt;strong&gt;length-delimited&lt;&#x2F;strong&gt; and &lt;strong&gt;bincode-encoded&lt;&#x2F;strong&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;Envelope: &lt;code&gt;version&lt;&#x2F;code&gt;, &lt;code&gt;chain_id&lt;&#x2F;code&gt;, &lt;code&gt;msg_type&lt;&#x2F;code&gt;, &lt;code&gt;request_id&lt;&#x2F;code&gt;, &lt;code&gt;payload&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;Hello&lt;&#x2F;code&gt; includes &lt;strong&gt;ed25519 signature&lt;&#x2F;strong&gt; over version&#x2F;chain_id&#x2F;id&#x2F;listen&#x2F;pubkey.&lt;&#x2F;li&gt;
+&lt;li&gt;Chain RPCs:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;GetTip&lt;&#x2F;code&gt;, &lt;code&gt;GetBlock&lt;&#x2F;code&gt;, &lt;code&gt;GetBlocks&lt;&#x2F;code&gt;, &lt;code&gt;SubmitTx&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;documentation-refresh&quot;&gt;Documentation refresh&lt;a class=&quot;zola-anchor&quot; href=&quot;#documentation-refresh&quot; aria-label=&quot;Anchor link for: documentation-refresh&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;code&gt;README.md&lt;&#x2F;code&gt; now includes:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Architecture overview&lt;&#x2F;li&gt;
+&lt;li&gt;Wire protocol details&lt;&#x2F;li&gt;
+&lt;li&gt;Config schema and defaults&lt;&#x2F;li&gt;
+&lt;li&gt;API examples&lt;&#x2F;li&gt;
+&lt;li&gt;Scripts and CLI usage&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;tradeoffs-limitations&quot;&gt;Tradeoffs &#x2F; limitations&lt;a class=&quot;zola-anchor&quot; href=&quot;#tradeoffs-limitations&quot; aria-label=&quot;Anchor link for: tradeoffs-limitations&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;No tx signatures or account model.&lt;&#x2F;li&gt;
+&lt;li&gt;No fork choice beyond round-robin + view timeouts.&lt;&#x2F;li&gt;
+&lt;li&gt;Mempool is in-memory only.&lt;&#x2F;li&gt;
+&lt;li&gt;Transport is authenticated but &lt;strong&gt;not encrypted&lt;&#x2F;strong&gt;.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;if-you-want-to-try-it&quot;&gt;If you want to try it&lt;a class=&quot;zola-anchor&quot; href=&quot;#if-you-want-to-try-it&quot; aria-label=&quot;Anchor link for: if-you-want-to-try-it&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;The easiest path:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash z-code&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;make&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; demo&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Then use the interactive prompt:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;z-code&quot;&gt;&lt;code&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;key=value [fee]
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;tip
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;exit
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;what-i-want-to-do-next&quot;&gt;What I want to do next&lt;a class=&quot;zola-anchor&quot; href=&quot;#what-i-want-to-do-next&quot; aria-label=&quot;Anchor link for: what-i-want-to-do-next&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Persistent mempool + eviction&lt;&#x2F;li&gt;
+&lt;li&gt;Snapshot&#x2F;restore tools&lt;&#x2F;li&gt;
+&lt;li&gt;Peer scoring + backoff&lt;&#x2F;li&gt;
+&lt;li&gt;Transport encryption + message signing&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+	</entry>
 	<entry xml:lang="en">
 		<title>phenomena | Update</title>
 		<published>2026-01-16T00:00:00+00:00</published>

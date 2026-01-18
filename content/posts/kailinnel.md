@@ -1,0 +1,104 @@
++++
+title = "kailinnel"
+date = 2026-01-19
++++
+
+[kailinnel](https://app.radicle.xyz/nodes/seed.radicle.garden/rad:z3zXXyw7tLgpFFK5YMzwSKqdJXL5t) is a Rust + libp2p project for spinning up ad-hoc “flash institutions”, the kind of temporary, ownerless coordination layer you want at a hackathon, festival, or pop-up clinic. No accounts, no servers; the network appears when you need it, disappears when you don’t.
+
+- **Spec-first**: Protocol lives in `./specs`, so implementation and design stay aligned.
+- **Pure P2P**: Discovery via mDNS on local nets, with optional Kademlia/relay/AutoNAT for wider reach.
+- **Sealed by room code**: A shared code derives the key for payload sealing; ops are signed per message.
+- **Abuse controls**: Rate limits, quotas, payload caps, allowlists/blocklists, optional proof-of-work, and kiosk quorum mode.
+- **Applets out of the box**: Announcements, voting, queueing, lost+found, and resource requests.
+- **Op-log sync**: Digest-based anti-entropy plus snapshotting so peers can catch up without a central source of truth.
+
+## Minimal architecture tour
+
+1) **Transport stack**: TCP + Noise + Yamux and QUIC for multiplexed, encrypted links.  
+2) **Discovery**: mDNS for LAN, with optional DHT rendezvous + relays if you want to stretch across networks.  
+3) **State layer**: Append-only op-log with anti-entropy sync; snapshots reduce catch-up time and storage churn.  
+4) **Security posture**: Shared secret sealing, per-message signatures, optional PoW gating, kiosk witnesses, and local block/allow lists.  
+5) **UI surface**: Today it’s CLI-first; bindings + UI will come later, but the core events are already exposed for integrations.
+
+## Run the quick manual demo
+
+Requires a recent Rust toolchain.
+
+Terminal 1:
+
+```bash
+cargo run -- start --room "BERLIN-COFFEE" --nick "A"
+```
+
+Terminal 2 (same LAN):
+
+```bash
+cargo run -- start --room "BERLIN-COFFEE" --nick "B"
+```
+
+Type into either terminal to broadcast on the announcements topic:
+
+```text
+hello everyone
+```
+
+Handy commands while a node is running:
+
+- `/peers` or `/peers verbose` to see who’s connected.
+- `/join` to print ready-to-dial multiaddrs, a join URI, and QR payload.
+- `/vote meta lunch title=Lunch options=tofu,pizza`, then `/vote lunch tofu` to participate.
+- `/queue join cafe label=A party=2 note=window` and `/queue list cafe` to try queueing.
+- `/snapshot` to force a snapshot for quicker restarts/catch-up.
+
+## Scripted demos (faster happy path)
+
+If you want to see everything without typing commands yourself:
+
+```bash
+./scripts/demo-all.sh
+```
+
+Other focused flows live under `scripts/`:
+
+- `demo-announcements.sh`, `demo-voting.sh`, `demo-queueing.sh`, `demo-lost-found.sh`, `demo-requests.sh`
+- Abuse/hardening: `demo-pow.sh`, `demo-rate-limit.sh`, `demo-quotas.sh`, `demo-blocklist.sh`
+- Networking: `demo-join-dial.sh`, `demo-bootstrap.sh`, `demo-relay.sh`
+- Reliability: `demo-persistence.sh`, `demo-snapshot.sh`, `demo-anti-entropy.sh`, `demo-kiosk-quorum.sh`, `demo-allowlist-roster.sh`
+
+Script outputs land in `target/demo-logs.*`. Useful overrides:
+
+- `KAILINNEL_DEMO_ROOM`: room code (default `DEMO-ROOM`)
+- `KAILINNEL_DEMO_FLAGS`: extra `start` flags (default `--no-quic --no-tls --no-mdns`)
+- `KAILINNEL_DEMO_BIN`: binary path (default `target/debug/kailinnel`)
+- `KAILINNEL_DEMO_FORCE_BUILD=1`: force rebuild before running
+- `KAILINNEL_DEMO_LOCAL_DIAL=0`: keep printed multiaddrs untouched
+- `KAILINNEL_DEMO_RUST_LOG`: set Rust log filter (default `info`)
+- `KAILINNEL_DEMO_POW_BITS`: PoW difficulty (default `10`)
+- `KAILINNEL_DEMO_KIOSK_QUORUM`: quorum size for kiosk witness demos (default `2`)
+
+## Configuring persistence and security
+
+Pass a config file to persist identity and state across restarts:
+
+```bash
+cargo run -- start --config ./config/kailinnel.example.toml
+```
+
+Settings you’ll likely tweak:
+
+- `node.key_path`: keep your libp2p identity stable (needed for allowlists).
+- `node.state_path`, `node.oplog_path`, `node.snapshot_path`: retain local state and speed up catch-up.
+- `security.allowlist`: constrain who can talk to you; `security.pow_difficulty_bits` for spam-throttling.
+- `net.bootstrap_defaults`, `net.relay_defaults`, `net.rendezvous`: switch on wider-than-LAN discovery.
+- `limits.*`: rate limits, payload caps, and per-applet quotas.
+
+## Observability hooks
+
+- Enable Prometheus metrics with `--metrics` or `metrics.enabled = true` and scrape `http://127.0.0.1:9898/metrics`.
+- Structured events exposed via `events::EventBus` and `swarm::run_node_with_events` if you’re wiring a UI/monitor.
+
+## Roadmap snapshot
+
+Current milestone: core networking + CLI applets (announcements, voting, queueing, lost+found, requests) with sealed payloads, signed ops, anti-entropy sync, snapshots, and abuse controls. Next up: richer applet state, CRDT-backed sync, mobile bindings, and UI polish.
+
+If you build something on top of this, drop in your own applet logic or UI; the transport, security, and sync layers are already doing the heavy lifting. Enjoy running pop-up networks without begging a server to stick around.

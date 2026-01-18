@@ -5,9 +5,102 @@
 	<link rel="self" type="application/atom+xml" href="https://idunnowhatiamdoing.engineering/posts/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://idunnowhatiamdoing.engineering/posts/"/>
   
-	<updated>2026-01-18T00:00:00+00:00</updated>
+	<updated>2026-01-19T00:00:00+00:00</updated>
 	
 	<id>https://idunnowhatiamdoing.engineering/posts/feed.xml</id>
+	<entry xml:lang="en">
+		<title>kailinnel</title>
+		<published>2026-01-19T00:00:00+00:00</published>
+		<updated>2026-01-19T00:00:00+00:00</updated>
+		<link rel="alternate" type="text/html" href="https://idunnowhatiamdoing.engineering/posts/kailinnel/"/>
+		<id>https://idunnowhatiamdoing.engineering/posts/kailinnel/</id>
+    
+		<content type="html" xml:base="https://idunnowhatiamdoing.engineering/posts/kailinnel/">&lt;p&gt;&lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;app.radicle.xyz&#x2F;nodes&#x2F;seed.radicle.garden&#x2F;rad:z3zXXyw7tLgpFFK5YMzwSKqdJXL5t&quot;&gt;kailinnel&lt;&#x2F;a&gt; is a Rust + libp2p project for spinning up ad-hoc “flash institutions”, the kind of temporary, ownerless coordination layer you want at a hackathon, festival, or pop-up clinic. No accounts, no servers; the network appears when you need it, disappears when you don’t.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Spec-first&lt;&#x2F;strong&gt;: Protocol lives in &lt;code&gt;.&#x2F;specs&lt;&#x2F;code&gt;, so implementation and design stay aligned.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Pure P2P&lt;&#x2F;strong&gt;: Discovery via mDNS on local nets, with optional Kademlia&#x2F;relay&#x2F;AutoNAT for wider reach.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Sealed by room code&lt;&#x2F;strong&gt;: A shared code derives the key for payload sealing; ops are signed per message.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Abuse controls&lt;&#x2F;strong&gt;: Rate limits, quotas, payload caps, allowlists&#x2F;blocklists, optional proof-of-work, and kiosk quorum mode.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Applets out of the box&lt;&#x2F;strong&gt;: Announcements, voting, queueing, lost+found, and resource requests.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Op-log sync&lt;&#x2F;strong&gt;: Digest-based anti-entropy plus snapshotting so peers can catch up without a central source of truth.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;minimal-architecture-tour&quot;&gt;Minimal architecture tour&lt;a class=&quot;zola-anchor&quot; href=&quot;#minimal-architecture-tour&quot; aria-label=&quot;Anchor link for: minimal-architecture-tour&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Transport stack&lt;&#x2F;strong&gt;: TCP + Noise + Yamux and QUIC for multiplexed, encrypted links.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Discovery&lt;&#x2F;strong&gt;: mDNS for LAN, with optional DHT rendezvous + relays if you want to stretch across networks.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;State layer&lt;&#x2F;strong&gt;: Append-only op-log with anti-entropy sync; snapshots reduce catch-up time and storage churn.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Security posture&lt;&#x2F;strong&gt;: Shared secret sealing, per-message signatures, optional PoW gating, kiosk witnesses, and local block&#x2F;allow lists.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;UI surface&lt;&#x2F;strong&gt;: Today it’s CLI-first; bindings + UI will come later, but the core events are already exposed for integrations.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h2 id=&quot;run-the-quick-manual-demo&quot;&gt;Run the quick manual demo&lt;a class=&quot;zola-anchor&quot; href=&quot;#run-the-quick-manual-demo&quot; aria-label=&quot;Anchor link for: run-the-quick-manual-demo&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;Requires a recent Rust toolchain.&lt;&#x2F;p&gt;
+&lt;p&gt;Terminal 1:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash z-code&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;cargo&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; run&lt;span class=&quot;z-keyword z-operator z-end-of-options z-shell&quot;&gt; --&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; start --room &lt;span class=&quot;z-string z-quoted z-double z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-string z-begin z-shell&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;BERLIN-COFFEE&lt;span class=&quot;z-punctuation z-definition z-string z-end z-shell&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt; --nick &lt;span class=&quot;z-string z-quoted z-double z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-string z-begin z-shell&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;A&lt;span class=&quot;z-punctuation z-definition z-string z-end z-shell&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Terminal 2 (same LAN):&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash z-code&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;cargo&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; run&lt;span class=&quot;z-keyword z-operator z-end-of-options z-shell&quot;&gt; --&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; start --room &lt;span class=&quot;z-string z-quoted z-double z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-string z-begin z-shell&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;BERLIN-COFFEE&lt;span class=&quot;z-punctuation z-definition z-string z-end z-shell&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt; --nick &lt;span class=&quot;z-string z-quoted z-double z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-string z-begin z-shell&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;B&lt;span class=&quot;z-punctuation z-definition z-string z-end z-shell&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Type into either terminal to broadcast on the announcements topic:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;text&quot; class=&quot;language-text z-code&quot;&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;hello everyone
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Handy commands while a node is running:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;&#x2F;peers&lt;&#x2F;code&gt; or &lt;code&gt;&#x2F;peers verbose&lt;&#x2F;code&gt; to see who’s connected.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;&#x2F;join&lt;&#x2F;code&gt; to print ready-to-dial multiaddrs, a join URI, and QR payload.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;&#x2F;vote meta lunch title=Lunch options=tofu,pizza&lt;&#x2F;code&gt;, then &lt;code&gt;&#x2F;vote lunch tofu&lt;&#x2F;code&gt; to participate.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;&#x2F;queue join cafe label=A party=2 note=window&lt;&#x2F;code&gt; and &lt;code&gt;&#x2F;queue list cafe&lt;&#x2F;code&gt; to try queueing.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;&#x2F;snapshot&lt;&#x2F;code&gt; to force a snapshot for quicker restarts&#x2F;catch-up.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;scripted-demos-faster-happy-path&quot;&gt;Scripted demos (faster happy path)&lt;a class=&quot;zola-anchor&quot; href=&quot;#scripted-demos-faster-happy-path&quot; aria-label=&quot;Anchor link for: scripted-demos-faster-happy-path&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;If you want to see everything without typing commands yourself:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash z-code&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;.&#x2F;scripts&#x2F;demo-all.sh&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Other focused flows live under &lt;code&gt;scripts&#x2F;&lt;&#x2F;code&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;demo-announcements.sh&lt;&#x2F;code&gt;, &lt;code&gt;demo-voting.sh&lt;&#x2F;code&gt;, &lt;code&gt;demo-queueing.sh&lt;&#x2F;code&gt;, &lt;code&gt;demo-lost-found.sh&lt;&#x2F;code&gt;, &lt;code&gt;demo-requests.sh&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Abuse&#x2F;hardening: &lt;code&gt;demo-pow.sh&lt;&#x2F;code&gt;, &lt;code&gt;demo-rate-limit.sh&lt;&#x2F;code&gt;, &lt;code&gt;demo-quotas.sh&lt;&#x2F;code&gt;, &lt;code&gt;demo-blocklist.sh&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Networking: &lt;code&gt;demo-join-dial.sh&lt;&#x2F;code&gt;, &lt;code&gt;demo-bootstrap.sh&lt;&#x2F;code&gt;, &lt;code&gt;demo-relay.sh&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Reliability: &lt;code&gt;demo-persistence.sh&lt;&#x2F;code&gt;, &lt;code&gt;demo-snapshot.sh&lt;&#x2F;code&gt;, &lt;code&gt;demo-anti-entropy.sh&lt;&#x2F;code&gt;, &lt;code&gt;demo-kiosk-quorum.sh&lt;&#x2F;code&gt;, &lt;code&gt;demo-allowlist-roster.sh&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;Script outputs land in &lt;code&gt;target&#x2F;demo-logs.*&lt;&#x2F;code&gt;. Useful overrides:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;KAILINNEL_DEMO_ROOM&lt;&#x2F;code&gt;: room code (default &lt;code&gt;DEMO-ROOM&lt;&#x2F;code&gt;)&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;KAILINNEL_DEMO_FLAGS&lt;&#x2F;code&gt;: extra &lt;code&gt;start&lt;&#x2F;code&gt; flags (default &lt;code&gt;--no-quic --no-tls --no-mdns&lt;&#x2F;code&gt;)&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;KAILINNEL_DEMO_BIN&lt;&#x2F;code&gt;: binary path (default &lt;code&gt;target&#x2F;debug&#x2F;kailinnel&lt;&#x2F;code&gt;)&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;KAILINNEL_DEMO_FORCE_BUILD=1&lt;&#x2F;code&gt;: force rebuild before running&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;KAILINNEL_DEMO_LOCAL_DIAL=0&lt;&#x2F;code&gt;: keep printed multiaddrs untouched&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;KAILINNEL_DEMO_RUST_LOG&lt;&#x2F;code&gt;: set Rust log filter (default &lt;code&gt;info&lt;&#x2F;code&gt;)&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;KAILINNEL_DEMO_POW_BITS&lt;&#x2F;code&gt;: PoW difficulty (default &lt;code&gt;10&lt;&#x2F;code&gt;)&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;KAILINNEL_DEMO_KIOSK_QUORUM&lt;&#x2F;code&gt;: quorum size for kiosk witness demos (default &lt;code&gt;2&lt;&#x2F;code&gt;)&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;configuring-persistence-and-security&quot;&gt;Configuring persistence and security&lt;a class=&quot;zola-anchor&quot; href=&quot;#configuring-persistence-and-security&quot; aria-label=&quot;Anchor link for: configuring-persistence-and-security&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;Pass a config file to persist identity and state across restarts:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash z-code&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;cargo&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; run&lt;span class=&quot;z-keyword z-operator z-end-of-options z-shell&quot;&gt; --&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; start --config .&#x2F;config&#x2F;kailinnel.example.toml&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Settings you’ll likely tweak:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;node.key_path&lt;&#x2F;code&gt;: keep your libp2p identity stable (needed for allowlists).&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;node.state_path&lt;&#x2F;code&gt;, &lt;code&gt;node.oplog_path&lt;&#x2F;code&gt;, &lt;code&gt;node.snapshot_path&lt;&#x2F;code&gt;: retain local state and speed up catch-up.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;security.allowlist&lt;&#x2F;code&gt;: constrain who can talk to you; &lt;code&gt;security.pow_difficulty_bits&lt;&#x2F;code&gt; for spam-throttling.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;net.bootstrap_defaults&lt;&#x2F;code&gt;, &lt;code&gt;net.relay_defaults&lt;&#x2F;code&gt;, &lt;code&gt;net.rendezvous&lt;&#x2F;code&gt;: switch on wider-than-LAN discovery.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;limits.*&lt;&#x2F;code&gt;: rate limits, payload caps, and per-applet quotas.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;observability-hooks&quot;&gt;Observability hooks&lt;a class=&quot;zola-anchor&quot; href=&quot;#observability-hooks&quot; aria-label=&quot;Anchor link for: observability-hooks&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Enable Prometheus metrics with &lt;code&gt;--metrics&lt;&#x2F;code&gt; or &lt;code&gt;metrics.enabled = true&lt;&#x2F;code&gt; and scrape &lt;code&gt;http:&#x2F;&#x2F;127.0.0.1:9898&#x2F;metrics&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;Structured events exposed via &lt;code&gt;events::EventBus&lt;&#x2F;code&gt; and &lt;code&gt;swarm::run_node_with_events&lt;&#x2F;code&gt; if you’re wiring a UI&#x2F;monitor.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;roadmap-snapshot&quot;&gt;Roadmap snapshot&lt;a class=&quot;zola-anchor&quot; href=&quot;#roadmap-snapshot&quot; aria-label=&quot;Anchor link for: roadmap-snapshot&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;Current milestone: core networking + CLI applets (announcements, voting, queueing, lost+found, requests) with sealed payloads, signed ops, anti-entropy sync, snapshots, and abuse controls. Next up: richer applet state, CRDT-backed sync, mobile bindings, and UI polish.&lt;&#x2F;p&gt;
+&lt;p&gt;If you build something on top of this, drop in your own applet logic or UI; the transport, security, and sync layers are already doing the heavy lifting. Enjoy running pop-up networks without begging a server to stick around.&lt;&#x2F;p&gt;
+</content>
+	</entry>
 	<entry xml:lang="en">
 		<title>steer</title>
 		<published>2026-01-18T00:00:00+00:00</published>

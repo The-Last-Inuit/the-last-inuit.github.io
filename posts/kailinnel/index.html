@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  
+  
+    
+  
+  <meta name="description" content="Software engineering à la Mexicana">
+
+  <title>kailinnel</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="https://idunnowhatiamdoing.engineering/img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://idunnowhatiamdoing.engineering/img/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://idunnowhatiamdoing.engineering/img/apple-touch-icon.png">
+  
+  <style>
+  @import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
+
+  /* light mode colors */
+  body {
+    --primary-color: #5871a2;
+    --primary-pale-color: #5871a233;
+    --primary-decoration-color: #5871a210;
+    --bg-color: #ffffff;
+    --text-color: #2f3030;
+    --text-pale-color: #767676;
+    --text-decoration-color: #a9a9a9;
+    --highlight-mark-color: #5f75b020;
+
+    --callout-note-color: #5871a2;
+    --callout-tip-color: #268556;
+    --callout-important-color: #885fc9;
+    --callout-warning-color: #ab6632;
+    --callout-caution-color: #c64e4e;
+  }
+
+  /* dark mode colors */
+  body.dark {
+    --primary-color: #6f8fd1;
+    --primary-pale-color: #6f8fd166;
+    --primary-decoration-color: #6f8fd112;
+    --bg-color: #1c1c1c;
+    --text-color: #c1c1c1;
+    --text-pale-color: #848484;
+    --text-decoration-color: #5f5f5f;
+    --highlight-mark-color: #8296cb3b;
+
+    --callout-note-color: #6f8fd1;
+    --callout-tip-color: #47976f;
+    --callout-important-color: #9776cd;
+    --callout-warning-color: #ad7a52;
+    --callout-caution-color: #d06161;
+  }
+
+  /* typography */
+  body {
+    --main-font: "Share Tech Mono", monospace;
+    --code-font: "Share Tech Mono", monospace;
+    --homepage-max-width: 81ch;
+    --main-max-width: 81ch;
+    --avatar-size: 60px;
+    --font-size: 16px;
+    --line-height: 1.75;
+    --img-border-radius: 0px;
+    --detail-border-radius: 0px;
+    --dark-mode-img-brightness: 0.75;
+    --dark-mode-chart-brightness: 0.75;
+    --inline-code-border-radius: 2px;
+    --inline-code-bg-color: var(--primary-decoration-color);
+    --block-code-border-radius: 0px;
+    --block-code-border-color: var(--primary-color);
+    --detail-border-color: var(--primary-color);
+  }
+</style>
+
+  <link rel="stylesheet" href="https://idunnowhatiamdoing.engineering/main.css">
+  
+
+<link id="hl" rel="stylesheet" type="text/css" href="/hl-light.css" />
+
+
+
+  
+</head>
+
+<body class="post">
+  
+  
+<div id="wrapper">
+  <div id="blank"></div>
+  <aside>
+    
+    
+    <nav>
+      <ul>
+        
+        <li>
+          <a class="h2" href="#minimal-architecture-tour">Minimal architecture tour</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#run-the-quick-manual-demo">Run the quick manual demo</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#scripted-demos-faster-happy-path">Scripted demos (faster happy path)</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#configuring-persistence-and-security">Configuring persistence and security</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#observability-hooks">Observability hooks</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#roadmap-snapshot">Roadmap snapshot</a>
+          
+        </li>
+        
+      </ul>
+    </nav>
+    
+    
+    <button id="back-to-top" aria-label="back to top">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+
+    </button>
+    
+  </aside>
+  <main>
+    
+<header>
+  <nav>
+    <a id="back-link" href="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts">← back</a>
+  </nav>
+</header>
+
+
+    <div>
+      
+      
+      
+      
+      <div id="copy-cfg" style="display: none;" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+"></div>
+      
+      <article class="prose">
+        <h1>kailinnel</h1>
+        <div id="post-info">
+          <div id="date">
+            <span id="publish">Jan 19, 2026</span>
+            </div>
+
+          
+        </div>
+
+        
+        
+
+        
+
+        <p><a rel="nofollow noreferrer" href="https://app.radicle.xyz/nodes/seed.radicle.garden/rad:z3zXXyw7tLgpFFK5YMzwSKqdJXL5t">kailinnel</a> is a Rust + libp2p project for spinning up ad-hoc “flash institutions”, the kind of temporary, ownerless coordination layer you want at a hackathon, festival, or pop-up clinic. No accounts, no servers; the network appears when you need it, disappears when you don’t.</p>
+<ul>
+<li><strong>Spec-first</strong>: Protocol lives in <code>./specs</code>, so implementation and design stay aligned.</li>
+<li><strong>Pure P2P</strong>: Discovery via mDNS on local nets, with optional Kademlia/relay/AutoNAT for wider reach.</li>
+<li><strong>Sealed by room code</strong>: A shared code derives the key for payload sealing; ops are signed per message.</li>
+<li><strong>Abuse controls</strong>: Rate limits, quotas, payload caps, allowlists/blocklists, optional proof-of-work, and kiosk quorum mode.</li>
+<li><strong>Applets out of the box</strong>: Announcements, voting, queueing, lost+found, and resource requests.</li>
+<li><strong>Op-log sync</strong>: Digest-based anti-entropy plus snapshotting so peers can catch up without a central source of truth.</li>
+</ul>
+<h2 id="minimal-architecture-tour">Minimal architecture tour<a class="zola-anchor" href="#minimal-architecture-tour" aria-label="Anchor link for: minimal-architecture-tour" style="visibility: hidden;"></a>
+</h2>
+<ol>
+<li><strong>Transport stack</strong>: TCP + Noise + Yamux and QUIC for multiplexed, encrypted links.</li>
+<li><strong>Discovery</strong>: mDNS for LAN, with optional DHT rendezvous + relays if you want to stretch across networks.</li>
+<li><strong>State layer</strong>: Append-only op-log with anti-entropy sync; snapshots reduce catch-up time and storage churn.</li>
+<li><strong>Security posture</strong>: Shared secret sealing, per-message signatures, optional PoW gating, kiosk witnesses, and local block/allow lists.</li>
+<li><strong>UI surface</strong>: Today it’s CLI-first; bindings + UI will come later, but the core events are already exposed for integrations.</li>
+</ol>
+<h2 id="run-the-quick-manual-demo">Run the quick manual demo<a class="zola-anchor" href="#run-the-quick-manual-demo" aria-label="Anchor link for: run-the-quick-manual-demo" style="visibility: hidden;"></a>
+</h2>
+<p>Requires a recent Rust toolchain.</p>
+<p>Terminal 1:</p>
+<pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cargo</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-keyword z-operator z-end-of-options z-shell"> --</span></span><span class="z-meta z-function-call z-arguments z-shell"> start --room <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>BERLIN-COFFEE<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> --nick <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>A<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Terminal 2 (same LAN):</p>
+<pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cargo</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-keyword z-operator z-end-of-options z-shell"> --</span></span><span class="z-meta z-function-call z-arguments z-shell"> start --room <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>BERLIN-COFFEE<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> --nick <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>B<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Type into either terminal to broadcast on the announcements topic:</p>
+<pre data-lang="text" class="language-text z-code"><code class="language-text" data-lang="text"><span class="z-text z-plain">hello everyone
+</span></code></pre>
+<p>Handy commands while a node is running:</p>
+<ul>
+<li><code>/peers</code> or <code>/peers verbose</code> to see who’s connected.</li>
+<li><code>/join</code> to print ready-to-dial multiaddrs, a join URI, and QR payload.</li>
+<li><code>/vote meta lunch title=Lunch options=tofu,pizza</code>, then <code>/vote lunch tofu</code> to participate.</li>
+<li><code>/queue join cafe label=A party=2 note=window</code> and <code>/queue list cafe</code> to try queueing.</li>
+<li><code>/snapshot</code> to force a snapshot for quicker restarts/catch-up.</li>
+</ul>
+<h2 id="scripted-demos-faster-happy-path">Scripted demos (faster happy path)<a class="zola-anchor" href="#scripted-demos-faster-happy-path" aria-label="Anchor link for: scripted-demos-faster-happy-path" style="visibility: hidden;"></a>
+</h2>
+<p>If you want to see everything without typing commands yourself:</p>
+<pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">./scripts/demo-all.sh</span></span>
+</span></code></pre>
+<p>Other focused flows live under <code>scripts/</code>:</p>
+<ul>
+<li><code>demo-announcements.sh</code>, <code>demo-voting.sh</code>, <code>demo-queueing.sh</code>, <code>demo-lost-found.sh</code>, <code>demo-requests.sh</code></li>
+<li>Abuse/hardening: <code>demo-pow.sh</code>, <code>demo-rate-limit.sh</code>, <code>demo-quotas.sh</code>, <code>demo-blocklist.sh</code></li>
+<li>Networking: <code>demo-join-dial.sh</code>, <code>demo-bootstrap.sh</code>, <code>demo-relay.sh</code></li>
+<li>Reliability: <code>demo-persistence.sh</code>, <code>demo-snapshot.sh</code>, <code>demo-anti-entropy.sh</code>, <code>demo-kiosk-quorum.sh</code>, <code>demo-allowlist-roster.sh</code></li>
+</ul>
+<p>Script outputs land in <code>target/demo-logs.*</code>. Useful overrides:</p>
+<ul>
+<li><code>KAILINNEL_DEMO_ROOM</code>: room code (default <code>DEMO-ROOM</code>)</li>
+<li><code>KAILINNEL_DEMO_FLAGS</code>: extra <code>start</code> flags (default <code>--no-quic --no-tls --no-mdns</code>)</li>
+<li><code>KAILINNEL_DEMO_BIN</code>: binary path (default <code>target/debug/kailinnel</code>)</li>
+<li><code>KAILINNEL_DEMO_FORCE_BUILD=1</code>: force rebuild before running</li>
+<li><code>KAILINNEL_DEMO_LOCAL_DIAL=0</code>: keep printed multiaddrs untouched</li>
+<li><code>KAILINNEL_DEMO_RUST_LOG</code>: set Rust log filter (default <code>info</code>)</li>
+<li><code>KAILINNEL_DEMO_POW_BITS</code>: PoW difficulty (default <code>10</code>)</li>
+<li><code>KAILINNEL_DEMO_KIOSK_QUORUM</code>: quorum size for kiosk witness demos (default <code>2</code>)</li>
+</ul>
+<h2 id="configuring-persistence-and-security">Configuring persistence and security<a class="zola-anchor" href="#configuring-persistence-and-security" aria-label="Anchor link for: configuring-persistence-and-security" style="visibility: hidden;"></a>
+</h2>
+<p>Pass a config file to persist identity and state across restarts:</p>
+<pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cargo</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-keyword z-operator z-end-of-options z-shell"> --</span></span><span class="z-meta z-function-call z-arguments z-shell"> start --config ./config/kailinnel.example.toml</span>
+</span></code></pre>
+<p>Settings you’ll likely tweak:</p>
+<ul>
+<li><code>node.key_path</code>: keep your libp2p identity stable (needed for allowlists).</li>
+<li><code>node.state_path</code>, <code>node.oplog_path</code>, <code>node.snapshot_path</code>: retain local state and speed up catch-up.</li>
+<li><code>security.allowlist</code>: constrain who can talk to you; <code>security.pow_difficulty_bits</code> for spam-throttling.</li>
+<li><code>net.bootstrap_defaults</code>, <code>net.relay_defaults</code>, <code>net.rendezvous</code>: switch on wider-than-LAN discovery.</li>
+<li><code>limits.*</code>: rate limits, payload caps, and per-applet quotas.</li>
+</ul>
+<h2 id="observability-hooks">Observability hooks<a class="zola-anchor" href="#observability-hooks" aria-label="Anchor link for: observability-hooks" style="visibility: hidden;"></a>
+</h2>
+<ul>
+<li>Enable Prometheus metrics with <code>--metrics</code> or <code>metrics.enabled = true</code> and scrape <code>http://127.0.0.1:9898/metrics</code>.</li>
+<li>Structured events exposed via <code>events::EventBus</code> and <code>swarm::run_node_with_events</code> if you’re wiring a UI/monitor.</li>
+</ul>
+<h2 id="roadmap-snapshot">Roadmap snapshot<a class="zola-anchor" href="#roadmap-snapshot" aria-label="Anchor link for: roadmap-snapshot" style="visibility: hidden;"></a>
+</h2>
+<p>Current milestone: core networking + CLI applets (announcements, voting, queueing, lost+found, requests) with sealed payloads, signed ops, anti-entropy sync, snapshots, and abuse controls. Next up: richer applet state, CRDT-backed sync, mobile bindings, and UI polish.</p>
+<p>If you build something on top of this, drop in your own applet logic or UI; the transport, security, and sync layers are already doing the heavy lifting. Enjoy running pop-up networks without begging a server to stick around.</p>
+
+      </article>
+
+      
+      
+
+      
+      
+    </div>
+
+    
+
+
+<footer>
+  <div class="left">
+    <div class="copyright">
+      ∅ 2026 n0um3n4
+      
+    </div>
+  </div>
+
+  <div class="right">
+    
+    
+      
+    
+    
+    <a id="rss-btn" href="https://idunnowhatiamdoing.engineering/posts/feed.xml">RSS</a>
+    
+    
+
+    
+  </div>
+</footer>
+
+
+
+
+<dialog id="rss-mask">
+  <div>
+    <a href="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml">https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml</a>
+    
+    
+    <button autofocus aria-label="copy" data-link="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+" >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z" fill="currentColor"></path></svg>
+
+    </button>
+  </div>
+</dialog>
+
+
+
+  </main>
+</div>
+
+  
+<script src="/js/lightense.min.js"></script>
+
+
+  <script src="https://idunnowhatiamdoing.engineering/js/main.js"></script>
+</body>
+
+</html>

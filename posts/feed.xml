@@ -5,9 +5,104 @@
 	<link rel="self" type="application/atom+xml" href="https://idunnowhatiamdoing.engineering/posts/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://idunnowhatiamdoing.engineering/posts/"/>
   
-	<updated>2026-01-19T00:00:00+00:00</updated>
+	<updated>2026-01-20T00:00:00+00:00</updated>
 	
 	<id>https://idunnowhatiamdoing.engineering/posts/feed.xml</id>
+	<entry xml:lang="en">
+		<title>hääl</title>
+		<published>2026-01-20T00:00:00+00:00</published>
+		<updated>2026-01-20T00:00:00+00:00</updated>
+		<link rel="alternate" type="text/html" href="https://idunnowhatiamdoing.engineering/posts/haal/"/>
+		<id>https://idunnowhatiamdoing.engineering/posts/haal/</id>
+    
+		<content type="html" xml:base="https://idunnowhatiamdoing.engineering/posts/haal/">&lt;p&gt;&lt;img src=&quot;&#x2F;img&#x2F;h%C3%A4%C3%A4l.png&quot; alt=&quot;rustamp-iced&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;The world is a 2D grid and the sim runs in fixed ticks. That keeps belts and machines deterministic
+and makes replay&#x2F;debugging easier. The world is stored as a cell array, and most systems (belts,
+machines, power, storage, haulers) read and write the same grid. That sounds obvious, but it makes
+features like overlays and tooltips much simpler.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;world-sizing-and-camera&quot;&gt;World sizing and camera&lt;a class=&quot;zola-anchor&quot; href=&quot;#world-sizing-and-camera&quot; aria-label=&quot;Anchor link for: world-sizing-and-camera&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;The world size is tied to the window. I enforce a minimum 1024x576, then grow the land to cover
+the viewport. I also keep an integer pixel scale and a simple camera that centers on the player
+but clamps to world bounds. Result: you can resize the window and the land adapts without showing
+empty space.&lt;&#x2F;p&gt;
+&lt;p&gt;I also added zoom controls (mouse wheel and +&#x2F;-) so the scale can change without breaking the
+world math. The zoom never lets the world shrink smaller than the window.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;desert-planet-look&quot;&gt;Desert planet look&lt;a class=&quot;zola-anchor&quot; href=&quot;#desert-planet-look&quot; aria-label=&quot;Anchor link for: desert-planet-look&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;I shifted the palette toward darker, sandy tones and reduced the bright greens. It is still
+abstract pixel art, but the overall mood reads more like a desert planet with muted blues for
+water and darker sand for ground.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;hud-and-usability&quot;&gt;HUD and usability&lt;a class=&quot;zola-anchor&quot; href=&quot;#hud-and-usability&quot; aria-label=&quot;Anchor link for: hud-and-usability&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;I keep the UI mostly in floating panels: status, controls, build menu, minimap, legends, etc.
+You can right-click to minimize any panel. That keeps the UI readable on small screens and lets
+you hide clutter when building.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;performance-fixes&quot;&gt;Performance fixes&lt;a class=&quot;zola-anchor&quot; href=&quot;#performance-fixes&quot; aria-label=&quot;Anchor link for: performance-fixes&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;This game is all about pixels, so performance is mostly about &lt;em&gt;not&lt;&#x2F;em&gt; drawing pixels you cannot see.
+The big wins so far:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Chunked renderer: the world is split into chunks and only dirty chunks are rebuilt.&lt;&#x2F;li&gt;
+&lt;li&gt;View culling: the draw pass skips chunks that are off screen.&lt;&#x2F;li&gt;
+&lt;li&gt;Minimap caching: the minimap is now a canvas that is only updated when chunks change.&lt;&#x2F;li&gt;
+&lt;li&gt;Larger chunks: bumping chunk size to 32x32 reduces draw calls.&lt;&#x2F;li&gt;
+&lt;li&gt;Removed shimmer FX: it looked cool, but it touched a lot of pixels each frame.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;The combination made the frame rate much steadier, especially on larger windows.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;overlays-and-debugging&quot;&gt;Overlays and debugging&lt;a class=&quot;zola-anchor&quot; href=&quot;#overlays-and-debugging&quot; aria-label=&quot;Anchor link for: overlays-and-debugging&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;I lean on overlays to debug the sim: power coverage, belt flow, bottlenecks, and dirty chunks.
+They are toggled with hotkeys and give me fast feedback on where the sim is doing work.&lt;&#x2F;p&gt;
+</content>
+	</entry>
+	<entry xml:lang="en">
+		<title>rustamp | updates</title>
+		<published>2026-01-20T00:00:00+00:00</published>
+		<updated>2026-01-20T00:00:00+00:00</updated>
+		<link rel="alternate" type="text/html" href="https://idunnowhatiamdoing.engineering/posts/rustamp-updates/"/>
+		<id>https://idunnowhatiamdoing.engineering/posts/rustamp-updates/</id>
+    
+		<content type="html" xml:base="https://idunnowhatiamdoing.engineering/posts/rustamp-updates/">&lt;p&gt;&lt;img src=&quot;&#x2F;img&#x2F;rustamp-iced.png&quot; alt=&quot;rustamp-iced&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;I started by giving rustamp a Death Stranding-inspired HUD in Iced. The look stuck: mono typography, amber tags, cyan highlights, and layered panels. After the first iteration, it was obvious this shouldn&#x27;t be a one-off. I wanted to reuse the same components in other Rust apps without copy-pasting UI glue everywhere.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;img&#x2F;rustamp-tui.png&quot; alt=&quot;rustamp-tui&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;So I split the HUD pieces into a small crate, &lt;code&gt;rustamp-iced-ui&lt;&#x2F;code&gt;, and wired &lt;code&gt;rustamp-iced&lt;&#x2F;code&gt; to consume it as an external path dependency. The result is a reusable set of components with the same visual language, plus fewer lifetime gymnastics in the app layer.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;what-changed&quot;&gt;What changed&lt;a class=&quot;zola-anchor&quot; href=&quot;#what-changed&quot; aria-label=&quot;Anchor link for: what-changed&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Added &lt;code&gt;rustamp-iced-ui&lt;&#x2F;code&gt; with a &lt;code&gt;HudTheme&lt;&#x2F;code&gt; palette and a handful of reusable components.&lt;&#x2F;li&gt;
+&lt;li&gt;Refactored the Iced view to consume those components instead of inline styling.&lt;&#x2F;li&gt;
+&lt;li&gt;Matched the Ratatui layout to the same HUD vibe, so the terminal UI doesn&#x27;t feel like a second-class citizen.&lt;&#x2F;li&gt;
+&lt;li&gt;Split &lt;code&gt;rustamp-iced-ui&lt;&#x2F;code&gt; into its own repo and referenced it via a path dependency.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;the-components&quot;&gt;The components&lt;a class=&quot;zola-anchor&quot; href=&quot;#the-components&quot; aria-label=&quot;Anchor link for: the-components&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;The crate is intentionally small: a theme struct and a few building blocks.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;HudTheme&lt;&#x2F;code&gt;: mono font + palette + a tiny alpha helper.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;panel_style&lt;&#x2F;code&gt;, &lt;code&gt;header_style&lt;&#x2F;code&gt;: style closures for consistent panels.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;divider&lt;&#x2F;code&gt;: a thin rule with the right border color.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;tag&lt;&#x2F;code&gt;, &lt;code&gt;header_bar&lt;&#x2F;code&gt;, &lt;code&gt;status_bar_text&lt;&#x2F;code&gt;: common HUD structures.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;That is enough to build a DS-style surface without embedding styling logic in every view function.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;why-the-api-looks-the-way-it-does&quot;&gt;Why the API looks the way it does&lt;a class=&quot;zola-anchor&quot; href=&quot;#why-the-api-looks-the-way-it-does&quot; aria-label=&quot;Anchor link for: why-the-api-looks-the-way-it-does&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;Iced&#x27;s style closures and widget builders can be picky about lifetimes. Instead of pushing those constraints into the app, the component helpers take a &lt;code&gt;HudTheme&lt;&#x2F;code&gt; by value. &lt;code&gt;HudTheme&lt;&#x2F;code&gt; is &lt;code&gt;Copy&lt;&#x2F;code&gt;-friendly, and that sidesteps a lot of lifetime noise when composing UI.&lt;&#x2F;p&gt;
+&lt;p&gt;Example usage in the app layer:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust z-code&quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;z-source z-rust&quot;&gt;&lt;span class=&quot;z-keyword z-other z-rust&quot;&gt;use&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-path z-rust&quot;&gt;rustamp_iced_ui&lt;span class=&quot;z-punctuation z-accessor z-rust&quot;&gt;::&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-block z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-begin z-rust&quot;&gt;{&lt;&#x2F;span&gt;components &lt;span class=&quot;z-keyword z-operator z-rust&quot;&gt;as&lt;&#x2F;span&gt; hud&lt;span class=&quot;z-punctuation z-separator z-rust&quot;&gt;,&lt;&#x2F;span&gt; HudTheme&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-block z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-end z-rust&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-rust&quot;&gt;;&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-rust&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-rust&quot;&gt;&lt;span class=&quot;z-storage z-type z-rust&quot;&gt;let&lt;&#x2F;span&gt; theme &lt;span class=&quot;z-keyword z-operator z-assignment z-rust&quot;&gt;=&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-path z-rust&quot;&gt;HudTheme&lt;span class=&quot;z-punctuation z-accessor z-rust&quot;&gt;::&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;default&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-rust&quot;&gt;(&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-rust&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-rust&quot;&gt;;&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-rust&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-rust&quot;&gt;&lt;span class=&quot;z-storage z-type z-rust&quot;&gt;let&lt;&#x2F;span&gt; header &lt;span class=&quot;z-keyword z-operator z-assignment z-rust&quot;&gt;=&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-path z-rust&quot;&gt;hud&lt;span class=&quot;z-punctuation z-accessor z-rust&quot;&gt;::&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;header_bar&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-rust&quot;&gt;(&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-rust&quot;&gt;&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;    theme&lt;span class=&quot;z-punctuation z-separator z-rust&quot;&gt;,&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-rust&quot;&gt;&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;    header_left&lt;span class=&quot;z-punctuation z-accessor z-dot z-rust&quot;&gt;.&lt;&#x2F;span&gt;&lt;span class=&quot;z-support z-function z-rust&quot;&gt;into&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-rust&quot;&gt;(&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-rust&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-separator z-rust&quot;&gt;,&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-rust&quot;&gt;&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;    header_right&lt;span class=&quot;z-punctuation z-accessor z-dot z-rust&quot;&gt;.&lt;&#x2F;span&gt;&lt;span class=&quot;z-support z-function z-rust&quot;&gt;into&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-rust&quot;&gt;(&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-rust&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-separator z-rust&quot;&gt;,&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-rust&quot;&gt;&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-rust&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-rust&quot;&gt;;&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-rust&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-rust&quot;&gt;&lt;span class=&quot;z-storage z-type z-rust&quot;&gt;let&lt;&#x2F;span&gt; status &lt;span class=&quot;z-keyword z-operator z-assignment z-rust&quot;&gt;=&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-path z-rust&quot;&gt;hud&lt;span class=&quot;z-punctuation z-accessor z-rust&quot;&gt;::&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;status_bar_text&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-rust&quot;&gt;(&lt;&#x2F;span&gt;theme&lt;span class=&quot;z-punctuation z-separator z-rust&quot;&gt;,&lt;&#x2F;span&gt; help_text&lt;span class=&quot;z-punctuation z-separator z-rust&quot;&gt;,&lt;&#x2F;span&gt; right_text&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-rust&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-rust&quot;&gt;;&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</content>
+	</entry>
 	<entry xml:lang="en">
 		<title>kailinnel</title>
 		<published>2026-01-19T00:00:00+00:00</published>

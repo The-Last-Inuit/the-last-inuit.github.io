@@ -5,9 +5,63 @@
 	<link rel="self" type="application/atom+xml" href="https://idunnowhatiamdoing.engineering/posts/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://idunnowhatiamdoing.engineering/posts/"/>
   
-	<updated>2026-01-20T00:00:00+00:00</updated>
+	<updated>2026-01-21T00:00:00+00:00</updated>
 	
 	<id>https://idunnowhatiamdoing.engineering/posts/feed.xml</id>
+	<entry xml:lang="en">
+		<title>varënna | updates</title>
+		<published>2026-01-21T00:00:00+00:00</published>
+		<updated>2026-01-21T00:00:00+00:00</updated>
+		<link rel="alternate" type="text/html" href="https://idunnowhatiamdoing.engineering/posts/varenna/"/>
+		<id>https://idunnowhatiamdoing.engineering/posts/varenna/</id>
+    
+		<content type="html" xml:base="https://idunnowhatiamdoing.engineering/posts/varenna/">&lt;h1 id=&quot;design-notes-on-the-varenna-demo&quot;&gt;Design Notes on the Varenna Demo&lt;a class=&quot;zola-anchor&quot; href=&quot;#design-notes-on-the-varenna-demo&quot; aria-label=&quot;Anchor link for: design-notes-on-the-varenna-demo&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h1&gt;
+&lt;p&gt;I have been building a small design system called Varenna that lives in three places: CSS, a ratatui TUI, and an iced GUI. The demo exists to answer a simple question: can one visual grammar survive across these very different surfaces without feeling like a forced port? The answer is &quot;mostly yes,&quot; and the demo is where I pressure test that.&lt;&#x2F;p&gt;
+&lt;p&gt;This post is a casual walkthrough of the demo and the design decisions behind it. It is not a release announcement. It is just a tour of the parts that matter to me as I iterate.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;what-the-demo-shows&quot;&gt;What the demo shows&lt;a class=&quot;zola-anchor&quot; href=&quot;#what-the-demo-shows&quot; aria-label=&quot;Anchor link for: what-the-demo-shows&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;img&#x2F;var%C3%ABnna-ratatui.png&quot; alt=&quot;varënna&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;The ratatui demo is a split layout: a left panel with a queue table and a right panel with details. It is intentionally dense so I can test readable spacing, hover states, and keyboard focus at the same time. There are also overlays for a command palette and a dialog, plus a toast stack so I can validate transient messaging.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;img&#x2F;var%C3%ABnna-css.png&quot; alt=&quot;varënna&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;The CSS demo mirrors the same components: panels, badges, tabs, meters, buttons, inputs, and a dialog. I keep the HTML minimal because the point is the component styling, not the DOM structure.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;visual-grammar-tokens-first&quot;&gt;Visual grammar: tokens first&lt;a class=&quot;zola-anchor&quot; href=&quot;#visual-grammar-tokens-first&quot; aria-label=&quot;Anchor link for: visual-grammar-tokens-first&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;The design system is token driven. I treat spacing, line weight, and accent color as the &quot;voice&quot; of the UI. The tokens are not just for colors. They also encode details like:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;padding size (used for both layout and inner frame calculations)&lt;&#x2F;li&gt;
+&lt;li&gt;border weight and dotted line style&lt;&#x2F;li&gt;
+&lt;li&gt;accent glow intensity (used on hover)&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;Keeping these in a single place makes it possible to tune the overall feel without hunting through component code. When I push the accent brightness up, everything that wants to feel &quot;active&quot; follows.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;panels-and-frames&quot;&gt;Panels and frames&lt;a class=&quot;zola-anchor&quot; href=&quot;#panels-and-frames&quot; aria-label=&quot;Anchor link for: panels-and-frames&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;The core component is the framed panel. The frame is always the same language: clipped corners, dotted borders, optional ticks, and a bold title. The frame is drawn first, then the inner content is rendered into a padded inner rect. This matters in a TUI because any off by one errors will panic or leave artifacts.&lt;&#x2F;p&gt;
+&lt;p&gt;The frame does two jobs:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;It isolates content so dense layouts are still readable.&lt;&#x2F;li&gt;
+&lt;li&gt;It communicates the &quot;device&quot; vibe without needing background art.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;I also use the frame in small components like badges and meters. That keeps the system consistent, even when the component itself is only 5 lines tall.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;the-ratatui-demo-interaction-and-state&quot;&gt;The ratatui demo: interaction and state&lt;a class=&quot;zola-anchor&quot; href=&quot;#the-ratatui-demo-interaction-and-state&quot; aria-label=&quot;Anchor link for: the-ratatui-demo-interaction-and-state&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;The demo is designed around 4 focus areas: table, tabs, button, and form. Mouse hover is supported, but the keyboard is the default. The focus indicator in the top bar is the fastest way to spot state bugs when I am debugging.&lt;&#x2F;p&gt;
+&lt;p&gt;Important interactions:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Arrow keys move within the table and form.&lt;&#x2F;li&gt;
+&lt;li&gt;Tab switching is both mouse and keyboard friendly.&lt;&#x2F;li&gt;
+&lt;li&gt;Ctrl+K opens a command palette and dims the background.&lt;&#x2F;li&gt;
+&lt;li&gt;D opens a confirmation dialog.&lt;&#x2F;li&gt;
+&lt;li&gt;Q quits.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;The overlays matter because they are a state stack, not just a widget. They force me to manage focus, block input to the base UI, and handle clicks outside the modal. The dimming layer is a tiny detail, but it makes the demo feel like a system instead of a bunch of rectangles.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;the-design-payoff&quot;&gt;The design payoff&lt;a class=&quot;zola-anchor&quot; href=&quot;#the-design-payoff&quot; aria-label=&quot;Anchor link for: the-design-payoff&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;The thing I like most is the way the system feels &quot;electrical&quot; without being noisy. The glow is restrained, the frame does the heavy lifting, and the typography stays small and tight. The goal is that you can look at a screen full of this UI and still scan for the important stuff quickly.&lt;&#x2F;p&gt;
+&lt;p&gt;The demo also keeps me honest about density. A terminal window does not have infinite space, so the layout has to work at smaller sizes. If a component cannot collapse gracefully, it does not belong in the system.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;img&#x2F;var%C3%ABnna-iced.png&quot; alt=&quot;varënna&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+</content>
+	</entry>
 	<entry xml:lang="en">
 		<title>hääl</title>
 		<published>2026-01-20T00:00:00+00:00</published>

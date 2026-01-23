@@ -4,6 +4,15 @@ projects
 
 A short list of things I build and learn from.
 
+DYNOSTIC []
+
+Dynostic is a reusable deterministic tactical-sim core in Rust with a
+LÖVE (LuaJIT) front-end. The design goal is fast iteration on UI/feel in
+LÖVE while keeping the simulation pure, deterministic, and event-sourced
+in Rust.
+
+[ rust | lua ]
+
 kailinnel []
 
 a Rust + libp2p project for spinning up ad-hoc “flash institutions”, the

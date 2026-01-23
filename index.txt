@@ -1,0 +1,28 @@
+[avatar]
+
+noumena ashitaka hundimägi mei @n0um3n4
+
+program writer
+
+posts projects about
+
+[] [] [] []
+
+This is a very opinionated blog about software engineering. None of the
+following is tru tru. What we do he'a is throw ideas 'round and see what
+breaks. It's messy, questionable, ilogical, and maybe illegal. Don't use
+these ideas, play with them, learn with them, steal what you find
+useful, and move on, carnal.
+
+Dr. Nose | updates Jan 22, 2026 varënna | updates Jan 21, 2026 hääl Jan
+20, 2026 rustamp | updates Jan 20, 2026 kailinnel Jan 19, 2026 mei |
+updates Jan 19, 2026 steer Jan 18, 2026 röyksopp | Update Jan 17, 2026
+phenomena | Update Jan 16, 2026 World Of Noumena | Update Jan 15, 2026
+solënna Jan 14, 2026 kai-rem Jan 12, 2026 sääl | core polish + proto +
+in-memory store Jan 10, 2026 sääl | wiring up the core Jan 9, 2026
+program writer Jan 5, 2026 rusty Jan 4, 2026 GLOG: Guns, Lots Of Guns
+Jan 3, 2026 Cheatsheets Jan 2, 2026 Agile Jan 1, 2026 Layoffs Dec 19,
+2025 URL Nov 26, 2025 Tor Nov 22, 2025 rustamp | shortcuts Nov 15, 2025
+rustamp | core + (Iced || RatatUI) Nov 12, 2025 rustamp Nov 10, 2025
+Systems Engineering | Tiny KV Nov 4, 2025 World Of Noumenon | Part One
+Oct 31, 2025 12 Oct 24, 2025 Hardware Memory Oct 19, 2025

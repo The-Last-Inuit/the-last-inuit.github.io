@@ -30,13 +30,11 @@ jobs:
       - name: Prepare deploy directory
         run: |
           mkdir -p deploy/about
-          mkdir -p deploy/icon
           mkdir -p deploy/img
           mkdir -p deploy/js
           mkdir -p deploy/posts
           mkdir -p deploy/projects
           cp -r about/. deploy/about
-          cp -r icon/. deploy/icon
           cp -r img/. deploy/img
           cp -r js/. deploy/js
           cp -r posts/. deploy/posts

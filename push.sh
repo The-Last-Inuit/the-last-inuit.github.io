@@ -3,7 +3,6 @@
 set -e
 zola build
 rm -rf ./about
-rm -rf ./icon
 rm -rf ./img
 rm -rf ./js
 rm -rf ./posts

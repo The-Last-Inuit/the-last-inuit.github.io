@@ -31,12 +31,10 @@ jobs:
         run: |
           mkdir -p deploy/about
           mkdir -p deploy/img
-          mkdir -p deploy/js
           mkdir -p deploy/posts
           mkdir -p deploy/projects
           cp -r about/. deploy/about
           cp -r img/. deploy/img
-          cp -r js/. deploy/js
           cp -r posts/. deploy/posts
           cp -r projects/. deploy/projects
           cp *.* deploy

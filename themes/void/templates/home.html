@@ -61,9 +61,9 @@ section.lang }}{% endif %}{% endblock lang %} {% block title %}{{ config.title
   <main class="txt">
     <pre class="txt-block">
 {% if section.extra.id %}
-=================================================================================
-<span id="id">@{{ section.extra.id }}</span>                                                         {% if section.extra.bio %}{{ section.extra.bio }}{% endif %}
-=================================================================================
+==========================================
+<span id="id">@{{ section.extra.id }}</span>                    {% if section.extra.bio %}{{ section.extra.bio }}{% endif %}
+==========================================
 {% endif %}
 <a href="/projects">projects</a>  <a href="/about">about</a>  <a href="https://app.radicle.xyz/nodes/seed.radicle.garden/users/did%3Akey%3Az6MkvqpvdaA8YpMzn5sQ67PChE3jRdzQQ69Qmco73HBtyUpm">repos</a>  <a href="email@noumena.mx">email</a>  <a href="https://smp9.simplex.im/a#zJxikzJyWUZyNm9AisqA2dREiD37o3gKqsSd1OvyCDI">msg</a>
 

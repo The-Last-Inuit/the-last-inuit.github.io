@@ -3,22 +3,23 @@ title = "World Of Noumena | Update"
 date = 2026-01-15
 +++
 
-This release focused on pushing the MUD toward a scalable, multi-node architecture while
-adding in-world tools for lore and puzzle interaction. Below is a technical walkthrough of
-the main changes and how they fit together.
+This release focused on pushing the MUD toward a scalable, multi-node architecture 
+while adding in-world tools for lore and puzzle interaction. Below is a technical
+walkthrough of the main changes and how they fit together.
 
-## Distributed Zone Architecture
+**Distributed Zone Architecture**
 
 Zones now shard across BEAM nodes using consistent hashing. The core changes:
 
 - `WorldOfNoumena.Cluster` computes a hash ring and assigns zone ownership.
-- `WorldOfNoumena.Zone` replaces the old global room-tracking GenServer; each zone process
-  tracks occupants and broadcasts within its shard.
-- `WorldOfNoumena.ZoneManager` starts/stops zone servers on each node as ownership changes.
-- `WorldOfNoumena.World` is now a facade that routes `enter/leave/say/emote/broadcast` to the
-  appropriate zone process.
+- `WorldOfNoumena.Zone` replaces the old global room-tracking GenServer; 
+  each zone process tracks occupants and broadcasts within its shard.
+- `WorldOfNoumena.ZoneManager` starts/stops zone servers on each node as 
+  ownership changes.
+- `WorldOfNoumena.World` is now a facade that routes 
+  `enter/leave/say/emote/broadcast` to the appropriate zone process.
 
-### Player Process Migration
+**Player Process Migration**
 
 Players are now separate from socket connections:
 
@@ -27,48 +28,55 @@ Players are now separate from socket connections:
 - When moving across zone boundaries, the `Player` migrates to the owning node. The connection
   updates its tracked `player_pid` and continues streaming output.
 
-This isolates socket lifecycles from game state and makes cross-node movement explicit.
+This isolates socket lifecycles from game state and makes cross-node movement 
+explicit.
 
-## NPC and World Event Sharding
+**NPC and World Event Sharding**
 
 NPCs and events now respect zone ownership:
 
-- `NPC.Manager` starts default NPCs only for locally owned zones and reacts to node up/down.
+- `NPC.Manager` starts default NPCs only for locally owned zones and reacts 
+  to node up/down.
 - Admin spawn commands route to the zone owner for the target room.
-- World events and room scripts are executed on nodes that own the relevant zone or are elected
-  leader for global events.
+- World events and room scripts are executed on nodes that own the relevant 
+  zone or are elected leader for global events.
 
-## Archive Terminals and Log Indexing
+**Archive Terminals and Log Indexing**
 
 The Archives are now a first-class interface:
 
 - Rooms tagged with `:archive` expose an `archive` command set.
-- `Archives.Log` captures global and zone-scoped broadcasts for later retrieval.
+- `Archives.Log` captures global and zone-scoped broadcasts for later 
+  retrieval.
 - Players can search and read lore with `archive search` and `archive read`.
 - Logs are accessible via `archive logs`, with zone-specific and global views.
 - Optional external data can be loaded from JSON via `ARCHIVE_EXTERNAL_PATH`.
 
 This gives the world a queryable memory without external tooling.
 
-## Puzzle Framework
+**Puzzle Framework**
 
 Rooms tagged with `:puzzle` can host lattice-style symbol puzzles:
 
-- `WorldOfNoumena.Puzzles` defines room-bound puzzles with symbols, prompts, and solutions.
-- `puzzle enter <sequence>` checks the attempt and persists solved state in the player process.
+- `WorldOfNoumena.Puzzles` defines room-bound puzzles with symbols, prompts, 
+  and solutions.
+- `puzzle enter <sequence>` checks the attempt and persists solved state in 
+  the player process.
 - Successful solves can trigger emotes or unlock additional archive entries.
 
-The puzzle system is lightweight but designed to grow into multi-step or data-driven puzzles.
+The puzzle system is lightweight but designed to grow into multi-step or 
+data-driven puzzles.
 
-## Tooling and Operational Updates
+**Tooling and Operational Updates**
 
 To make distribution testable locally:
 
 - `docker-compose.yml` brings up Postgres plus multiple BEAM nodes.
-- `Makefile` adds cluster run targets (`cluster-node1`, `cluster-node2`, `cluster-node3`).
+- `Makefile` adds cluster run targets (`cluster-node1`, `cluster-node2`, 
+  `cluster-node3`).
 - `TELNET_PORT` and `GATEWAY_PORT` can be configured at runtime per node.
 
-## Code Quality and Maintenance
+**Code Quality and Maintenance**
 
 Several refactors landed to reduce complexity and Credo warnings:
 
@@ -77,7 +85,7 @@ Several refactors landed to reduce complexity and Credo warnings:
 - Simplified storage transaction flow for character creation.
 - Updated map/join patterns to use `Enum.map_join/3` where appropriate.
 
-## Next Steps
+**Next Steps**
 
 Immediate follow-ups:
 

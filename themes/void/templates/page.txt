@@ -1,0 +1,22 @@
+{% extends "base.html" %} {% import "macros/ui.html" as ui %} {% block
+content %}
+
+{{ page.title }}
+
+{% if page.date %} {{ page.date | date(format="%Y-%m-%d") }} · {% endif
+%} {{ page.reading_time }} min read {% if page.taxonomies.tags is
+defined and (page.taxonomies.tags | length > 0) %} · {% for t in
+page.taxonomies.tags %} #{{ t }} {% endfor %} {% endif %}
+
+{% set show_toc = page.extra.toc | default(value=false) %} {% if
+show_toc and (page.toc | length > 0) %}
+
+Contents
+
+{{ ui::toc(headers=page.toc) }}
+
+{% endif %}
+
+{{ page.content | safe }}
+
+{% endblock content %}

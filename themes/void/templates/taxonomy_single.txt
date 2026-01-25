@@ -1,0 +1,14 @@
+{% extends "base.html" %} {% import "macros/ui.html" as ui %} {% block
+content %}
+
+#{{ term.name }}
+
+{{ term.page_count }} post{% if term.page_count != 1 %}s{% endif %}.
+
+{% set pages = term.pages %} {% if paginator is defined %} {% set pages
+= paginator.pages %} {% endif %}
+
+{% for p in pages %} {{ ui::post_card(p=p) }} {% endfor %}
+
+{% if paginator is defined %} {{ ui::paginate(paginator=paginator) }} {%
+endif %} {% endblock content %}

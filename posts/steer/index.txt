@@ -1,41 +1,38 @@
-← back
 
-steer
 
-Jan 18, 2026
+    ← back
 
-Steer is a small but opinionated experiment in local‑first
-collaboration. It pairs a Dioxus LiveView front end with a
-libp2p-powered backend so you can ideate even when Wi‑Fi is flaky, then
-sync when peers appear. This post walks through how it works, how to run
-it, and what to demo.
+    steer
+    Jan 18, 2026
 
-What Steer Does
+    Steer is a small but opinionated experiment in local‑first collaboration.
+    It pairs a Dioxus LiveView front end with a libp2p-powered backend so you can
+    ideate even when Wi‑Fi is flaky, then sync when peers appear. This post walks
+    through how it works, how to run it, and what to demo.
+    What Steer Does
 
-- Local-first: you can read/write ideas and comments without a server
-  round-trip; networking is additive, not required.
-- P2P sync: libp2p gossips events (ideas, votes, moderation actions)
-  between peers.
-- Moderation: capabilities, rate limits, and proof checks gate inbound
-  events.
-- Offline shell: a minimal service worker caches the app shell and
-  assets (/offline.html keeps the UI available).
+    Local-first: you can read/write ideas and comments without a server
+    round-trip; networking is additive, not required.
+    P2P sync: libp2p gossips events (ideas, votes, moderation actions)
+    between peers.
+    Moderation: capabilities, rate limits, and proof checks gate inbound
+    events.
+    Offline shell: a minimal service worker caches the app shell and
+    assets (/offline.html keeps the UI available).
 
-Architecture Snapshot
+    Architecture Snapshot
 
-- Rust + Axum host a Dioxus LiveView app at / and a WebSocket endpoint
-  at /ws.
-- The derived application state is rebuilt from an append-only event log
-  (steer-core + steer-net).
-- Static assets live under crates/steer-app/static (ë.css, ë.ui.js,
-  icons, offline page) and are served directly by the Axum router.
-- The service worker pre-caches the shell and icons; it stores fetched
-  requests into a simple cache (steer-cache-v2).
+    Rust + Axum host a Dioxus LiveView app at / and a WebSocket endpoint
+    at /ws.
+    The derived application state is rebuilt from an append-only event log
+    (steer-core + steer-net).
+    Static assets live under crates/steer-app/static (ë.css, ë.ui.js,
+    icons, offline page) and are served directly by the Axum router.
+    The service worker pre-caches the shell and icons; it stores fetched
+    requests into a simple cache (steer-cache-v2).
 
-Running It Locally
-
-Prereqs: Rust (stable), Git. No external DB or brokers required.
-
+    Running It Locally
+    Prereqs: Rust (stable), Git. No external DB or brokers required.
     git clone https://github.com/your-org/steer.git
     cd steer
     cargo run --package steer -- \
@@ -80,7 +77,7 @@ Demo Script
     Observe live updates across two browser tabs (they share the same
     WebSocket and state).
 3.  Moderation actions: Hide an event by ID, label it, then toggle
-    “strict mode” to hide unapproved content. Grant/Revoke capabilities
+    "strict mode" to hide unapproved content. Grant/Revoke capabilities
     to a subject and see labels appear.
 4.  Checkpoint/export: Click “Checkpoint now” to publish a checkpoint
     event, then download /export and re-import it to show idempotent
@@ -109,18 +106,8 @@ Operational Notes
 - If you ship binaries, include the static/ assets alongside for the
   routes to serve them.
 
-Closing Thoughts
-
-Steer’s focus is ergonomics under bad networks: the UI stays responsive
-with or without peers, and synchronization is a best-effort background
-concern. The combination of Dioxus LiveView and libp2p keeps the stack
-lean while still giving you real-time collaboration and offline
-resilience.
-
-∅ 2026 n0um3n4
-
-RSS
-
-https://idunnowhatiamdoing.engineering/posts/feed.xml
-
-[]
+Closing Thoughts Steer’s focus is ergonomics under bad networks: the UI
+stays responsive with or without peers, and synchronization is a
+best-effort background concern. The combination of Dioxus LiveView and
+libp2p keeps the stack lean while still giving you real-time
+collaboration and offline resilience.

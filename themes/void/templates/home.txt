@@ -1,0 +1,13 @@
+
+    {% if section.extra.id %}
+    =================================================================================
+    @{{ section.extra.id }}                                                         {% if section.extra.bio %}{{ section.extra.bio }}{% endif %}
+    =================================================================================
+    {% endif %}
+    projects  about  repos  email  msg
+
+    {{ section.content | trim | safe }}
+    {% if section.extra.recent %}{% set blog_section_path = config.extra.blog_section_path | trim_start_matches(pat="/") %}{% set section_md_path = blog_section_path ~ "/_index.md" %}{% set blog_section = get_section(path=section_md_path) %}{% for post in blog_section.pages | slice(end=section.extra.recent_max) %}{{ post.title }} [{{ post.date | date(format=section.extra.date_format) }}]
+    {% endfor %}
+    {% endif %}
+        

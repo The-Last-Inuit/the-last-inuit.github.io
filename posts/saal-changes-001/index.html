@@ -20,64 +20,114 @@
   <style>
   @import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
 
-  /* light mode colors */
-  body {
-    --primary-color: #5871a2;
-    --primary-pale-color: #5871a233;
-    --primary-decoration-color: #5871a210;
-    --bg-color: #ffffff;
-    --text-color: #2f3030;
-    --text-pale-color: #767676;
-    --text-decoration-color: #a9a9a9;
-    --highlight-mark-color: #5f75b020;
-
-    --callout-note-color: #5871a2;
-    --callout-tip-color: #268556;
-    --callout-important-color: #885fc9;
-    --callout-warning-color: #ab6632;
-    --callout-caution-color: #c64e4e;
+  :root {
+    --bg-top: #ffffff;
+    --bg-bottom: #ffffff;
+    --ink: #141414;
+    --muted: #6a6358;
+    --link: #1d4f8c;
+    --max: 88ch;
+    --pad: clamp(1rem, 3vw, 2.5rem);
   }
 
-  /* dark mode colors */
-  body.dark {
-    --primary-color: #6f8fd1;
-    --primary-pale-color: #6f8fd166;
-    --primary-decoration-color: #6f8fd112;
-    --bg-color: #1c1c1c;
-    --text-color: #c1c1c1;
-    --text-pale-color: #848484;
-    --text-decoration-color: #5f5f5f;
-    --highlight-mark-color: #8296cb3b;
-
-    --callout-note-color: #6f8fd1;
-    --callout-tip-color: #47976f;
-    --callout-important-color: #9776cd;
-    --callout-warning-color: #ad7a52;
-    --callout-caution-color: #d06161;
+  * {
+    box-sizing: border-box;
   }
 
-  /* typography */
+  html {
+    font-size: 100%;
+  }
+
   body {
-    --main-font: "Share Tech Mono", monospace;
-    --code-font: "Share Tech Mono", monospace;
-    --homepage-max-width: 81ch;
-    --main-max-width: 81ch;
-    --avatar-size: 60px;
-    --font-size: 16px;
-    --line-height: 1.75;
-    --img-border-radius: 0px;
-    --detail-border-radius: 0px;
-    --dark-mode-img-brightness: 0.75;
-    --dark-mode-chart-brightness: 0.75;
-    --inline-code-border-radius: 2px;
-    --inline-code-bg-color: var(--primary-decoration-color);
-    --block-code-border-radius: 0px;
-    --block-code-border-color: var(--primary-color);
-    --detail-border-color: var(--primary-color);
+    margin: 0;
+    min-height: 100%;
+    padding: var(--pad);
+    background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+    color: var(--ink);
+    font-family: "Share Tech Mono", monospace;
+    font-size: 16px;
+    line-height: 1.5;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  main.txt {
+    max-width: var(--max);
+    margin: 0 auto;
+  }
+
+  pre {
+    font-family: "Share Tech Mono", monospace;
+  }
+  pre.txt-block {
+    margin: 0;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  a:visited {
+    color: inherit;
+  }
+
+  a:where(:hover, :focus) {
+    color: var(--link);
+  }
+
+  ::selection {
+    background: rgba(29, 79, 140, 0.18);
+  }
+  p {
+    margin: 0;
+    line-height: 16pt;
+  }
+  ul,
+  ol {
+    margin: 0;
+    line-height: 10pt;
+  }
+  li {
+    line-height: 16pt;
+  }
+  blockquote {
+    margin: 0 16pt;
+    line-height: 16pt;
+  }
+  img {
+    max-width: 64ch;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    main.txt {
+      animation: fade-in 600ms ease-out both;
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+
+  @media (max-width: 700px) {
+    body {
+      font-size: 15px;
+      padding: 1rem;
+    }
   }
 </style>
 
-  <link rel="stylesheet" href="https://idunnowhatiamdoing.engineering/main.css">
   
 
 <link id="hl" rel="stylesheet" type="text/css" href="/hl-light.css" />
@@ -90,181 +140,69 @@
 <body class="post">
   
   
-<div id="wrapper">
-  <div id="blank"></div>
-  <aside>
-    
-    
-    <nav>
-      <ul>
-        
-        <li>
-          <a class="h2" href="#updates">Updates</a>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#protocol-surface-saal-proto">Protocol surface (saal-proto)</a>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#in-memory-store-saal-store-mem">In-memory store (saal-store-mem)</a>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#tooling-cleanup">Tooling cleanup</a>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#next">Next</a>
-          
-        </li>
-        
-      </ul>
-    </nav>
-    
-    
-    <button id="back-to-top" aria-label="back to top">
-      
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+<main class="txt">
+  <pre class="txt-block">
 
-    </button>
-    
-  </aside>
-  <main>
-    
-<header>
-  <nav>
-    <a id="back-link" href="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts">← back</a>
-  </nav>
-</header>
+<a id="back-link" href="/">← back</a>
 
+<b>sääl | core polish + proto + in-memory store</b>
+<span id="publish">Jan 10, 2026</span>
 
-    <div>
-      
-      
-      
-      
-      <div id="copy-cfg" style="display: none;" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-"></div>
-      
-      <article class="prose">
-        <h1>sääl | core polish + proto + in-memory store</h1>
-        <div id="post-info">
-          <div id="date">
-            <span id="publish">Jan 10, 2026</span>
-            </div>
-
-          
-        </div>
-
-        
-        
-
-        
-
-        <p>Quick engineering log for sääl. The current round of changes is mostly about tightening the core types, making canonical encoding boringly deterministic, and putting a thin protocol + storage layer around it so the rest of the system has something real to plug into.</p>
-<h2 id="updates">Updates<a class="zola-anchor" href="#updates" aria-label="Anchor link for: updates" style="visibility: hidden;"></a>
-</h2>
+<p>Quick engineering log for sääl. The current round of changes is mostly about
+tightening the core types, making canonical encoding boringly deterministic,
+and putting a thin protocol + storage layer around it so the rest of the
+system has something real to plug into.</p>
+<p><strong>Updates</strong></p>
 <p><code>saal-core</code> got a few practical fixes and clarifications:</p>
 <ul>
-<li><strong>Canonical CBOR is now explicit</strong>: serialization goes through <code>serde_cbor::value::to_value</code> so map key ordering is deterministic before hashing.</li>
-<li><strong>Signature plumbing cleaned up</strong>: the Ed25519 <code>Signer</code> trait is in scope, and signature decoding uses explicit length errors instead of ambiguous <code>?</code> behavior.</li>
-<li><strong>Dependency hygiene</strong>: <code>serde_bytes</code> is in place anywhere we use <code>#[serde(with = "serde_bytes")]</code> for byte arrays.</li>
+<li><strong>Canonical CBOR is now explicit</strong>: serialization goes through
+<code>serde_cbor::value::to_value</code> so map key ordering is deterministic before
+hashing.</li>
+<li><strong>Signature plumbing cleaned up</strong>: the Ed25519 <code>Signer</code> trait is in scope,
+and signature decoding uses explicit length errors instead of ambiguous <code>?</code>
+behavior.</li>
+<li><strong>Dependency hygiene</strong>: <code>serde_bytes</code> is in place anywhere we use
+<code>#[serde(with = "serde_bytes")]</code> for byte arrays.</li>
 </ul>
-<p>Net result: <code>ObjectId</code> hashing is stable, and the sign/verify path is a little harder to trip over.</p>
-<h2 id="protocol-surface-saal-proto">Protocol surface (saal-proto)<a class="zola-anchor" href="#protocol-surface-saal-proto" aria-label="Anchor link for: protocol-surface-saal-proto" style="visibility: hidden;"></a>
-</h2>
-<p>I added a small <code>saal-proto</code> crate that just defines message shapes and CBOR codecs:</p>
+<p>Net result: <code>ObjectId</code> hashing is stable, and the sign/verify path is a little
+harder to trip over.</p>
+<p><strong>Protocol surface (saal-proto)</strong></p>
+<p>I added a small <code>saal-proto</code> crate that just defines message shapes and
+CBOR codecs:</p>
 <ul>
 <li><code>GetObject</code> request/response (fetch by <code>ObjectId</code>).</li>
 <li><code>GetAuthorLog</code> request/response (seq-based author log paging).</li>
 <li>A tiny <code>PingPolicy</code> message for capability negotiation.</li>
 </ul>
-<p>Everything is encoded/decoded via canonical CBOR so the wire format stays consistent across implementations.</p>
-<h2 id="in-memory-store-saal-store-mem">In-memory store (saal-store-mem)<a class="zola-anchor" href="#in-memory-store-saal-store-mem" aria-label="Anchor link for: in-memory-store-saal-store-mem" style="visibility: hidden;"></a>
-</h2>
+<p>Everything is encoded/decoded via canonical CBOR so the wire format stays
+consistent across implementations.</p>
+<p><strong>In-memory store (saal-store-mem)</strong></p>
 <p>There’s now a minimal in-memory store to make the protocol testable:</p>
 <ul>
 <li>Objects are stored as canonical CBOR bytes of signed <code>Object</code>s.</li>
-<li>Author logs are indexed by seq using a <code>BTreeMap</code>, so paging is deterministic.</li>
-<li>Tests exercise round-trip decode + signature verification on stored entries.</li>
+<li>Author logs are indexed by seq using a <code>BTreeMap</code>, so paging is
+deterministic.</li>
+<li>Tests exercise round-trip decode + signature verification on stored
+entries.</li>
 </ul>
-<p>It’s intentionally simple, but it’s already enough to test end-to-end flows without a real database.</p>
-<h2 id="tooling-cleanup">Tooling cleanup<a class="zola-anchor" href="#tooling-cleanup" aria-label="Anchor link for: tooling-cleanup" style="visibility: hidden;"></a>
-</h2>
-<p>I dropped in a basic <code>Makefile</code> and <code>.gitignore</code> so the workflow is less repetitive, plus a few small dependency nudges to keep the workspace compiling cleanly.</p>
-<h2 id="next">Next<a class="zola-anchor" href="#next" aria-label="Anchor link for: next" style="visibility: hidden;"></a>
-</h2>
+<p>It’s intentionally simple, but it’s already enough to test end-to-end flows
+without a real database.</p>
+<p><strong>Tooling cleanup</strong></p>
+<p>I dropped in a basic <code>Makefile</code> and <code>.gitignore</code> so the workflow is less
+repetitive, plus a few small dependency nudges to keep the workspace
+compiling cleanly.</p>
+<p><strong>Next</strong></p>
 <ul>
 <li>A storage trait so the in-memory store can be swapped out cleanly.</li>
 <li>Wire-level integration tests with CBOR fixtures.</li>
 <li>A tiny CLI for creating and inspecting objects during development.</li>
 </ul>
 
-      </article>
-
-      
-      
-
-      
-      
-    </div>
-
-    
-
-
-<footer>
-  <div class="left">
-    <div class="copyright">
-      ∅ 2026 n0um3n4
-      
-    </div>
-  </div>
-
-  <div class="right">
-    
-    
-      
-    
-    
-    <a id="rss-btn" href="https://idunnowhatiamdoing.engineering/posts/feed.xml">RSS</a>
-    
-    
-
-    
-  </div>
-</footer>
-
-
-
-
-<dialog id="rss-mask">
-  <div>
-    <a href="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml">https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml</a>
-    
-    
-    <button autofocus aria-label="copy" data-link="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-" >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z" fill="currentColor"></path></svg>
-
-    </button>
-  </div>
-</dialog>
-
-
-
-  </main>
-</div>
+  </pre>
+</main>
 
   
 <script src="/js/lightense.min.js"></script>
-
 
   <script src="https://idunnowhatiamdoing.engineering/js/main.js"></script>
 </body>

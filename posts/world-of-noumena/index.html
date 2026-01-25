@@ -12,7 +12,7 @@
   
   <meta name="description" content="Software engineering à la Mexicana">
 
-  <title>World Of Noumenon | Part One</title>
+  <title>World Of Noumena | Part One</title>
   <link rel="icon" type="image/png" sizes="32x32" href="https://idunnowhatiamdoing.engineering/img/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="https://idunnowhatiamdoing.engineering/img/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="https://idunnowhatiamdoing.engineering/img/apple-touch-icon.png">
@@ -20,64 +20,114 @@
   <style>
   @import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
 
-  /* light mode colors */
-  body {
-    --primary-color: #5871a2;
-    --primary-pale-color: #5871a233;
-    --primary-decoration-color: #5871a210;
-    --bg-color: #ffffff;
-    --text-color: #2f3030;
-    --text-pale-color: #767676;
-    --text-decoration-color: #a9a9a9;
-    --highlight-mark-color: #5f75b020;
-
-    --callout-note-color: #5871a2;
-    --callout-tip-color: #268556;
-    --callout-important-color: #885fc9;
-    --callout-warning-color: #ab6632;
-    --callout-caution-color: #c64e4e;
+  :root {
+    --bg-top: #ffffff;
+    --bg-bottom: #ffffff;
+    --ink: #141414;
+    --muted: #6a6358;
+    --link: #1d4f8c;
+    --max: 88ch;
+    --pad: clamp(1rem, 3vw, 2.5rem);
   }
 
-  /* dark mode colors */
-  body.dark {
-    --primary-color: #6f8fd1;
-    --primary-pale-color: #6f8fd166;
-    --primary-decoration-color: #6f8fd112;
-    --bg-color: #1c1c1c;
-    --text-color: #c1c1c1;
-    --text-pale-color: #848484;
-    --text-decoration-color: #5f5f5f;
-    --highlight-mark-color: #8296cb3b;
-
-    --callout-note-color: #6f8fd1;
-    --callout-tip-color: #47976f;
-    --callout-important-color: #9776cd;
-    --callout-warning-color: #ad7a52;
-    --callout-caution-color: #d06161;
+  * {
+    box-sizing: border-box;
   }
 
-  /* typography */
+  html {
+    font-size: 100%;
+  }
+
   body {
-    --main-font: "Share Tech Mono", monospace;
-    --code-font: "Share Tech Mono", monospace;
-    --homepage-max-width: 81ch;
-    --main-max-width: 81ch;
-    --avatar-size: 60px;
-    --font-size: 16px;
-    --line-height: 1.75;
-    --img-border-radius: 0px;
-    --detail-border-radius: 0px;
-    --dark-mode-img-brightness: 0.75;
-    --dark-mode-chart-brightness: 0.75;
-    --inline-code-border-radius: 2px;
-    --inline-code-bg-color: var(--primary-decoration-color);
-    --block-code-border-radius: 0px;
-    --block-code-border-color: var(--primary-color);
-    --detail-border-color: var(--primary-color);
+    margin: 0;
+    min-height: 100%;
+    padding: var(--pad);
+    background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+    color: var(--ink);
+    font-family: "Share Tech Mono", monospace;
+    font-size: 16px;
+    line-height: 1.5;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  main.txt {
+    max-width: var(--max);
+    margin: 0 auto;
+  }
+
+  pre {
+    font-family: "Share Tech Mono", monospace;
+  }
+  pre.txt-block {
+    margin: 0;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  a:visited {
+    color: inherit;
+  }
+
+  a:where(:hover, :focus) {
+    color: var(--link);
+  }
+
+  ::selection {
+    background: rgba(29, 79, 140, 0.18);
+  }
+  p {
+    margin: 0;
+    line-height: 16pt;
+  }
+  ul,
+  ol {
+    margin: 0;
+    line-height: 10pt;
+  }
+  li {
+    line-height: 16pt;
+  }
+  blockquote {
+    margin: 0 16pt;
+    line-height: 16pt;
+  }
+  img {
+    max-width: 64ch;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    main.txt {
+      animation: fade-in 600ms ease-out both;
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+
+  @media (max-width: 700px) {
+    body {
+      font-size: 15px;
+      padding: 1rem;
+    }
   }
 </style>
 
-  <link rel="stylesheet" href="https://idunnowhatiamdoing.engineering/main.css">
   
 
 <link id="hl" rel="stylesheet" type="text/css" href="/hl-light.css" />
@@ -90,74 +140,71 @@
 <body class="post">
   
   
-<div id="wrapper">
-  <div id="blank"></div>
-  <aside>
-    
-    
-    
-    <button id="back-to-top" aria-label="back to top">
-      
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+<main class="txt">
+  <pre class="txt-block">
 
-    </button>
-    
-  </aside>
-  <main>
-    
-<header>
-  <nav>
-    <a id="back-link" href="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts">← back</a>
-  </nav>
-</header>
+<a id="back-link" href="/">← back</a>
 
+<b>World Of Noumena | Part One</b>
+<span id="publish">Oct 31, 2025</span>
 
-    <div>
-      
-      
-      
-      
-      <div id="copy-cfg" style="display: none;" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-"></div>
-      
-      <article class="prose">
-        <h1>World Of Noumenon | Part One</h1>
-        <div id="post-info">
-          <div id="date">
-            <span id="publish">Oct 31, 2025</span>
-            </div>
-
-          
-        </div>
-
-        
-        
-
-        
-
-        <p>I was born in the 80s, which basically means I grew up in that strange in–between era: too early for smartphones, just in time for machines that beeped, whirred, and occasionally screamed at you through a modem (do you remember that? It's almost like a PTSD every time I hear that sound. Nah! I loved it).</p>
-<p>My first computer was the legendary Commodore 64. I was way too young to code, barely old enough to properly play games, but that beige bread loaf with its rainbow logo and blue screen did something important: it imprinted. I remember the sound of the keyboard (no shit why I love mechanical keyboards), the way the screen felt like a portal even when I had no idea what I was doing.</p>
-<p>In the 90s I finally started learning to code in BASIC. It wasn't glamorous. No fancy IDEs, no tutorials with thumbnails of shocked YouTubers. Just manuals, random snippets, and a lot of trial and error. In fact, I think what’s why I prefer vim or emacs over the new IDEs, just ain’t my thing.</p>
+<p>I was born in the 80s, which basically means I grew up in that strange
+in–between era: too early for smartphones, just in time for machines that
+beeped, whirred, and occasionally screamed at you through a modem (do you
+remember that? It's almost like a PTSD every time I hear that sound. Nah!
+I loved it).</p>
+<p>My first computer was the legendary Commodore 64. I was way too young to
+code, barely old enough to properly play games, but that beige bread loaf
+with its rainbow logo and blue screen did something important: it imprinted.
+I remember the sound of the keyboard (no shit why I love mechanical keyboards), the way the screen felt like a portal even when I had no idea what I was doing.</p>
+<p>In the 90s I finally started learning to code in BASIC. It wasn't glamorous.
+No fancy IDEs, no tutorials with thumbnails of shocked YouTubers. Just
+manuals, random snippets, and a lot of trial and error. In fact, I think
+what’s why I prefer vim or emacs over the new IDEs, just ain’t my thing.</p>
 <p>Around the same time, the internet wandered into our lives and never left.</p>
-<p>Afternoons became a ritual: school, home, homework (if I was disciplined), then computer. While other kids were out doing… whatever "normal" kids did, I was dialing into other worlds. My mother was very strict about a lot of things, but she made two big exceptions: computers and TV.</p>
-<p>If you never played a MUD: imagine an MMO stripped of graphics, sound, particle effects, and loot boxes, what's left is pure text and imagination. Rooms described in a few lines. Exits in cardinal directions. Players as names in a list. Combat as rolling text. And yet, somehow, it felt huge. Those games were slow and fast at the same time: slow because you had to read and type, fast because your imagination was doing all the rendering. I didn't know it then, but MUDs were quietly teaching me:</p>
+<p>Afternoons became a ritual: school, home, homework (if I was disciplined),
+then computer. While other kids were out doing… whatever "normal" kids did,
+I was dialing into other worlds. My mother was very strict about a lot of
+things, but she made two big exceptions: computers and TV.</p>
+<p>If you never played a MUD: imagine an MMO stripped of graphics, sound,
+particle effects, and loot boxes, what's left is pure text and imagination.
+Rooms described in a few lines. Exits in cardinal directions. Players as
+names in a list. Combat as rolling text. And yet, somehow, it felt huge.
+Those games were slow and fast at the same time: slow because you had to
+read and type, fast because your imagination was doing all the rendering.
+I didn't know it then, but MUDs were quietly teaching me:</p>
 <ul>
 <li>how to read and visualize quickly</li>
 <li>how to communicate in chat rooms full of strangers</li>
 <li>how systems, rules, and emergent behavior come together to form a "world"</li>
 </ul>
-<p>They were also teaching me how much I loved being inside a system, not just using it. I didn't want just to play in the world; I wanted to understand its rules and eventually bend them.</p>
-<p>I kept playing MUDs well into college, even as graphical games exploded. When I finally got into World of Warcraft, it felt like the natural evolution: the same feeling of an online world, but painted in color and sound and spectacle.
+<p>They were also teaching me how much I loved being inside a system, not just
+using it. I didn't want just to play in the world; I wanted to understand
+its rules and eventually bend them.</p>
+<p>I kept playing MUDs well into college, even as graphical games exploded.
+When I finally got into World of Warcraft, it felt like the natural evolution:
+the same feeling of an online world, but painted in color and sound and spectacle.
 But a part of me stayed in those quiet telnet sessions.
-WoW gave me shared raids, guild drama, and late-night dungeon runs. MUDs had given me something else: the sense that under everything flashy, there’s always a simple core made of text, rules, and state. Someone thought this up. Someone wrote this. Someone built this strange little universe.
-And that "someone" started to feel less like a mysterious wizard behind the curtain and more like a possibility.</p>
+WoW gave me shared raids, guild drama, and late-night dungeon runs. MUDs had
+given me something else: the sense that under everything flashy, there’s always
+a simple core made of text, rules, and state. Someone thought this up. Someone
+wrote this. Someone built this strange little universe.
+And that "someone" started to feel less like a mysterious wizard behind the
+curtain and more like a possibility.</p>
 <p>Fast-forward to now.</p>
-<p>I'm old enough that they call it "middle-age", young enough that I still stay up too late staring at glowing rectangles. I've been writing software professionally for years. I've touched a bunch of tech stacks, helped build systems that move money around and keep businesses running.
+<p>I'm old enough that they call it "middle-age", young enough that I still stay up
+too late staring at glowing rectangles. I've been writing software professionally
+for years. I've touched a bunch of tech stacks, helped build systems that move
+money around and keep businesses running.
 But lately, nostalgia has been tapping me on the shoulder.
-Not just the "remember that old game?" kind of nostalgia, but something deeper: a desire to go back to the source code of why I fell in love with computers and the internet at all (it is also true I’m bored, quite bored).
-For me, that source code is text. Terminals. Green screens. Typing look to see a room description. Getting lost in an ASCII maze with some random player from the other side of the world.
-So I've decided to do something that feels both completely reckless and completely inevitable:
+Not just the "remember that old game?" kind of nostalgia, but something deeper:
+a desire to go back to the source code of why I fell in love with computers and
+the internet at all (it is also true I’m bored, quite bored).
+For me, that source code is text. Terminals. Green screens. Typing look to see a
+room description. Getting lost in an ASCII maze with some random player from the
+other side of the world.
+So I've decided to do something that feels both completely reckless and completely
+inevitable:
 I'm making a MUD.</p>
 <p>This is the intro to a series of posts where I’ll document that journey.
 I want to build a MUD as both:</p>
@@ -165,69 +212,23 @@ I want to build a MUD as both:</p>
 <li>a love letter to the era that raised me, and</li>
 <li>a playground to explore ideas about systems, storytelling, and online communities</li>
 </ul>
-<p>Some posts will likely be technical: architecture, protocols, Elixir, how to represent rooms, entities, and state. Others will be more personal: what it feels like to recreate the magic that pulled me in as a kid, and how that collides with adult life, deadlines, and limited energy.
-I'm not promising anything revolutionary. I'm not trying to compete with modern games. This is more like building a small cabin in the woods of the internet, a place made of text, where imagination does the rendering again.
-If you’ve ever stayed up too late in front of a CRT monitor, or lost track of time in a text prompt, or felt that strange comfort of being alone in your room but not alone in the world, this series is, first and foremost, for me, but feel free to enjoy it.</p>
+<p>Some posts will likely be technical: architecture, protocols, Elixir, how to
+represent rooms, entities, and state. Others will be more personal: what it feels
+like to recreate the magic that pulled me in as a kid, and how that collides with
+adult life, deadlines, and limited energy.
+I'm not promising anything revolutionary. I'm not trying to compete with modern
+games. This is more like building a small cabin in the woods of the internet, a
+place made of text, where imagination does the rendering again.
+If you’ve ever stayed up too late in front of a CRT monitor, or lost track of time
+in a text prompt, or felt that strange comfort of being alone in your room but not
+alone in the world, this series is, first and foremost, for me, but feel free to
+enjoy it.</p>
 
-      </article>
-
-      
-      
-
-      
-      
-    </div>
-
-    
-
-
-<footer>
-  <div class="left">
-    <div class="copyright">
-      ∅ 2026 n0um3n4
-      
-    </div>
-  </div>
-
-  <div class="right">
-    
-    
-      
-    
-    
-    <a id="rss-btn" href="https://idunnowhatiamdoing.engineering/posts/feed.xml">RSS</a>
-    
-    
-
-    
-  </div>
-</footer>
-
-
-
-
-<dialog id="rss-mask">
-  <div>
-    <a href="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml">https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml</a>
-    
-    
-    <button autofocus aria-label="copy" data-link="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-" >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z" fill="currentColor"></path></svg>
-
-    </button>
-  </div>
-</dialog>
-
-
-
-  </main>
-</div>
+  </pre>
+</main>
 
   
 <script src="/js/lightense.min.js"></script>
-
 
   <script src="https://idunnowhatiamdoing.engineering/js/main.js"></script>
 </body>

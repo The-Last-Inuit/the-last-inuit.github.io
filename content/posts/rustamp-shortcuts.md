@@ -163,7 +163,7 @@ pub fn help_line() -> &'static str {
 
 Notice the take one shortcuts? It's quite similar approach to VIM, ain't no coincidence broddha. I'm up for simplicity, always, and VIM approach, I, for one, believe is the best approach.
 
-### rustamp-tui
+**rustamp-tui**
 
 Now, at the RatatUI part, we need to update our `handle_norma_key`:
 
@@ -213,7 +213,7 @@ match input::parse_command_line(&state.cmdline) {
 
 and delete our now deprecated function `parse_cmdline`.
 
-### rustamp-iced
+**rustamp-iced**
 
 We only need to update our keyboard handler at `app`:
 

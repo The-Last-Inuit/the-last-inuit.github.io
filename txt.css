@@ -1,0 +1,89 @@
+@import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
+
+:root {
+  --bg-top: #f8f5f0;
+  --bg-bottom: #efe7dc;
+  --ink: #141414;
+  --muted: #6a6358;
+  --link: #1d4f8c;
+  --max: 88ch;
+  --pad: clamp(1rem, 3vw, 2.5rem);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  padding: var(--pad);
+  background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+  color: var(--ink);
+  font-family:
+    "Share Tech Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", monospace;
+  font-size: 16px;
+  line-height: 1.5;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+main.txt {
+  max-width: var(--max);
+  margin: 0 auto;
+}
+
+pre.txt-block {
+  margin: 0;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+a:visited {
+  color: inherit;
+}
+
+a:where(:hover, :focus) {
+  color: var(--link);
+}
+
+::selection {
+  background: rgba(29, 79, 140, 0.18);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  main.txt {
+    animation: fade-in 600ms ease-out both;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  body {
+    font-size: 15px;
+    padding: 1rem;
+  }
+}

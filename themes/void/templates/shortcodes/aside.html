@@ -1,0 +1,8 @@
+<div class="tv-aside tv-aside--{{ kind | default(value="note") }}">
+  {% if title %}
+    <div class="tv-aside__title">{{ title }}</div>
+  {% endif %}
+  <div class="tv-aside__body">
+    {{ body | markdown | safe }}
+  </div>
+</div>

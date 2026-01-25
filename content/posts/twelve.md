@@ -3,17 +3,26 @@ title = "12"
 date = 2025-10-24
 +++
 
-I'll be honest: I like order and organization as much as the next obsessive person. But sometimes I think we invent complexity just to justify... well, whatever.
+I'll be honest: I like order and organization as much as the next obsessive 
+person. But sometimes I think we invent complexity just to justify... 
+well, whatever.
 
 The same goes for jargon.
 
-Today, however, I won't complain about that. I find [The Twelve-Factor methology](https://12factor.net/) to hit the sweet spot (though the jargon bothers me).
+Today, however, I won't complain about that. I find 
+[The Twelve-Factor methology](https://12factor.net/) to hit the sweet spot (though the 
+jargon bothers me).
 
-#### 12-Factor Methology
+**12-Factor Methology**
 
-It's a practical set of constraints for building services that deploy cleanly, scale predictably, and don't turn into *works on my laptop* folklore. The core ideas map extremely well to modern Rust services running in containers, Kubernetes, Nomad, systemd, or basically anything that can start a process and feed it environment variables. 
+It's a practical set of constraints for building services that deploy 
+cleanly, scale predictably, and don't turn into *works on my laptop* folklore. 
+The core ideas map extremely well to modern Rust services running in 
+containers, Kubernetes, Nomad, systemd, or basically anything that can start a
+process and feed it environment variables. 
 
-This post walks through all 12 factors with a concrete Rust shape: a small HTTP API using `axum`, `tokio`, and `sqlx`.
+This post walks through all 12 factors with a concrete Rust shape: a small HTTP 
+API using `axum`, `tokio`, and `sqlx`.
 
 A tiny service that:
 
@@ -23,25 +32,31 @@ A tiny service that:
 * supports graceful shutdown (`SIGTERM`)
 * runs migrations as a one-off admin process
 
-#### Factor I — Codebase: one codebase, many deploys
+**Factor I — Codebase: one codebase, many deploys**
 
-One service = one codebase tracked in version control. If you have *multiple codebases for one app*, you're already in distributed-system territory; treat each component as its own app. 
+One service = one codebase tracked in version control. If you have 
+*multiple codebases for one app*, you're already in distributed-system territory; 
+treat each component as its own app. 
 
-**Rust fit**: a single repo can still contain multiple binaries (like `server` + `migrate`) via `src/bin/*` and shared modules via `src/*`. That's still one codebase.
+**Rust fit**: a single repo can still contain multiple binaries (like `server` 
++ `migrate`) via `src/bin/*` and shared modules via `src/*`. That's still one codebase.
 
-#### Factor II — Dependencies: declare and isolate
+**Factor II — Dependencies: declare and isolate**
 
-A twelve-factor app declares dependencies explicitly and avoids assuming system-wide packages exist. 
+A twelve-factor app declares dependencies explicitly and avoids assuming 
+system-wide packages exist. 
 
 **Rust fit**:
 
 * `Cargo.toml` declares dependencies
 * `Cargo.lock` pins versions for reproducible builds
-* for native dependencies: prefer pure-Rust stacks when reasonable (e.g., `rustls` vs OpenSSL), or make system deps explicit in your build image.
+* for native dependencies: prefer pure-Rust stacks when reasonable (e.g., 
+  `rustls` vs OpenSSL), or make system deps explicit in your build image.
 
-#### Factor III — Config: store config in the environment
+**Factor III — Config: store config in the environment**
 
-Configuration that varies between deploys (ports, DB URLs, API keys) should come from environment variables. 
+Configuration that varies between deploys (ports, DB URLs, API keys) should 
+come from environment variables. 
 
 A practical Rust pattern: deserialize env into a typed `Settings` struct.
 
@@ -67,11 +82,13 @@ pub fn from_env() -> anyhow::Result<Settings> {
 }
 ```
 
-Local dev convenience: use a `.env` file *locally*, but treat it as developer tooling, not *the deployment system*.
+Local dev convenience: use a `.env` file *locally*, but treat it as developer 
+tooling, not *the deployment system*.
 
-#### Factor IV — Backing services: treat them as attached resources
+**Factor IV — Backing services: treat them as attached resources**
 
-Databases, caches, queues, and object storage are backing services and should be treated as swappable attached resources. 
+Databases, caches, queues, and object storage are backing services and should 
+be treated as swappable attached resources. 
 
 **Rust fit**:
 
@@ -95,14 +112,15 @@ pub async fn connect(database_url: &str) -> anyhow::Result<PgPool> {
 }
 ```
 
-#### Factor V — Build, release, run: strictly separate
+**Factor V — Build, release, run: strictly separate**
 
 The methodology wants strict separation between build, release, and run. 
 
 **Rust fit**:
 
 * Build: compile a binary (`cargo build --release`) 
-* Release: package that build artifact + attach config (env vars, secrets, release metadata)
+* Release: package that build artifact + attach config (env vars, secrets, 
+  release metadata)
 * Run: execute the same artifact with the release’s environment
 
 A simple container flow:
@@ -110,12 +128,13 @@ A simple container flow:
 * build stage compiles `tiny-svc`
 * runtime stage runs `./tiny-svc` and receives env from orchestrator
 
-Key idea: no *SSH into prod and edit code*. If you changed code, you made a new build.
+Key idea: no *SSH into prod and edit code*. If you changed code, you made 
+a new build.
 
-#### Factor VI — Processes: stateless, share-nothing
+**Factor VI — Processes: stateless, share-nothing**
 
-Processes should be stateless and share-nothing; persistent state belongs in backing services. 
-12factor
+Processes should be stateless and share-nothing; persistent state belongs 
+in backing services. 
 
 **Rust fit**:
 
@@ -123,9 +142,10 @@ Processes should be stateless and share-nothing; persistent state belongs in bac
 * don't rely on local filesystem as durable storage
 * treat local memory as cache only (and disposable)
 
-If you need sessions, use Redis or the DB. If you need files, use object storage.
+If you need sessions, use Redis or the DB. If you need files, use object 
+storage.
 
-#### Factor VII — Port binding: export services via a port
+**Factor VII — Port binding: export services via a port**
 
 The app should be self-contained and bind to a port to serve requests.
 
@@ -147,20 +167,23 @@ pub async fn serve(host: &str, port: u16) -> anyhow::Result<()> {
 }
 ```
 
-#### Factor VIII — Concurrency: scale out via the process model
+**Factor VIII — Concurrency: scale out via the process model**
 
 The factor emphasizes scaling out by running more processes. 
 
-Rust reality check: Rust async can handle high concurrency inside one process, but twelve-factor wants you to be able to scale horizontally anyway.
+Rust reality check: Rust async can handle high concurrency inside one 
+process, but twelve-factor wants you to be able to scale horizontally 
+anyway.
 
 So you do both:
 
 * use async I/O for efficient per-process concurrency
 * scale with more replicas when needed (N processes behind a load balancer)
 
-#### Factor IX — Disposability: fast startup, graceful shutdown
+**Factor IX — Disposability: fast startup, graceful shutdown**
 
-Processes should start quickly and shut down gracefully for resilience and rapid deploys. 
+Processes should start quickly and shut down gracefully for resilience 
+and rapid deploys. 
 
 **Rust fit**: handle `SIGTERM/CTRL-C` and allow in-flight requests to finish.
 
@@ -199,11 +222,13 @@ async fn shutdown_signal() {
 }
 ```
 
-In production you'll also want `SIGTERM` handling on Unix; the axum example shows the pattern.
+In production you'll also want `SIGTERM` handling on Unix; the axum example shows 
+the pattern.
 
-#### Factor X — Dev/prod parity: keep them similar
+**Factor X — Dev/prod parity: keep them similar**
 
-Minimize gaps between dev/staging/prod; avoid *SQLite locally, Postgres in prod* surprises. 
+Minimize gaps between dev/staging/prod; avoid *SQLite locally, Postgres 
+in prod* surprises. 
 
 **Rust fit**:
 
@@ -216,9 +241,10 @@ Example `docker-compose.yml` idea:
 * `postgres:16`
 * tiny-svc with `DATABASE_URL=postgres://...`
 
-#### Factor XI — Logs: treat logs as event streams
+**Factor XI — Logs: treat logs as event streams**
 
-A twelve-factor app should not manage log files, it writes its event stream to stdout and the environment routes/aggregates it. 
+A twelve-factor app should not manage log files, it writes its event stream to 
+stdout and the environment routes/aggregates it. 
 
 **Rust fit**: `tracing` + `tracing-subscriber` with JSON to stdout.
 
@@ -229,23 +255,26 @@ Good defaults:
 * structured logs (JSON)
 * log level from env (`RUST_LOG=info`)
 
-#### Factor XII — Admin processes: run one-off tasks as one-off processes
+**Factor XII — Admin processes: run one-off tasks as one-off processes**
 
-Migrations, data backfills, and maintenance tasks should run in the same environment (same code + config) as the app. 
+Migrations, data backfills, and maintenance tasks should run in the same 
+environment (same code + config) as the app. 
 
 Two common Rust approaches:
 
-##### `sqlx-cli`
+**`sqlx-cli`**
 
-`sqlx migrate run` compares the DB migration history with `migrations/` and runs pending migrations. 
-Docs.rs
+`sqlx migrate run` compares the DB migration history with `migrations/` and runs 
+pending migrations. 
+
+**Docs.rs**
 
 This is often perfect in CI/CD:
 
 * run migrations as a job
 * then deploy the app
 
-##### A dedicated admin binary
+**A dedicated admin binary**
 
 `src/bin/migrate.rs`:
 

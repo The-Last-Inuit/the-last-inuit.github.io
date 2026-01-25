@@ -20,64 +20,114 @@
   <style>
   @import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
 
-  /* light mode colors */
-  body {
-    --primary-color: #5871a2;
-    --primary-pale-color: #5871a233;
-    --primary-decoration-color: #5871a210;
-    --bg-color: #ffffff;
-    --text-color: #2f3030;
-    --text-pale-color: #767676;
-    --text-decoration-color: #a9a9a9;
-    --highlight-mark-color: #5f75b020;
-
-    --callout-note-color: #5871a2;
-    --callout-tip-color: #268556;
-    --callout-important-color: #885fc9;
-    --callout-warning-color: #ab6632;
-    --callout-caution-color: #c64e4e;
+  :root {
+    --bg-top: #ffffff;
+    --bg-bottom: #ffffff;
+    --ink: #141414;
+    --muted: #6a6358;
+    --link: #1d4f8c;
+    --max: 88ch;
+    --pad: clamp(1rem, 3vw, 2.5rem);
   }
 
-  /* dark mode colors */
-  body.dark {
-    --primary-color: #6f8fd1;
-    --primary-pale-color: #6f8fd166;
-    --primary-decoration-color: #6f8fd112;
-    --bg-color: #1c1c1c;
-    --text-color: #c1c1c1;
-    --text-pale-color: #848484;
-    --text-decoration-color: #5f5f5f;
-    --highlight-mark-color: #8296cb3b;
-
-    --callout-note-color: #6f8fd1;
-    --callout-tip-color: #47976f;
-    --callout-important-color: #9776cd;
-    --callout-warning-color: #ad7a52;
-    --callout-caution-color: #d06161;
+  * {
+    box-sizing: border-box;
   }
 
-  /* typography */
+  html {
+    font-size: 100%;
+  }
+
   body {
-    --main-font: "Share Tech Mono", monospace;
-    --code-font: "Share Tech Mono", monospace;
-    --homepage-max-width: 81ch;
-    --main-max-width: 81ch;
-    --avatar-size: 60px;
-    --font-size: 16px;
-    --line-height: 1.75;
-    --img-border-radius: 0px;
-    --detail-border-radius: 0px;
-    --dark-mode-img-brightness: 0.75;
-    --dark-mode-chart-brightness: 0.75;
-    --inline-code-border-radius: 2px;
-    --inline-code-bg-color: var(--primary-decoration-color);
-    --block-code-border-radius: 0px;
-    --block-code-border-color: var(--primary-color);
-    --detail-border-color: var(--primary-color);
+    margin: 0;
+    min-height: 100%;
+    padding: var(--pad);
+    background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+    color: var(--ink);
+    font-family: "Share Tech Mono", monospace;
+    font-size: 16px;
+    line-height: 1.5;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  main.txt {
+    max-width: var(--max);
+    margin: 0 auto;
+  }
+
+  pre {
+    font-family: "Share Tech Mono", monospace;
+  }
+  pre.txt-block {
+    margin: 0;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  a:visited {
+    color: inherit;
+  }
+
+  a:where(:hover, :focus) {
+    color: var(--link);
+  }
+
+  ::selection {
+    background: rgba(29, 79, 140, 0.18);
+  }
+  p {
+    margin: 0;
+    line-height: 16pt;
+  }
+  ul,
+  ol {
+    margin: 0;
+    line-height: 10pt;
+  }
+  li {
+    line-height: 16pt;
+  }
+  blockquote {
+    margin: 0 16pt;
+    line-height: 16pt;
+  }
+  img {
+    max-width: 64ch;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    main.txt {
+      animation: fade-in 600ms ease-out both;
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+
+  @media (max-width: 700px) {
+    body {
+      font-size: 15px;
+      padding: 1rem;
+    }
   }
 </style>
 
-  <link rel="stylesheet" href="https://idunnowhatiamdoing.engineering/main.css">
   
 
 <link id="hl" rel="stylesheet" type="text/css" href="/hl-light.css" />
@@ -90,28 +140,12 @@
 <body class="prose-page">
   
   
-<div id="wrapper">
-  <main>
-    
-<header>
-  <nav>
-    <a id="back-link" href="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering">← back</a>
-  </nav>
-</header>
+  <main class="txt">
+    <pre class="txt-block">
 
-    
-<div class="section-title">
-  
-  <h1>projects</h1>
-  
-  
-</div>
+<a id="back-link" href="/">← back</a>
 
-
-    <div>
-      
-      <article class="prose">
-        <p>A short list of things I build and learn from.</p>
+<p>A short list of things I build and learn from.</p>
 <div class="projects-grid" style="display: grid;grid-template-columns: repeat(2, 1fr); gap: 12px;">
   <article class="project-card" style="margin-bottom: 2rem;">
       <h3 class="project-title" style="margin: initial; font-size: 1.17rem;">
@@ -353,36 +387,8 @@
   </article>
 </div>
 
-      </article>
-
-      
-      
-
-      
-    </div>
-
-    
-
-
-<footer>
-  <div class="left">
-    <div class="copyright">
-      ∅ 2026 n0um3n4
-      
-    </div>
-  </div>
-
-  <div class="right">
-    
-
-    
-  </div>
-</footer>
-
-
-
+    </pre>
   </main>
-</div>
 
   
 <script src="/js/lightense.min.js"></script>

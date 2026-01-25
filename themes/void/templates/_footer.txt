@@ -1,0 +1,30 @@
+{% if config.extra.blog_section_path is defined %} {% set
+blog_section_path = config.extra.blog_section_path %} {% endif %}
+
+{{ config.extra.footer_copyright }} {% if config.extra.footer_credits %}
+| Built with zola and serene {% endif %}
+
+{% if blog_section_path is defined and section.path is
+starting_with(blog_section_path) %} {% if section.generate_feeds %} {%
+set_global rss_path = blog_section_path ~ "/" ~ config.feed_filenames.0
+%} {% elif config.generate_feeds %} {% set_global rss_path = "/" ~
+config.feed_filenames.0 %} {% endif %} {% if section.generate_feeds or
+config.generate_feeds %} RSS {% endif %} {% endif %} {% if not
+config.extra.force_theme %} {% set moon_icon =
+load_data(path="icon/moon.svg") %} {% set sun_icon =
+load_data(path="icon/sun.svg") %}
+
+{{ moon_icon | safe }} {{ sun_icon | safe }}
+
+{% endif %}
+
+{% if blog_section_path is defined and section.path is
+starting_with(blog_section_path) %} {% if section.generate_feeds or
+config.generate_feeds %} {% set link = get_url(path=rss_path) %}
+
+{{ link }} {% set copy_icon = load_data(path="icon/copy.svg") %} {% set
+check_icon = load_data(path="icon/check.svg") %}
+
+{{ copy_icon | safe }}
+
+{% endif %} {% endif %}

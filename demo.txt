@@ -1,0 +1,238 @@
+        ___                  _____       _  _
+ _ __  / _ \ _   _ _ __ ___ |___ / _ __ | || |
+| '_ \| | | | | | | '_ ` _ \  |_ \| '_ \| || |_
+| | | | |_| | |_| | | | | | |___) | | | |__   _|
+|_| |_|\___/ \__,_|_| |_| |_|____/|_| |_|  |_|
+
+============================================================
+noumena ashitaka hundimägi mei (n0um3n4)
+============================================================
+
+"Deeds belong to their hour, and no other. As for idle tales, they bear
+within them the seed of their own ending."
+
+# 1: jmp 1b ;
+
+Currently working as a Product Engineer @ Yolo Group | Elixir
+
+I make my living as a software developer with experience in Elixir, Ruby,
+PHP, and JavaScript. I've worked across different stacks, mostly building
+backend systems and APIs, but I’m comfortable doing full-stack work when
+needed.
+
+I’ve contributed to projects in marketplaces, real estate, healthcare,
+Web3, finance, and e-commerce. Most recently, I’ve been focused on Elixir
+and Phoenix LiveView, and I really enjoy the simplicity and clarity the
+language brings. I’ve also worked with Docker, PostgreSQL, and various
+frontend frameworks like Svelte and AlpineJS.
+
+I’ve made mistakes, missed deadlines, and learned a lot from them.
+I take responsibility and try to get better with every project.
+
+PS: I am a theoretical physicist. I deliberately abandoned my PhD and left
+academia as an act of protest.
+
+------------------------------------------------------------
+RESUME
+------------------------------------------------------------
+
+Full resume (PDF): https://noumena.mx/full-resume.pdf
+
+EMPLOYMENT HISTORY
+------------------------------------------------------------
+
+Elixir Developer, Yolo Group, Finance | Elixir, PostgreSQL
+  Apr 2024 – Present  |  Remote, Estonia
+  Activities: Work in the balanced.io on LiveView primarily for our
+  accounting stakeholders.
+
+Elixir Developer, Hawku | Elixir, AlpineJS, PostgreSQL
+  Jan 2022 – Apr 2023 | Remote, USA
+  Activities: Working on LiveView primarily. Integration with Metamask and
+  working with Hawku Marketplace.
+
+Elixir Developer, SeedEmbassy | Elixir, Docker, PostgreSQL
+  Jan 2021 – Feb 2022 | Remote, Brazil
+  Activities: I do minor tasks/features.
+  Mistakes: A few, I'm improving my Elixir skills.
+
+PHP/Ruby/Elixir Developer, VentUp | Ruby, Docker, PHP, MySQL, Redis, GraphQL
+  Sept 2020 – Jan 2021 | Remote, Monterrey, Mexico
+  Activities: On a daily basis I add features for the Laravel Web
+  Application. I created an GraphQL API backend with Rails and Svelte as
+  its frontend. I also look for places where I can improve performance at
+  SQL level. Lately, I'm developing a GraphQL API backend with Phoenix and
+  Absinthe.
+  Mistakes: I have failed a few times to deliver some features on time.
+
+Ruby Developer, PerkHealth | Ruby, Docker, PostgreSQL, Sidekiq
+  Jun 2021 – Aug 2021 | Remote, Minnesota, USA
+  Activities: On a daily basis I add features to the ongoing applications.
+  Mistakes: Apparently none.
+
+Ruby Developer, Reverse Retail GmbH | Ruby, Docker, Sidekiq, Postgres
+  Nov 2019 – Jun 2020 | Hamburg, Germany
+  Activities: Most of the things I did on a daily basis was fixing bugs.
+  I did create a scrapping system. On the legacy code, I added a couple
+  small features. Other activities were reviewing PRs and helped other
+  developers with their issues.
+  Mistakes: I failed at dealing with managers or the lack of it.
+
+Ruby/Javascript Developer, Bytestand | Ruby, Docker, Sidekiq, Postgres, Vue,
+ShopifyAPI, Mailgun API
+  Mar 2019 – Sept 2020 | Remote, Charlotte, USA
+  Activities: I worked on the legacy code of one of the platforms called
+  Bytestand. That consisted in adding a few features and fixing major bugs.
+  I re-engineered the frontend for another platform called FreshCredit.
+  The frontend was done with VueJS framework.
+  Mistakes: I failed at working with none-agile environments.
+
+Ruby Developer, Cultivate Labs | Ruby, Postgres, jQuery
+  Oct 2018 – Jan 2019 | Remote, Chicago, USA
+  Activities: I added a couple of features: basically the customizable
+  forms where users can create their own forms with as many different DOM
+  elements among other stuff.
+  Mistakes: Apparently none.
+
+Ruby/Javascript/Rust Developer, Icalia Labs | Ruby, Rust, Postgres, Docker,
+jQuery, React, Redux, Angular, Sidekiq, Sendgrid API, Stripe API, Twilio API,
+RabbitMQ
+  Mar 2016 – Sep 2018 | Monterrey, Mexico
+  Activities: I worked with development teams to increase their
+  productivity. I was in charge of PR reviews. I worked as a technical
+  consultant for new projects. I created a few platforms with Rails,
+  Sidekiq, Redis with third-party services such as Twilio, Sendgrid,
+  Realstate APIs, Google APIs, and IBM Watson APIs. All this under the
+  infrastructure of Docker (Swarm) on AWS.
+  Mistakes: I failed in delivering features on time. I failed in trying to
+  manage too many projects. I failed in giving feedback to work collegues.
+
+Ruby/Javascript/iOS Developer, Eolus IDeA | Ruby, Postgres, jQuery, Angular,
+Sidekiq, Sendgrid API, Conekta API
+  Feb 2014 – Feb 2016 | Monterrey, Mexico
+  Activities: I created two platforms for company. My work consisted in
+  developing the backend, frontend and iOS native app. I also managed the
+  deployment on AWS.
+  Mistakes: I failed on delivering features on time.
+
+Ruby/iOS Developer, Alebrije Estudios | Ruby, Postgres, MySQL, jQuery,
+Angular, DelayedJob, Sendgrid API, Conekta API, iOS
+  May 2013 – Feb 2014 | Monterrey, Mexico
+  Activities: I managed 4 ongoing projects. I delivered a few iOS apps with
+  Rails backends. I also managed the new developers onboarding.
+  Mistakes: I failed how to deliver feedback in the beginning. Sometimes
+  chaos was too much that I failed in organization the daily activities
+  for myself and the group.
+
+References available upon request
+
+------------------------------------------------------------
+VALUES, PRINCIPLES AND BELIEFS
+------------------------------------------------------------
+
+The human being I'm trying to be
+
+  - Preserve, not to destroy. Wield power to do good.
+  - Real strength lies in domestication of one's emotions not in pretending
+    they don't exist.
+  - Educate yourself.
+  - Courage and humility
+
+My values
+
+  - Honor others: No matter what degree, title or lack of it, everyone has
+    something to offer. It takes a village to raise a child. We all have a
+    role to fulfill.
+  - Empower others: Things are hard and complex. We all are doomed to make
+    mistakes. Making room for mistakes allow us to grow.
+  - Privilege people: Existence is pain and this system we have created only
+    make things harder. Remember we are flying away on a gigant rock. Don't
+    get dragged away by irrelevant things like profit, titles, ego, etc.
+  - Serve with humility: We all have room for improvement, recognize it.
+    Listen to others' feedback and be open to criticism.
+
+Things I believe
+
+  - Reversed Trust: Usually we earn respect and trust by working on it. In
+    my case, I believe in trusting and respecting others since the beginning
+    100%. They work on keeping that. In my experience, people start showing
+    you who they real are and therefore the trust and respect may decrease.
+    This is not great since I've been abused and hurt. But I believe in a
+    human's good heart. Granted, maybe naive but that's who I am.
+  - How can I help? I think the only way to be the best leader is by being
+    of service to others.
+  - I will hold your heart more tenderly than my own. I will. For some
+    reason I think I can take all the pain in the Cosmos.
+  - The less forgivable the act, the more must be forgiven. The less loveable
+    the person is, the more you must find the means to love them. I have
+    learnt that the hard way but I believe I must follow such principle.
+  - I think everyone has something to offer and they are always open to do
+    that. The problem is there are so many things affecting us that we tend
+    to be mean to each other, however, this means I believe humans have a
+    good heart.
+  - Any one has the capacity to become awesome at something. The reasons why
+    people look for expertise, in the end I believe, has nothing to do with
+    the actual matter. I'd rather collaborate with someone up for a challange
+    than with some expert on the matter.
+  - We need one another. Anyone can do things on its own... Perhaps not
+    everything. However, I believe doing things together makes the experience
+    more fun.
+  - You are going to fail. And so will I. That's the way it is and I'm fine
+    with the logic behind. Do fail. By all means, do it.
+  - I'm an open book. I trust you by default. And if you decide to break that
+    trust, that's alright. You will save me some time. I'm all about creating
+    long lasting friendships and time is of the essence.
+  - There are social conventions, social cues and sugar coding. I don't
+    understand any of them. Just be straight with me. I won't get offended.
+    Otherwise, there will be misunderstanding. I guarantee that.
+
+------------------------------------------------------------
+PROJECTS
+------------------------------------------------------------
+
+Note: All material is free to use as you see fit specially if it doesn't
+explicitly state it.
+
+  - i dunno what i am doing
+    https://idunnowhatiamdoing.engineering/
+    where I tackle software engineering problems.
+
+  - Quiene Studio
+    https://quiene.studio/
+    where I make fun games with friends.
+
+  - SALTA Studio
+    https://salta.studio/
+    where I sort of write stuff... perhaps it's more a verbal diarrhea.
+
+------------------------------------------------------------
+PUBLIC KEY
+------------------------------------------------------------
+
+  OxF9E4DEDB07B27B36
+
+------------------------------------------------------------
+CONTACT
+------------------------------------------------------------
+
+  email:        email@noumena.mx
+  simplex:      @n0um3n4  (https://smp9.simplex.im/a)
+  radicle:      did:key:z6MkvqpvdaA8YpMzn5sQ67PChE3jRdzQQ69Qmco73HBtyUpm
+  microblogging:
+		- @noumena@hachyderm.io     (https://hachyderm.io/@noumena)
+    - @noumena@genserver.social (https://genserver.social/@noumena)
+
+------------------------------------------------------------
+GAMING IDS
+------------------------------------------------------------
+
+Nintendo Switch:  SW-2841-4685-4894
+Steam:            https://steamcommunity.com/id/n0um3n4/
+Riot:             noumena#919
+Battle.net:       noumena#11886
+PS:               noumena-mx
+Discord:          n0um3n4 / 1263265476126052373
+
+------------------------------------------------------------
+
+To run away and live with the wolves.

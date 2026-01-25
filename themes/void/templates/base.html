@@ -1,0 +1,65 @@
+{% import "macros/ui.html" as ui %}
+
+<!doctype html>
+<html lang="{{ lang | default(value=config.default_language) }}">
+<head>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
+  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  {# ----- Title ----- #}
+  {% set full_title = config.title %}
+  {% if page is defined and page.title %}
+    {% set full_title = page.title ~ " · " ~ config.title %}
+  {% elif section is defined and section.title and section.title != config.title %}
+    {% set full_title = section.title ~ " · " ~ config.title %}
+  {% endif %}
+  <title>{{ full_title }}</title>
+
+  {# ----- Description ----- #}
+  {% if page is defined and page.description %}
+    <meta name="description" content="{{ page.description }}">
+  {% elif section is defined and section.description %}
+    <meta name="description" content="{{ section.description }}">
+  {% elif config.description %}
+    <meta name="description" content="{{ config.description }}">
+  {% endif %}
+
+  <link rel="stylesheet" href="{{ get_url(path="main.css", cachebust=true) }}">
+
+  {# Zola v0.22+ syntax highlighting (Giallo): include generated CSS if class-based #}
+  {% if config.markdown.highlighting.style is defined and config.markdown.highlighting.style == "class" %}
+    {% if config.markdown.highlighting.light_theme is defined and config.markdown.highlighting.dark_theme is defined %}
+      <link rel="stylesheet" href="{{ get_url(path="giallo-light.css", cachebust=true) }}" media="(prefers-color-scheme: light)">
+      <link rel="stylesheet" href="{{ get_url(path="giallo-dark.css", cachebust=true) }}" media="(prefers-color-scheme: dark)">
+    {% else %}
+      <link rel="stylesheet" href="{{ get_url(path="giallo.css", cachebust=true) }}">
+    {% endif %}
+  {% endif %}
+
+  {% if config.generate_feeds %}
+    {# default feed filename is atom.xml unless changed in config #}
+    <link rel="alternate" type="application/atom+xml" title="{{ config.title }} · Atom" href="{{ get_url(path="atom.xml") }}">
+  {% endif %}
+
+  <link rel="icon" href="{{ get_url(path="favicon.svg") }}" type="image/svg+xml">
+
+  {% block extra_head %}{% endblock extra_head %}
+</head>
+
+<body class="tv" style="--tv-accent: {{ config.extra.accent | default(value='#6cf9ff') }};">
+  <a class="tv-skip" href="#main">Skip to content</a>
+
+  {{ ui::header(config=config, current_path=current_path | default(value="/"), lang=lang | default(value=config.default_language)) }}
+
+  <main id="main" class="tv-container">
+    {% block content %}{% endblock content %}
+  </main>
+
+  {{ ui::footer(config=config) }}
+
+  {% block extra_scripts %}{% endblock extra_scripts %}
+</body>
+</html>

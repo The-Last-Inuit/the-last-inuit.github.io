@@ -1,0 +1,17 @@
+{% extends "base.html" %} {% block content %}
+
+{{ taxonomy.name | title }}
+
+All {{ taxonomy.name }}.
+
+{% if terms | length > 0 %}
+
+- {% for t in terms %}
+- #{{ t.name }} {{ t.page_count }}
+  {% endfor %}
+
+{% else %}
+
+No terms found.
+
+{% endif %} {% endblock content %}

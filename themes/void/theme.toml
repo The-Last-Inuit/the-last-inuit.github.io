@@ -1,0 +1,7 @@
+name = "Terminal Void"
+description = "A minimal, readable, terminal-ish Zola theme (81ch layout, subtle neon accents)."
+tags = ["blog", "minimal", "dark", "terminal", "responsive"]
+license = "MIT"
+homepage = "https://github.com/yourname/terminal-void"
+min_version = "0.22.0"
+demo = ""

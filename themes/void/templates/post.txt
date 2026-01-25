@@ -1,0 +1,7 @@
+
+    {{ macros::back_link(path = get_url(path=section.path)) }}
+    {{ page.title }}
+    {{ page.date | date(format=section.extra.date_format) }}
+
+    {{ page.content | safe }}
+      

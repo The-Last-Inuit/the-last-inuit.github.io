@@ -3,31 +3,41 @@ title = "DynOSTiC"
 date = 2026-01-23
 +++
 
-After working on [Kaíven and ëëntïï](https://quiene.studio/#games), I realized I needed an engine. What I was doing with those two projects wasn’t good enough—something was missing.
+After working on [Kaíven and ëëntïï](https://quiene.studio/#games), I realized I needed an engine. What I was 
+doing with those two projects wasn’t good enough, something was missing.
 
-After a few back-and-forths, I remembered an idea from another story: DYNamics Of the Space-Time Continuum. Reusing the name just felt right. In that story, the machine lets you travel through time and space, and it can even change your DNA. I could keep going, but that’s probably for another time.
+After a few back-and-forths, I remembered an idea from another story: 
+DYNamics Of the Space TIme Continuum. Reusing the name just felt right. In that 
+story, the machine lets you travel through time and space, and it can even 
+hange your DNA. I could keep going, but that’s probably for another time.
 
 Anyway, I present DYNOSTIC.
 
-# Using Dynostic: A Practical Guide to the Deterministic Tactical-Sim Core
+**Using Dynostic: A Practical Guide to the Deterministic Tactical-Sim Core**
 
-Dynostic is a reusable deterministic tactical-sim core in Rust with a LÖVE (LuaJIT)
-front-end. The design goal is fast iteration on UI/feel in LÖVE while keeping the
-simulation pure, deterministic, and event-sourced in Rust. This post focuses on
-how to get it running and how to use the CLI and packaging pipeline day to day.
+Dynostic is a reusable deterministic tactical-sim core in Rust with a LÖVE 
+(LuaJIT) front-end. The design goal is fast iteration on UI/feel in LÖVE while 
+keeping the simulation pure, deterministic, and event-sourced in Rust. This 
+post focuses on how to get it running and how to use the CLI and packaging 
+pipeline day to day.
 
-## What you are running
-- `rust/` contains the Cargo workspace for the sim core, FFI boundary, and CLI.
+**What you are running**
+
+- `rust/` contains the Cargo workspace for the sim core, FFI boundary, and 
+  CLI.
 - `love/` is the LÖVE project that loads the Rust library and renders the UI.
-- Data is pack-driven, so you can create and ship content without changing engine code.
+- Data is pack-driven, so you can create and ship content without changing 
+  engine code.
 
-## Prerequisites
+**Prerequisites**
+
 - Rust toolchain (stable) with Cargo
 - LÖVE (LuaJIT build)
 - `make` for the convenience targets (optional)
 - `ffmpeg` only if you want offline video encoding
 
-## Quick start: build and run
+**Quick start: build and run**
+
 From the repo root:
 
 ```bash
@@ -49,11 +59,13 @@ love love
 You should see a small window with a moving dot driven by the Rust sim. If the
 native library is missing or mismatched, the LÖVE app will fail to load the FFI.
 
-## Create a new game scaffold
+**Create a new game scaffold**
+
 Generate a pack skeleton with the CLI:
 
 ```bash
-cargo run -p dynostic_cli --manifest-path rust/Cargo.toml -- new "My Game" --out games
+cargo run -p dynostic_cli --manifest-path rust/Cargo.toml -- new "My Game" \
+  --out games
 ```
 
 Explore the reference game for data layout and conventions:
@@ -65,50 +77,61 @@ examples/reference_game
 Packs are data-driven, so you can iterate on JSON content without touching the
 engine. This is the fastest path to new units, abilities, and scenarios.
 
-## Profile the simulation
+**Profile the simulation**
+
 The CLI can run headless and dump hot-path counters:
 
 ```bash
-cargo run -p dynostic_cli --manifest-path rust/Cargo.toml -- --ticks 200 --profile
+cargo run -p dynostic_cli --manifest-path rust/Cargo.toml -- --ticks 200 \
+  --profile
 ```
 
 Use this when tuning pathfinding, line-of-sight, or ability targeting rules.
 
-## Work with mods (experimental)
+**Work with mods (experimental)**
+
 Mods live under `mods/` and are enabled via `mods/mods.json`. Use the CLI to add
 and toggle them:
 
 ```bash
-cargo run -p dynostic_cli --manifest-path rust/Cargo.toml -- mod add --id cool_mod --path mods/cool_mod/pack.json --enable
+cargo run -p dynostic_cli --manifest-path rust/Cargo.toml -- mod add \
+  --id cool_mod --path mods/cool_mod/pack.json --enable
 cargo run -p dynostic_cli --manifest-path rust/Cargo.toml -- mod list
-cargo run -p dynostic_cli --manifest-path rust/Cargo.toml -- mod disable cool_mod
+cargo run -p dynostic_cli --manifest-path rust/Cargo.toml \
+  -- mod disable cool_mod
 ```
 
-When a mod is enabled, its pack is merged after the base pack. Script permissions
-are gated by `pack.permissions.scripts` (default false).
+When a mod is enabled, its pack is merged after the base pack. Script 
+permissions are gated by `pack.permissions.scripts` (default false).
 
-## Speed up loads with pack cache
+**Speed up loads with pack cache**
+
 Compile pack data into a deterministic cache blob:
 
 ```bash
-cargo run -p dynostic_cli --manifest-path rust/Cargo.toml -- pack cache --pack love/content/pack.json
+cargo run -p dynostic_cli --manifest-path rust/Cargo.toml -- pack cache \
+  --pack love/content/pack.json
 ```
 
 The runtime uses `pack.cache.json` automatically when present. Disable with
 `DYNOSTIC_PACK_CACHE=0` if you need to test cold loads.
 
-## Cutscenes and previews
+**Cutscenes and previews**
+
 Validate and run a deterministic cutscene timeline:
 
 ```bash
-cargo run -p dynostic_cli --manifest-path rust/Cargo.toml -- cine validate --timeline tools/cutscene_demo.json
-cargo run -p dynostic_cli --manifest-path rust/Cargo.toml -- cine run --timeline tools/cutscene_demo.json
+cargo run -p dynostic_cli --manifest-path rust/Cargo.toml -- cine validate \
+  --timeline tools/cutscene_demo.json
+cargo run -p dynostic_cli --manifest-path rust/Cargo.toml -- cine run \
+  --timeline tools/cutscene_demo.json
 ```
 
-For the LÖVE preview tool, launch the app and press `F7`. Use `DYNOSTIC_CINE` to
-load a different timeline.
+For the LÖVE preview tool, launch the app and press `F7`. Use `DYNOSTIC_CINE` 
+to load a different timeline.
 
-## Package and ship
+**Package and ship**
+
 Build a portable `.love` archive and a platform folder with native libs:
 
 ```bash
@@ -132,20 +155,26 @@ make release-verify
 Dynostic can sign packs and release manifests with an ed25519 key:
 
 ```bash
-cargo run -p dynostic_cli --manifest-path rust/Cargo.toml -- pack keygen --out-public keys/pack.pub --out-secret keys/pack.secret
-cargo run -p dynostic_cli --manifest-path rust/Cargo.toml -- pack sign --pack dist/pack/pack.json --key keys/pack.secret
-cargo run -p dynostic_cli --manifest-path rust/Cargo.toml -- release sign --manifest dist/release_manifest.json --key keys/pack.secret
+cargo run -p dynostic_cli --manifest-path rust/Cargo.toml -- pack keygen \
+  --out-public keys/pack.pub --out-secret keys/pack.secret
+cargo run -p dynostic_cli --manifest-path rust/Cargo.toml -- pack sign \
+  --pack dist/pack/pack.json --key keys/pack.secret
+cargo run -p dynostic_cli --manifest-path rust/Cargo.toml -- release sign \
+  --manifest dist/release_manifest.json --key keys/pack.secret
 ```
 
 Note: dynamic libraries cannot be loaded from inside a zipped `.love` archive.
 Ship platform builds with the native library next to the executable/app bundle.
 
-## Optional: offline replay rendering
+**Optional: offline replay rendering**
+
 To render deterministic replays into PNG frames (or video with ffmpeg):
 
 ```bash
-DYNOSTIC_RENDER=1 DYNOSTIC_RENDER_REPLAY=../tools/golden/replay_combat.json make run
-DYNOSTIC_RENDER=1 DYNOSTIC_RENDER_REPLAY=../tools/golden/replay_combat.json DYNOSTIC_RENDER_FFMPEG=ffmpeg make run
+DYNOSTIC_RENDER=1 DYNOSTIC_RENDER_REPLAY=../tools/golden/replay_combat.json \
+  make run
+DYNOSTIC_RENDER=1 DYNOSTIC_RENDER_REPLAY=../tools/golden/replay_combat.json \
+  DYNOSTIC_RENDER_FFMPEG=ffmpeg make run
 ```
 
 This is useful for capture pipelines, trailers, and visual regression testing.

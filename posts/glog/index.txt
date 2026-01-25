@@ -1,15 +1,16 @@
-← back
 
-GLOG: Guns, Lots Of Guns
 
-Jan 3, 2026
+    ← back
 
-A few days ago, I started working on GLOG, a simple multiplayer shooter.
-I needed a project that:
+    GLOG: Guns, Lots Of Guns
+    Jan 3, 2026
 
-- lets me use Elixir for the server
-- is a game for our studio
-- is fun rather than… professional 😅
+    A few days ago, I started working on GLOG, a simple multiplayer shooter. I needed
+    a project that:
+
+    lets me use Elixir for the server
+    is a game for our studio
+    is fun rather than… professional 😅
 
     glog/
       glog-cli/     # Lua, löve2D engine
@@ -21,11 +22,3 @@ functionality still pending but it runs smoothly.
 And from that, a handy cheatsheet:
 
 Your browser can’t display PDFs inline. Open the PDF
-
-∅ 2026 n0um3n4
-
-RSS
-
-https://idunnowhatiamdoing.engineering/posts/feed.xml
-
-[]

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% import "macros/ui.html" as ui %}
+
+{% block content %}
+  <header class="tv-pagehead">
+    <h1 class="tv-h1">#{{ term.name }}</h1>
+    <p class="tv-lede">{{ term.page_count }} post{% if term.page_count != 1 %}s{% endif %}.</p>
+  </header>
+
+  {% set pages = term.pages %}
+  {% if paginator is defined %}
+    {% set pages = paginator.pages %}
+  {% endif %}
+
+  <div class="tv-stack">
+    {% for p in pages %}
+      {{ ui::post_card(p=p) }}
+    {% endfor %}
+  </div>
+
+  {% if paginator is defined %}
+    {{ ui::paginate(paginator=paginator) }}
+  {% endif %}
+{% endblock content %}

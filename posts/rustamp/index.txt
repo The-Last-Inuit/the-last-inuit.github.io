@@ -1,33 +1,23 @@
-← back
 
-rustamp
 
-Nov 10, 2025
+    ← back
 
-Do you remember the era of Winamp and Napster? I kind miss those days.
-So, today I want share rustamp, a small certainly-not-winamp mp3 player.
-It's going to be a toy will comeback from time to time to make it
-better. you can find the code here.
+    rustamp
+    Nov 10, 2025
 
-This is how it looks right now
+    Do you remember the era of Winamp and Napster? I kind miss those days. So, today
+    I want share rustamp, a small certainly-not-winamp mp3 player.
+    It's going to be a toy will comeback from time to time to make it better. you can
+    find the code here.
+    This is how it looks right now
 
-[rustamp]
+    It's buggy. I'm totally not convinced with the interface. I prefer text-based apps
+    but the Halloy interface looks cool af. So, I use the same UI library, Iced.
+    I'm thinking that perhaps i switch or have two versions:
 
-It's buggy. I'm totally not convinced with the interface. I prefer
-text-based apps but the Halloy interface looks cool af. So, I use the
-same UI library, Iced.
+    Iced UI
+    RatatUI
 
-I'm thinking that perhaps i switch or have two versions:
+    So, the next post we can work creating the new UI.
 
-- Iced UI
-- RatatUI
-
-So, the next post we can work creating the new UI.
-
-∅ 2026 n0um3n4
-
-RSS
-
-https://idunnowhatiamdoing.engineering/posts/feed.xml
-
-[]
+      

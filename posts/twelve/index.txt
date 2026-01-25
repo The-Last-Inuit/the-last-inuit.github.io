@@ -1,69 +1,56 @@
-← back
 
-12
 
-Oct 24, 2025
+    ← back
 
-I'll be honest: I like order and organization as much as the next
-obsessive person. But sometimes I think we invent complexity just to
-justify... well, whatever.
+    12
+    Oct 24, 2025
 
-The same goes for jargon.
+    I'll be honest: I like order and organization as much as the next obsessive
+    person. But sometimes I think we invent complexity just to justify...
+    well, whatever.
+    The same goes for jargon.
+    Today, however, I won't complain about that. I find
+    The Twelve-Factor methology to hit the sweet spot (though the
+    jargon bothers me).
+    12-Factor Methology
+    It's a practical set of constraints for building services that deploy
+    cleanly, scale predictably, and don't turn into works on my laptop folklore.
+    The core ideas map extremely well to modern Rust services running in
+    containers, Kubernetes, Nomad, systemd, or basically anything that can start a
+    process and feed it environment variables.
+    This post walks through all 12 factors with a concrete Rust shape: a small HTTP
+    API using axum, tokio, and sqlx.
+    A tiny service that:
 
-Today, however, I won't complain about that. I find The Twelve-Factor
-methology to hit the sweet spot (though the jargon bothers me).
+    exposes HTTP on a port (/healthz, /v1/echo)
+    connects to Postgres via DATABASE_URL
+    logs to stdout
+    supports graceful shutdown (SIGTERM)
+    runs migrations as a one-off admin process
 
-12-Factor Methology
+    Factor I — Codebase: one codebase, many deploys
+    One service = one codebase tracked in version control. If you have
+    multiple codebases for one app, you're already in distributed-system territory;
+    treat each component as its own app.
+    Rust fit: a single repo can still contain multiple binaries (like server
 
-It's a practical set of constraints for building services that deploy
-cleanly, scale predictably, and don't turn into works on my laptop
-folklore. The core ideas map extremely well to modern Rust services
-running in containers, Kubernetes, Nomad, systemd, or basically anything
-that can start a process and feed it environment variables.
+    migrate) via src/bin/* and shared modules via src/*. That's still one codebase.
 
-This post walks through all 12 factors with a concrete Rust shape: a
-small HTTP API using axum, tokio, and sqlx.
+    Factor II — Dependencies: declare and isolate
+    A twelve-factor app declares dependencies explicitly and avoids assuming
+    system-wide packages exist.
+    Rust fit:
 
-A tiny service that:
+    Cargo.toml declares dependencies
+    Cargo.lock pins versions for reproducible builds
+    for native dependencies: prefer pure-Rust stacks when reasonable (e.g.,
+    rustls vs OpenSSL), or make system deps explicit in your build image.
 
-- exposes HTTP on a port (/healthz, /v1/echo)
-- connects to Postgres via DATABASE_URL
-- logs to stdout
-- supports graceful shutdown (SIGTERM)
-- runs migrations as a one-off admin process
-
-Factor I — Codebase: one codebase, many deploys
-
-One service = one codebase tracked in version control. If you have
-multiple codebases for one app, you're already in distributed-system
-territory; treat each component as its own app.
-
-Rust fit: a single repo can still contain multiple binaries (like
-server + migrate) via src/bin/* and shared modules via src/*. That's
-still one codebase.
-
-Factor II — Dependencies: declare and isolate
-
-A twelve-factor app declares dependencies explicitly and avoids assuming
-system-wide packages exist.
-
-Rust fit:
-
-- Cargo.toml declares dependencies
-- Cargo.lock pins versions for reproducible builds
-- for native dependencies: prefer pure-Rust stacks when reasonable
-  (e.g., rustls vs OpenSSL), or make system deps explicit in your build
-  image.
-
-Factor III — Config: store config in the environment
-
-Configuration that varies between deploys (ports, DB URLs, API keys)
-should come from environment variables.
-
-A practical Rust pattern: deserialize env into a typed Settings struct.
-
-src/config.rs:
-
+    Factor III — Config: store config in the environment
+    Configuration that varies between deploys (ports, DB URLs, API keys) should
+    come from environment variables.
+    A practical Rust pattern: deserialize env into a typed Settings struct.
+    src/config.rs:
     use serde::Deserialize;
 
     #[derive(Clone, Debug, Deserialize)]
@@ -132,7 +119,7 @@ a new build.
 Factor VI — Processes: stateless, share-nothing
 
 Processes should be stateless and share-nothing; persistent state
-belongs in backing services. 12factor
+belongs in backing services.
 
 Rust fit:
 
@@ -261,7 +248,9 @@ Two common Rust approaches:
 sqlx-cli
 
 sqlx migrate run compares the DB migration history with migrations/ and
-runs pending migrations. Docs.rs
+runs pending migrations.
+
+Docs.rs
 
 This is often perfect in CI/CD:
 
@@ -288,11 +277,3 @@ Run it as:
 (And yes, cargo run -- ... passes args to your binary if you need them.)
 
 :tada:
-
-∅ 2026 n0um3n4
-
-RSS
-
-https://idunnowhatiamdoing.engineering/posts/feed.xml
-
-[]

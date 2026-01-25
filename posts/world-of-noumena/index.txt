@@ -1,105 +1,84 @@
-← back
 
-World Of Noumenon | Part One
 
-Oct 31, 2025
+    ← back
 
-I was born in the 80s, which basically means I grew up in that strange
-in–between era: too early for smartphones, just in time for machines
-that beeped, whirred, and occasionally screamed at you through a modem
-(do you remember that? It's almost like a PTSD every time I hear that
-sound. Nah! I loved it).
+    World Of Noumena | Part One
+    Oct 31, 2025
 
-My first computer was the legendary Commodore 64. I was way too young to
-code, barely old enough to properly play games, but that beige bread
-loaf with its rainbow logo and blue screen did something important: it
-imprinted. I remember the sound of the keyboard (no shit why I love
-mechanical keyboards), the way the screen felt like a portal even when I
-had no idea what I was doing.
+    I was born in the 80s, which basically means I grew up in that strange
+    in–between era: too early for smartphones, just in time for machines that
+    beeped, whirred, and occasionally screamed at you through a modem (do you
+    remember that? It's almost like a PTSD every time I hear that sound. Nah!
+    I loved it).
+    My first computer was the legendary Commodore 64. I was way too young to
+    code, barely old enough to properly play games, but that beige bread loaf
+    with its rainbow logo and blue screen did something important: it imprinted.
+    I remember the sound of the keyboard (no shit why I love mechanical keyboards), the way the screen felt like a portal even when I had no idea what I was doing.
+    In the 90s I finally started learning to code in BASIC. It wasn't glamorous.
+    No fancy IDEs, no tutorials with thumbnails of shocked YouTubers. Just
+    manuals, random snippets, and a lot of trial and error. In fact, I think
+    what’s why I prefer vim or emacs over the new IDEs, just ain’t my thing.
+    Around the same time, the internet wandered into our lives and never left.
+    Afternoons became a ritual: school, home, homework (if I was disciplined),
+    then computer. While other kids were out doing… whatever "normal" kids did,
+    I was dialing into other worlds. My mother was very strict about a lot of
+    things, but she made two big exceptions: computers and TV.
+    If you never played a MUD: imagine an MMO stripped of graphics, sound,
+    particle effects, and loot boxes, what's left is pure text and imagination.
+    Rooms described in a few lines. Exits in cardinal directions. Players as
+    names in a list. Combat as rolling text. And yet, somehow, it felt huge.
+    Those games were slow and fast at the same time: slow because you had to
+    read and type, fast because your imagination was doing all the rendering.
+    I didn't know it then, but MUDs were quietly teaching me:
 
-In the 90s I finally started learning to code in BASIC. It wasn't
-glamorous. No fancy IDEs, no tutorials with thumbnails of shocked
-YouTubers. Just manuals, random snippets, and a lot of trial and error.
-In fact, I think what’s why I prefer vim or emacs over the new IDEs,
-just ain’t my thing.
+    how to read and visualize quickly
+    how to communicate in chat rooms full of strangers
+    how systems, rules, and emergent behavior come together to form a "world"
 
-Around the same time, the internet wandered into our lives and never
-left.
+    They were also teaching me how much I loved being inside a system, not just
+    using it. I didn't want just to play in the world; I wanted to understand
+    its rules and eventually bend them.
+    I kept playing MUDs well into college, even as graphical games exploded.
+    When I finally got into World of Warcraft, it felt like the natural evolution:
+    the same feeling of an online world, but painted in color and sound and spectacle.
+    But a part of me stayed in those quiet telnet sessions.
+    WoW gave me shared raids, guild drama, and late-night dungeon runs. MUDs had
+    given me something else: the sense that under everything flashy, there’s always
+    a simple core made of text, rules, and state. Someone thought this up. Someone
+    wrote this. Someone built this strange little universe.
+    And that "someone" started to feel less like a mysterious wizard behind the
+    curtain and more like a possibility.
+    Fast-forward to now.
+    I'm old enough that they call it "middle-age", young enough that I still stay up
+    too late staring at glowing rectangles. I've been writing software professionally
+    for years. I've touched a bunch of tech stacks, helped build systems that move
+    money around and keep businesses running.
+    But lately, nostalgia has been tapping me on the shoulder.
+    Not just the "remember that old game?" kind of nostalgia, but something deeper:
+    a desire to go back to the source code of why I fell in love with computers and
+    the internet at all (it is also true I’m bored, quite bored).
+    For me, that source code is text. Terminals. Green screens. Typing look to see a
+    room description. Getting lost in an ASCII maze with some random player from the
+    other side of the world.
+    So I've decided to do something that feels both completely reckless and completely
+    inevitable:
+    I'm making a MUD.
+    This is the intro to a series of posts where I’ll document that journey.
+    I want to build a MUD as both:
 
-Afternoons became a ritual: school, home, homework (if I was
-disciplined), then computer. While other kids were out doing… whatever
-"normal" kids did, I was dialing into other worlds. My mother was very
-strict about a lot of things, but she made two big exceptions: computers
-and TV.
+    a love letter to the era that raised me, and
+    a playground to explore ideas about systems, storytelling, and online communities
 
-If you never played a MUD: imagine an MMO stripped of graphics, sound,
-particle effects, and loot boxes, what's left is pure text and
-imagination. Rooms described in a few lines. Exits in cardinal
-directions. Players as names in a list. Combat as rolling text. And yet,
-somehow, it felt huge. Those games were slow and fast at the same time:
-slow because you had to read and type, fast because your imagination was
-doing all the rendering. I didn't know it then, but MUDs were quietly
-teaching me:
+    Some posts will likely be technical: architecture, protocols, Elixir, how to
+    represent rooms, entities, and state. Others will be more personal: what it feels
+    like to recreate the magic that pulled me in as a kid, and how that collides with
+    adult life, deadlines, and limited energy.
+    I'm not promising anything revolutionary. I'm not trying to compete with modern
+    games. This is more like building a small cabin in the woods of the internet, a
+    place made of text, where imagination does the rendering again.
+    If you’ve ever stayed up too late in front of a CRT monitor, or lost track of time
+    in a text prompt, or felt that strange comfort of being alone in your room but not
+    alone in the world, this series is, first and foremost, for me, but feel free to
+    enjoy it.
 
-- how to read and visualize quickly
-- how to communicate in chat rooms full of strangers
-- how systems, rules, and emergent behavior come together to form a
-  "world"
-
-They were also teaching me how much I loved being inside a system, not
-just using it. I didn't want just to play in the world; I wanted to
-understand its rules and eventually bend them.
-
-I kept playing MUDs well into college, even as graphical games exploded.
-When I finally got into World of Warcraft, it felt like the natural
-evolution: the same feeling of an online world, but painted in color and
-sound and spectacle. But a part of me stayed in those quiet telnet
-sessions. WoW gave me shared raids, guild drama, and late-night dungeon
-runs. MUDs had given me something else: the sense that under everything
-flashy, there’s always a simple core made of text, rules, and state.
-Someone thought this up. Someone wrote this. Someone built this strange
-little universe. And that "someone" started to feel less like a
-mysterious wizard behind the curtain and more like a possibility.
-
-Fast-forward to now.
-
-I'm old enough that they call it "middle-age", young enough that I still
-stay up too late staring at glowing rectangles. I've been writing
-software professionally for years. I've touched a bunch of tech stacks,
-helped build systems that move money around and keep businesses running.
-But lately, nostalgia has been tapping me on the shoulder. Not just the
-"remember that old game?" kind of nostalgia, but something deeper: a
-desire to go back to the source code of why I fell in love with
-computers and the internet at all (it is also true I’m bored, quite
-bored). For me, that source code is text. Terminals. Green screens.
-Typing look to see a room description. Getting lost in an ASCII maze
-with some random player from the other side of the world. So I've
-decided to do something that feels both completely reckless and
-completely inevitable: I'm making a MUD.
-
-This is the intro to a series of posts where I’ll document that journey.
-I want to build a MUD as both:
-
-- a love letter to the era that raised me, and
-- a playground to explore ideas about systems, storytelling, and online
-  communities
-
-Some posts will likely be technical: architecture, protocols, Elixir,
-how to represent rooms, entities, and state. Others will be more
-personal: what it feels like to recreate the magic that pulled me in as
-a kid, and how that collides with adult life, deadlines, and limited
-energy. I'm not promising anything revolutionary. I'm not trying to
-compete with modern games. This is more like building a small cabin in
-the woods of the internet, a place made of text, where imagination does
-the rendering again. If you’ve ever stayed up too late in front of a CRT
-monitor, or lost track of time in a text prompt, or felt that strange
-comfort of being alone in your room but not alone in the world, this
-series is, first and foremost, for me, but feel free to enjoy it.
-
-∅ 2026 n0um3n4
-
-RSS
-
-https://idunnowhatiamdoing.engineering/posts/feed.xml
-
-[]
+      

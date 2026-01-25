@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% import "macros/ui.html" as ui %}
+
+{% block content %}
+  <article class="tv-article">
+    <header class="tv-article__head">
+      <h1 class="tv-h1">{{ page.title }}</h1>
+
+      <div class="tv-article__meta">
+        {% if page.date %}
+          <time datetime="{{ page.date }}">{{ page.date | date(format="%Y-%m-%d") }}</time>
+          <span class="tv-dot">·</span>
+        {% endif %}
+        <span>{{ page.reading_time }} min read</span>
+
+        {% if page.taxonomies.tags is defined and (page.taxonomies.tags | length > 0) %}
+          <span class="tv-dot">·</span>
+          <span class="tv-tags">
+            {% for t in page.taxonomies.tags %}
+              <a class="tv-tag" href="{{ get_taxonomy_url(kind="tags", name=t, lang=page.lang) }}">#{{ t }}</a>
+            {% endfor %}
+          </span>
+        {% endif %}
+      </div>
+    </header>
+
+    {% set show_toc = page.extra.toc | default(value=false) %}
+    {% if show_toc and (page.toc | length > 0) %}
+      <aside class="tv-toc" aria-label="Table of contents">
+        <div class="tv-toc__title">Contents</div>
+        {{ ui::toc(headers=page.toc) }}
+      </aside>
+    {% endif %}
+
+    <div class="tv-prose">
+      {{ page.content | safe }}
+    </div>
+  </article>
+{% endblock content %}

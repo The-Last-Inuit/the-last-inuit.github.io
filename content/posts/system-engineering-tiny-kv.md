@@ -3,9 +3,14 @@ title = "Systems Engineering | Tiny KV"
 date = 2025-11-04
 +++
 
-For the time being, working on The World of Noumenon requires time and thought. All of that is good, but I also want other things in life. One of the things I like is systems thinking. So I thought that perhaps I could build a few projects with Elixir and Rust to cover systems thinking within the context of software engineering.
+For the time being, working on The World of Noumenon requires time and thought. 
+All of that is good, but I also want other things in life. One of the things I 
+like is systems thinking. So I thought that perhaps I could build a few projects 
+with Elixir and Rust to cover systems thinking within the context of software 
+engineering.
 
-Today, we will work on a simple key–value store: TinyKV – an in-memory key–value store over TCP
+Today, we will work on a simple key–value store: TinyKV – an in-memory 
+key–value store over TCP
 
 * Concepts to cover: sockets, protocols, concurrency, state, back-pressure.
 * Elixir: GenServer + Task.Supervisor + :gen_tcp
@@ -13,7 +18,8 @@ Today, we will work on a simple key–value store: TinyKV – an in-memory key�
 
 Let’s dive in.
 
-We can execute all the following code by using the raw-dogged technique (if we need libraries).
+We can execute all the following code by using the raw-dogged technique 
+(if we need libraries).
 
 ```elixir
 # lib/tiny_kv/application.ex

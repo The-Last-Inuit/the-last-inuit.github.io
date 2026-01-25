@@ -20,64 +20,114 @@
   <style>
   @import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
 
-  /* light mode colors */
-  body {
-    --primary-color: #5871a2;
-    --primary-pale-color: #5871a233;
-    --primary-decoration-color: #5871a210;
-    --bg-color: #ffffff;
-    --text-color: #2f3030;
-    --text-pale-color: #767676;
-    --text-decoration-color: #a9a9a9;
-    --highlight-mark-color: #5f75b020;
-
-    --callout-note-color: #5871a2;
-    --callout-tip-color: #268556;
-    --callout-important-color: #885fc9;
-    --callout-warning-color: #ab6632;
-    --callout-caution-color: #c64e4e;
+  :root {
+    --bg-top: #ffffff;
+    --bg-bottom: #ffffff;
+    --ink: #141414;
+    --muted: #6a6358;
+    --link: #1d4f8c;
+    --max: 88ch;
+    --pad: clamp(1rem, 3vw, 2.5rem);
   }
 
-  /* dark mode colors */
-  body.dark {
-    --primary-color: #6f8fd1;
-    --primary-pale-color: #6f8fd166;
-    --primary-decoration-color: #6f8fd112;
-    --bg-color: #1c1c1c;
-    --text-color: #c1c1c1;
-    --text-pale-color: #848484;
-    --text-decoration-color: #5f5f5f;
-    --highlight-mark-color: #8296cb3b;
-
-    --callout-note-color: #6f8fd1;
-    --callout-tip-color: #47976f;
-    --callout-important-color: #9776cd;
-    --callout-warning-color: #ad7a52;
-    --callout-caution-color: #d06161;
+  * {
+    box-sizing: border-box;
   }
 
-  /* typography */
+  html {
+    font-size: 100%;
+  }
+
   body {
-    --main-font: "Share Tech Mono", monospace;
-    --code-font: "Share Tech Mono", monospace;
-    --homepage-max-width: 81ch;
-    --main-max-width: 81ch;
-    --avatar-size: 60px;
-    --font-size: 16px;
-    --line-height: 1.75;
-    --img-border-radius: 0px;
-    --detail-border-radius: 0px;
-    --dark-mode-img-brightness: 0.75;
-    --dark-mode-chart-brightness: 0.75;
-    --inline-code-border-radius: 2px;
-    --inline-code-bg-color: var(--primary-decoration-color);
-    --block-code-border-radius: 0px;
-    --block-code-border-color: var(--primary-color);
-    --detail-border-color: var(--primary-color);
+    margin: 0;
+    min-height: 100%;
+    padding: var(--pad);
+    background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+    color: var(--ink);
+    font-family: "Share Tech Mono", monospace;
+    font-size: 16px;
+    line-height: 1.5;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  main.txt {
+    max-width: var(--max);
+    margin: 0 auto;
+  }
+
+  pre {
+    font-family: "Share Tech Mono", monospace;
+  }
+  pre.txt-block {
+    margin: 0;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  a:visited {
+    color: inherit;
+  }
+
+  a:where(:hover, :focus) {
+    color: var(--link);
+  }
+
+  ::selection {
+    background: rgba(29, 79, 140, 0.18);
+  }
+  p {
+    margin: 0;
+    line-height: 16pt;
+  }
+  ul,
+  ol {
+    margin: 0;
+    line-height: 10pt;
+  }
+  li {
+    line-height: 16pt;
+  }
+  blockquote {
+    margin: 0 16pt;
+    line-height: 16pt;
+  }
+  img {
+    max-width: 64ch;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    main.txt {
+      animation: fade-in 600ms ease-out both;
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+
+  @media (max-width: 700px) {
+    body {
+      font-size: 15px;
+      padding: 1rem;
+    }
   }
 </style>
 
-  <link rel="stylesheet" href="https://idunnowhatiamdoing.engineering/main.css">
   
 
 <link id="hl" rel="stylesheet" type="text/css" href="/hl-light.css" />
@@ -90,159 +140,34 @@
 <body class="post">
   
   
-<div id="wrapper">
-  <div id="blank"></div>
-  <aside>
-    
-    
-    <nav>
-      <ul>
-        
-        <li>
-          <a class="h2" href="#tl-dr">TL;DR</a>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#what-changed">What changed</a>
-          
-          <ul>
-            
-            <li>
-              <a class="h3" href="#persistence-and-recovery">Persistence and recovery</a>
-            </li>
-            
-            <li>
-              <a class="h3" href="#mempool-rules">Mempool rules</a>
-            </li>
-            
-            <li>
-              <a class="h3" href="#consensus-hardening">Consensus hardening</a>
-            </li>
-            
-            <li>
-              <a class="h3" href="#block-propagation">Block propagation</a>
-            </li>
-            
-          </ul>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#tooling-and-scripts">Tooling and scripts</a>
-          
-          <ul>
-            
-            <li>
-              <a class="h3" href="#cli-binaries">CLI binaries</a>
-            </li>
-            
-            <li>
-              <a class="h3" href="#scripts">Scripts</a>
-            </li>
-            
-            <li>
-              <a class="h3" href="#make-targets">Make targets</a>
-            </li>
-            
-          </ul>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#api-usage">API usage</a>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#wire-protocol-short-version">Wire protocol (short version)</a>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#documentation-refresh">Documentation refresh</a>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#tradeoffs-limitations">Tradeoffs &#x2F; limitations</a>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#if-you-want-to-try-it">If you want to try it</a>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#what-i-want-to-do-next">What I want to do next</a>
-          
-        </li>
-        
-      </ul>
-    </nav>
-    
-    
-    <button id="back-to-top" aria-label="back to top">
-      
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+<main class="txt">
+  <pre class="txt-block">
 
-    </button>
-    
-  </aside>
-  <main>
-    
-<header>
-  <nav>
-    <a id="back-link" href="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts">← back</a>
-  </nav>
-</header>
+<a id="back-link" href="/">← back</a>
 
+<b>röyksopp | Update</b>
+<span id="publish">Jan 17, 2026</span>
 
-    <div>
-      
-      
-      
-      
-      <div id="copy-cfg" style="display: none;" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-"></div>
-      
-      <article class="prose">
-        <h1>röyksopp | Update</h1>
-        <div id="post-info">
-          <div id="date">
-            <span id="publish">Jan 17, 2026</span>
-            </div>
-
-          
-        </div>
-
-        
-        
-
-        
-
-        <p>It started as an OTP-flavored actor runtime with a toy TCP mesh, and now it has a minimal blockchain node layered on top.</p>
-<h2 id="tl-dr">TL;DR<a class="zola-anchor" href="#tl-dr" aria-label="Anchor link for: tl-dr" style="visibility: hidden;"></a>
-</h2>
+<p>It started as an OTP-flavored actor runtime with a toy TCP mesh, and now it
+has a minimal blockchain node layered on top.</p>
+<p><strong>TL;DR</strong></p>
 <ul>
-<li>Added a minimal blockchain pipeline with persistence, mempool rules, and round-robin consensus.</li>
+<li>Added a minimal blockchain pipeline with persistence, mempool rules, and
+round-robin consensus.</li>
 <li>Introduced compact block propagation and batched sync.</li>
 <li>Added CLI tools and scripts to spin up a local cluster and play with it.</li>
 <li>Expanded docs, tests, and fuzzing so the system is easier to reason about.</li>
 </ul>
-<h2 id="what-changed">What changed<a class="zola-anchor" href="#what-changed" aria-label="Anchor link for: what-changed" style="visibility: hidden;"></a>
-</h2>
-<h3 id="persistence-and-recovery">Persistence and recovery<a class="zola-anchor" href="#persistence-and-recovery" aria-label="Anchor link for: persistence-and-recovery" style="visibility: hidden;"></a>
-</h3>
+<p><strong>What changed</strong></p>
+<p><strong>Persistence and recovery</strong></p>
 <ul>
-<li><strong>BlockStore</strong> is still append-only, but the <strong>StateStore</strong> now uses snapshot + WAL (write-ahead log).</li>
-<li>On startup, state can <strong>recover by replaying the WAL</strong> and verifying against the block store tip.</li>
+<li><strong>BlockStore</strong> is still append-only, but the <strong>StateStore</strong> now uses
+snapshot + WAL (write-ahead log).</li>
+<li>On startup, state can <strong>recover by replaying the WAL</strong> and verifying
+against the block store tip.</li>
 <li>This gives a simple durability story without a full DB.</li>
 </ul>
-<h3 id="mempool-rules">Mempool rules<a class="zola-anchor" href="#mempool-rules" aria-label="Anchor link for: mempool-rules" style="visibility: hidden;"></a>
-</h3>
+<p><strong>Mempool rules</strong></p>
 <ul>
 <li>Mempool now validates txs:
 <ul>
@@ -254,15 +179,13 @@
 <li>Ordering is <strong>fee-first</strong> when assembling blocks.</li>
 <li><code>Tx</code> now includes a <code>fee</code> field and stable <code>id</code> hash.</li>
 </ul>
-<h3 id="consensus-hardening">Consensus hardening<a class="zola-anchor" href="#consensus-hardening" aria-label="Anchor link for: consensus-hardening" style="visibility: hidden;"></a>
-</h3>
+<p><strong>Consensus hardening</strong></p>
 <ul>
 <li>Consensus is still <strong>round-robin leader</strong>, but now includes <strong>view timeouts</strong>.</li>
 <li>A node bumps its <strong>view</strong> when it times out and broadcasts a <code>ViewChange</code>.</li>
 <li>Blocks include the <strong>view</strong> in the header.</li>
 </ul>
-<h3 id="block-propagation">Block propagation<a class="zola-anchor" href="#block-propagation" aria-label="Anchor link for: block-propagation" style="visibility: hidden;"></a>
-</h3>
+<p><strong>Block propagation</strong></p>
 <ul>
 <li>Added <strong>compact block announcements</strong>:
 <ul>
@@ -273,32 +196,27 @@
 </li>
 <li>Added <strong>batched block sync</strong> to reduce RPC chatter.</li>
 </ul>
-<h2 id="tooling-and-scripts">Tooling and scripts<a class="zola-anchor" href="#tooling-and-scripts" aria-label="Anchor link for: tooling-and-scripts" style="visibility: hidden;"></a>
-</h2>
-<h3 id="cli-binaries">CLI binaries<a class="zola-anchor" href="#cli-binaries" aria-label="Anchor link for: cli-binaries" style="visibility: hidden;"></a>
-</h3>
+<p><strong>Tooling and scripts</strong></p>
+<p><strong>CLI binaries</strong></p>
 <ul>
 <li><code>royksopp</code> - run a node from config.</li>
 <li><code>royksopp_keys</code> - generate/read keypair and print pubkey hex.</li>
 <li><code>royksopp_play</code> - interactive playground (local or attached).</li>
 </ul>
-<h3 id="scripts">Scripts<a class="zola-anchor" href="#scripts" aria-label="Anchor link for: scripts" style="visibility: hidden;"></a>
-</h3>
+<p><strong>Scripts</strong></p>
 <ul>
 <li><code>scripts/run_nodes.sh</code> - spin up N nodes and write configs/logs.</li>
 <li><code>scripts/play.sh</code> - interactive client (in-process by default).</li>
 <li><code>scripts/demo.sh</code> - full demo: start nodes + attach client.</li>
 </ul>
-<h3 id="make-targets">Make targets<a class="zola-anchor" href="#make-targets" aria-label="Anchor link for: make-targets" style="visibility: hidden;"></a>
-</h3>
+<p><strong>Make targets</strong></p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">make</span></span><span class="z-meta z-function-call z-arguments z-shell"> demo      <span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> nodes + interactive client</span><span class="z-comment z-line z-number-sign z-shell">
 </span></span></span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">make</span></span><span class="z-meta z-function-call z-arguments z-shell"> play      <span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> in-process playground</span><span class="z-comment z-line z-number-sign z-shell">
 </span></span></span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">make</span></span><span class="z-meta z-function-call z-arguments z-shell"> nodes     <span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> run nodes only</span><span class="z-comment z-line z-number-sign z-shell">
 </span></span></span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">make</span></span><span class="z-meta z-function-call z-arguments z-shell"> test      <span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> all tests</span><span class="z-comment z-line z-number-sign z-shell">
 </span></span></span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">make</span></span><span class="z-meta z-function-call z-arguments z-shell"> clippy    <span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> lint</span><span class="z-comment z-line z-number-sign z-shell">
 </span></span></span></code></pre>
-<h2 id="api-usage">API usage<a class="zola-anchor" href="#api-usage" aria-label="Anchor link for: api-usage" style="visibility: hidden;"></a>
-</h2>
+<p><strong>API usage</strong></p>
 <p>In-process submission:</p>
 <pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-storage z-type z-rust">let</span> tx <span class="z-keyword z-operator z-assignment z-rust">=</span> Tx <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span> key<span class="z-punctuation z-separator z-rust">:</span> <span class="z-string z-quoted z-double z-rust"><span class="z-storage z-type z-string z-rust">b</span><span class="z-punctuation z-definition z-string z-begin z-rust">&quot;</span>foo<span class="z-punctuation z-definition z-string z-end z-rust">&quot;</span></span><span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">to_vec</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-separator z-rust">,</span> value<span class="z-punctuation z-separator z-rust">:</span> <span class="z-string z-quoted z-double z-rust"><span class="z-storage z-type z-string z-rust">b</span><span class="z-punctuation z-definition z-string z-begin z-rust">&quot;</span>bar<span class="z-punctuation z-definition z-string z-end z-rust">&quot;</span></span><span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">to_vec</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-separator z-rust">,</span> fee<span class="z-punctuation z-separator z-rust">:</span> <span class="z-constant z-numeric z-integer z-decimal z-rust">1</span> </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span><span class="z-punctuation z-terminator z-rust">;</span>
 </span><span class="z-source z-rust">runtime<span class="z-punctuation z-accessor z-dot z-rust">.</span>chain<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">submit_tx</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>tx</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-accessor z-dot z-rust">.</span>await<span class="z-keyword z-operator z-rust">?</span><span class="z-punctuation z-terminator z-rust">;</span>
@@ -306,10 +224,10 @@
 <p>RPC submission:</p>
 <pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-storage z-type z-rust">let</span> req <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-meta z-path z-rust">ChainRequest<span class="z-punctuation z-accessor z-rust">::</span></span>SubmitTx <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span> tx </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span><span class="z-punctuation z-terminator z-rust">;</span>
 </span><span class="z-source z-rust"><span class="z-storage z-type z-rust">let</span> bytes <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-meta z-path z-rust">bincode<span class="z-punctuation z-accessor z-rust">::</span></span>serialize<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-keyword z-operator z-bitwise z-rust">&amp;</span>req</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-keyword z-operator z-rust">?</span><span class="z-punctuation z-terminator z-rust">;</span>
-</span><span class="z-source z-rust"><span class="z-storage z-type z-rust">let</span> resp_bytes <span class="z-keyword z-operator z-assignment z-rust">=</span> net<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">request</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>peer_id<span class="z-punctuation z-separator z-rust">,</span> <span class="z-string z-quoted z-double z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&quot;</span>chain<span class="z-punctuation z-definition z-string z-end z-rust">&quot;</span></span><span class="z-punctuation z-separator z-rust">,</span> bytes<span class="z-punctuation z-separator z-rust">,</span> <span class="z-meta z-path z-rust">Duration<span class="z-punctuation z-accessor z-rust">::</span></span>from_secs<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-constant z-numeric z-integer z-decimal z-rust">2</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-accessor z-dot z-rust">.</span>await<span class="z-keyword z-operator z-rust">?</span><span class="z-punctuation z-terminator z-rust">;</span>
+</span><span class="z-source z-rust"><span class="z-storage z-type z-rust">let</span> resp_bytes <span class="z-keyword z-operator z-assignment z-rust">=</span> net<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">request</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>peer_id<span class="z-punctuation z-separator z-rust">,</span> <span class="z-string z-quoted z-double z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&quot;</span>chain<span class="z-punctuation z-definition z-string z-end z-rust">&quot;</span></span><span class="z-punctuation z-separator z-rust">,</span> bytes<span class="z-punctuation z-separator z-rust">,</span> <span class="z-meta z-path z-rust">Duration<span class="z-punctuation z-accessor z-rust">::</span></span>from_secs<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-constant z-numeric z-integer z-decimal z-rust">2</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+</span><span class="z-source z-rust">                    <span class="z-punctuation z-accessor z-dot z-rust">.</span>await<span class="z-keyword z-operator z-rust">?</span><span class="z-punctuation z-terminator z-rust">;</span>
 </span></code></pre>
-<h2 id="wire-protocol-short-version">Wire protocol (short version)<a class="zola-anchor" href="#wire-protocol-short-version" aria-label="Anchor link for: wire-protocol-short-version" style="visibility: hidden;"></a>
-</h2>
+<p><strong>Wire protocol (short version)</strong></p>
 <ul>
 <li>All frames are <strong>length-delimited</strong> and <strong>bincode-encoded</strong>.</li>
 <li>Envelope: <code>version</code>, <code>chain_id</code>, <code>msg_type</code>, <code>request_id</code>, <code>payload</code>.</li>
@@ -320,8 +238,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="documentation-refresh">Documentation refresh<a class="zola-anchor" href="#documentation-refresh" aria-label="Anchor link for: documentation-refresh" style="visibility: hidden;"></a>
-</h2>
+<p><strong>Documentation refresh</strong></p>
 <p><code>README.md</code> now includes:</p>
 <ul>
 <li>Architecture overview</li>
@@ -330,16 +247,14 @@
 <li>API examples</li>
 <li>Scripts and CLI usage</li>
 </ul>
-<h2 id="tradeoffs-limitations">Tradeoffs / limitations<a class="zola-anchor" href="#tradeoffs-limitations" aria-label="Anchor link for: tradeoffs-limitations" style="visibility: hidden;"></a>
-</h2>
+<p><strong>Tradeoffs / limitations</strong></p>
 <ul>
 <li>No tx signatures or account model.</li>
 <li>No fork choice beyond round-robin + view timeouts.</li>
 <li>Mempool is in-memory only.</li>
 <li>Transport is authenticated but <strong>not encrypted</strong>.</li>
 </ul>
-<h2 id="if-you-want-to-try-it">If you want to try it<a class="zola-anchor" href="#if-you-want-to-try-it" aria-label="Anchor link for: if-you-want-to-try-it" style="visibility: hidden;"></a>
-</h2>
+<p><strong>If you want to try it</strong></p>
 <p>The easiest path:</p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">make</span></span><span class="z-meta z-function-call z-arguments z-shell"> demo</span>
 </span></code></pre>
@@ -348,8 +263,7 @@
 </span><span class="z-text z-plain">tip
 </span><span class="z-text z-plain">exit
 </span></code></pre>
-<h2 id="what-i-want-to-do-next">What I want to do next<a class="zola-anchor" href="#what-i-want-to-do-next" aria-label="Anchor link for: what-i-want-to-do-next" style="visibility: hidden;"></a>
-</h2>
+<p><strong>What I want to do next</strong></p>
 <ul>
 <li>Persistent mempool + eviction</li>
 <li>Snapshot/restore tools</li>
@@ -357,65 +271,11 @@
 <li>Transport encryption + message signing</li>
 </ul>
 
-      </article>
-
-      
-      
-
-      
-      
-    </div>
-
-    
-
-
-<footer>
-  <div class="left">
-    <div class="copyright">
-      ∅ 2026 n0um3n4
-      
-    </div>
-  </div>
-
-  <div class="right">
-    
-    
-      
-    
-    
-    <a id="rss-btn" href="https://idunnowhatiamdoing.engineering/posts/feed.xml">RSS</a>
-    
-    
-
-    
-  </div>
-</footer>
-
-
-
-
-<dialog id="rss-mask">
-  <div>
-    <a href="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml">https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml</a>
-    
-    
-    <button autofocus aria-label="copy" data-link="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-" >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z" fill="currentColor"></path></svg>
-
-    </button>
-  </div>
-</dialog>
-
-
-
-  </main>
-</div>
+  </pre>
+</main>
 
   
 <script src="/js/lightense.min.js"></script>
-
 
   <script src="https://idunnowhatiamdoing.engineering/js/main.js"></script>
 </body>

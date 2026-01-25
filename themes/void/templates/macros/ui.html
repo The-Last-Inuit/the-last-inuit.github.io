@@ -1,0 +1,110 @@
+{# UI macros for Terminal Void #}
+
+{% macro header(config, current_path, lang) %}
+<header class="tv-header">
+  <div class="tv-container tv-header__inner">
+    <div class="tv-brand">
+      <a class="tv-brand__title" href="{{ get_url(path="@/_index.md", lang=lang) }}">{{ config.title }}</a>
+      {% if config.description %}
+        <div class="tv-brand__tagline">{{ config.description }}</div>
+      {% endif %}
+    </div>
+
+    {% set menu = config.extra.menu | default(value=[]) %}
+    {% if menu | length > 0 %}
+      <nav class="tv-nav" aria-label="Primary">
+        {% for item in menu %}
+          {% set url = item.url %}
+          {% if item.external | default(value=false) %}
+            <a class="tv-nav__link" href="{{ url }}" rel="noopener" target="_blank">{{ item.name }}</a>
+          {% else %}
+            <a class="tv-nav__link {% if current_path == url %}is-active{% endif %}" href="{{ url }}">{{ item.name }}</a>
+          {% endif %}
+        {% endfor %}
+      </nav>
+    {% endif %}
+  </div>
+</header>
+{% endmacro header %}
+
+{% macro footer(config) %}
+<footer class="tv-footer">
+  <div class="tv-container tv-footer__inner">
+    {% set social = config.extra.social | default(value=[]) %}
+    {% if social | length > 0 %}
+      <div class="tv-footer__social">
+        {% for item in social %}
+          <a class="tv-footer__link" href="{{ item.url }}" rel="noopener" target="_blank">{{ item.name }}</a>
+        {% endfor %}
+      </div>
+    {% endif %}
+    <div class="tv-footer__meta">
+      <span>© {{ now() | date(format="%Y") }} {{ config.title }}</span>
+      <span class="tv-dot">·</span>
+      <span>Built with Zola</span>
+    </div>
+  </div>
+</footer>
+{% endmacro footer %}
+
+{% macro post_card(p) %}
+<article class="tv-card">
+  <header class="tv-card__head">
+    <h2 class="tv-card__title"><a href="{{ p.permalink }}">{{ p.title }}</a></h2>
+    <div class="tv-card__meta">
+      {% if p.date %}
+        <time datetime="{{ p.date }}">{{ p.date | date(format="%Y-%m-%d") }}</time>
+        <span class="tv-dot">·</span>
+      {% endif %}
+      <span>{{ p.reading_time }} min read</span>
+      {% if p.taxonomies.tags is defined and (p.taxonomies.tags | length > 0) %}
+        <span class="tv-dot">·</span>
+        <span class="tv-tags">
+          {% for t in p.taxonomies.tags %}
+            <a class="tv-tag" href="{{ get_taxonomy_url(kind="tags", name=t, lang=p.lang) }}">#{{ t }}</a>
+          {% endfor %}
+        </span>
+      {% endif %}
+    </div>
+  </header>
+
+  <div class="tv-card__body">
+    {% if p.summary %}
+      {{ p.summary | safe }}
+    {% elif p.description %}
+      <p>{{ p.description }}</p>
+    {% endif %}
+  </div>
+</article>
+{% endmacro post_card %}
+
+{% macro paginate(paginator) %}
+<nav class="tv-pagination" aria-label="Pagination">
+  {% if paginator.previous %}
+    <a class="tv-pagination__link" href="{{ paginator.previous }}">← Newer</a>
+  {% else %}
+    <span class="tv-pagination__spacer"></span>
+  {% endif %}
+
+  <span class="tv-pagination__current">Page {{ paginator.current_index }} / {{ paginator.number_pagers }}</span>
+
+  {% if paginator.next %}
+    <a class="tv-pagination__link" href="{{ paginator.next }}">Older →</a>
+  {% else %}
+    <span class="tv-pagination__spacer"></span>
+  {% endif %}
+</nav>
+{% endmacro paginate %}
+
+{% macro toc(headers) %}
+<ul class="tv-toc__list">
+  {% for h in headers %}
+    <li class="tv-toc__item tv-toc__lvl-{{ h.level }}">
+      <a href="{{ h.permalink }}">{{ h.title }}</a>
+      {% if h.children and (h.children | length > 0) %}
+        {{ self::toc(headers=h.children) }}
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>
+{% endmacro toc %}

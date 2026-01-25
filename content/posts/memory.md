@@ -3,49 +3,52 @@ title = "Hardware Memory"
 date = 2025-10-19
 +++
 
-I recently binged Halt and Catch Fire **again**. The episode where they reverse-engineered the BIOS took me right back to when I'd watch my dad with his oscilloscopes like he was doing magic from another universe.
-
-It got me thinking about chips and memory. I took a microprocessors class in college, it was a blast.
-
+I recently binged Halt and Catch Fire **again**. The episode where they 
+reverse-engineered the BIOS took me right back to when I'd watch my dad with 
+his oscilloscopes like he was doing magic from another universe.
+It got me thinking about chips and memory. I took a microprocessors class in 
+college, it was a blast.
 For the first post on my new, new, new blog, I'm starting with [hardware memory](https://research.swtch.com/hwmm).
 
-#### Memory
+**Memory**
 
-
-Rust doesn't magically remove the problem. What it *does* do is give you unusually strong leverage: safe code is designed to avoid data races (which Rust treats as Undefined Behavior), and when you need atomics, Rust exposes the same fundamental ordering toolbox used by other systems languages.
+Rust doesn't magically remove the problem. What it *does* do is give you 
+unusually strong leverage: safe code is designed to avoid data races (which 
+Rust treats as Undefined Behavior), and when you need atomics, Rust exposes 
+the same fundamental ordering toolbox used by other systems languages.
 
 **three contracts**:
 
-1. **Hardware contract**: what CPUs may do.
-2. **Language contract**: what the compiler may assume and reorder.
-3. **Type contract**: what Rust will (and won't) let you express safely.
+* **Hardware contract**: what CPUs may do.
+* **Language contract**: what the compiler may assume and reorder.
+* **Type contract**: what Rust will (and won't) let you express safely.
 
-#### Contract 1: Hardware does not promise as-written execution
+**Contract 1: Hardware does not promise as-written execution**
 
-Russ Cox opens his hardware memory model series with the key punchline: optimizations that were invisible in single-threaded programs become *visible* with threads, and it depends becomes the default unless you have a contract. 
+Russ Cox opens his hardware memory model series with the key punchline: 
+optimizations that were invisible in single-threaded programs become 
+*visible* with threads, and it depends becomes the default unless you have a 
+contract. 
 
 A classic litmus test is **message passing**:
 
 >  Thread 1 # Thread 2
->
 >  x = 1 r1 = y
->
 >  y = 1 r2 = x
 
 Can Thread 2 observe `r1 = 1` but `r2 = 0`?
 
 * On a sequentially consistent machine: **no**.
 * On x86 TSO: **no**.
-* On weaker hardware like ARM/POWER: it can be **yes** without extra barriers/fences.
+* On weaker hardware like ARM/POWER: it can be **yes** without extra
+  barriers/fences.
 
-So even before we talk about compilers, *my writes become visible to other cores in program order* is not a universal hardware law.
-
+So even before we talk about compilers, *my writes become visible to other 
+cores in program order* is not a universal hardware law.
 Another famous one is **store buffering** (a.k.a. store buffer / write queue):
 
 >  Thread 1 # Thread 2
->
 >  x = 1 y = 1
->
 >  r1 = y r2 = x
 
 Can we end with `r1 = 0` and `r2 = 0`?
@@ -54,68 +57,76 @@ Can we end with `r1 = 0` and `r2 = 0`?
 * x86 TSO: **yes** (both stores sit in per-core buffers; both reads miss them).
 * ARM/POWER: **yes**.
 
-If your brain is screaming *but that's illegal*, good, your brain is sequentially consistent. Your CPU is not required to be.
+If your brain is screaming *but that's illegal*, good, your brain is sequentially
+consistent. Your CPU is not required to be.
 
-#### Contract 2: The language memory model is where compilers get permission
+**Contract 2: The language memory model is where compilers get permission**
 
-Even if hardware were perfectly sequentially consistent, the compiler still wants to reorder, eliminate, and fuse loads/stores for speed. Those transformations were *invisible* in single-threaded code. With threads, they become visible. 
+Even if hardware were perfectly sequentially consistent, the compiler still wants
+to reorder, eliminate, and fuse loads/stores for speed. Those transformations 
+were *invisible* in single-threaded code. With threads, they become visible. 
 
 Language memory models generally converge on a pragmatic deal often summarized as:
-
 > **DRF-SC**: *Data-race-free programs behave as if sequentially consistent.*
 
-Russ Cox describes that as a major goal in mainstream language memory models (Java, C/C++, Rust, etc.). 
+Russ Cox describes that as a major goal in mainstream language memory models 
+(Java, C/C++, Rust, etc.). 
 
-But: **DRF-SC is a conditional promise**. If you have a data race, the language may give you anything from *we define a weak-but-sane behavior* (Java historically tried) to *the program has no defined meaning* (C/C++ land). 
-
+But: **DRF-SC is a conditional promise**. If you have a data race, the language 
+may give you anything from *we define a weak-but-sane behavior* (Java historically 
+tried) to *the program has no defined meaning* (C/C++ land). 
 Rust lands firmly in the *no defined meaning* camp for data races.
 
-#### Contract 3: Rust's type system tries to prevent you from *writing* data races
+**Contract 3: Rust's type system tries to prevent you from *writing* data races**
 
 Rust's unsafe book states it plainly:
-
 * A **data race is Undefined Behavior**
-* And safe Rust is designed to make data races impossible to express (mostly through ownership/borrowing; with `Send`/`Sync` controlling what can cross threads).
+* And safe Rust is designed to make data races impossible to express (mostly 
+  through ownership/borrowing; with `Send`/`Sync` controlling what can cross threads).
 
 Important nuance:
-
-* Rust does **not** prevent *all* race conditions (logic races, lost updates, timing bugs).
-* It targets **data races**: unsynchronized concurrent access where at least one access is a write.
+* Rust does **not** prevent *all* race conditions (logic races, lost updates, 
+  timing bugs).
+* It targets **data races**: unsynchronized concurrent access where at least
+  one access is a write.
 
 This is why Rust concurrency often feels like:
-
 > You don't get to share mutable stuff unless you prove how you're coordinating it.
 
-And the moment you *do* want to coordinate at a lower level (lock-free structures, custom primitives), you end up using **atomics** (safe) or `unsafe` (very sharp).
+And the moment you *do* want to coordinate at a lower level (lock-free structures, 
+custom primitives), you end up using **atomics** (safe) or `unsafe` (very sharp).
 
-#### Rust atomics: what they are actually for
+**Rust atomics: what they are actually for**
 
-Atomics are not *faster mutexes*. They are the *vocabulary* used to build synchronization: the tool that creates **happens-before** edges and constrains reordering.
+Atomics are not *faster mutexes*. They are the *vocabulary* used to build 
+synchronization: the tool that creates **happens-before** edges and constrains 
+reordering.
 
-Rust's atomic orderings (`Relaxed`, `Acquire`, `Release`, `AcqRel`, `SeqCst`) are documented in `std::sync::atomic::Ordering`.
-
+Rust's atomic orderings (`Relaxed`, `Acquire`, `Release`, `AcqRel`, `SeqCst`) are 
+documented in `std::sync::atomic::Ordering`.
 Here's the practical mental model I recommend:
 
-##### `Relaxed`: atomicity without ordering
-
+**`Relaxed`: atomicity without ordering**
 Good for counters, stats, *eventually consistent* observations.
+It prevents torn reads/writes of that atomic variable, but does not promise when 
+other memory becomes visible.
 
-It prevents torn reads/writes of that atomic variable, but does not promise when other memory becomes visible.
-
-##### `Release` / `Acquire`: publish–subscribe
-
+**`Release` / `Acquire`: publish–subscribe**
 - Writer: do regular work, then **Release-store** a flag.
 - Reader: **Acquire-load** the flag, then it can safely observe what was published.
 
-Rust docs describe `Release` as making prior operations ordered before an `Acquire` load that observes that value.
+Rust docs describe `Release` as making prior operations ordered before an `Acquire` 
+load that observes that value.
 
-### `SeqCst`: the *everyone agrees* mode
+**`SeqCst`: the *everyone agrees* mode**
 
-Same synchronization power as Acquire/Release, plus a single global order of all `SeqCst` operations (simplifies reasoning; can cost more). :contentReference[oaicite:11]{index=11}
+Same synchronization power as Acquire/Release, plus a single global order of all 
+`SeqCst` operations (simplifies reasoning; can cost more).
 
-##### Example 1: A clean publish–subscribe in Rust (no `unsafe`)
+**Example 1: A clean publish–subscribe in Rust (no `unsafe`)**
 
-This example uses only atomics, so it stays fully safe. It shows the shape of the pattern:
+This example uses only atomics, so it stays fully safe. It shows the shape of 
+the pattern:
 
 ```rust
 use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
@@ -155,69 +166,87 @@ fn main() {
 }
 ```
 
-The Release store on ready ensures the prior write to data becomes visible to any thread that sees `ready == true` via an `Acquire` load. 
+The Release store on ready ensures the prior write to data becomes visible 
+to any thread that sees `ready == true` via an `Acquire` load. 
+Where I usually go wrong: I make ready relaxed too, and then the reader can 
+observe the flag without observing the published data on some 
+platforms/optimizations, the exact *it depends* Russ warns about.
 
-Where I usually go wrong: I make ready relaxed too, and then the reader can observe the flag without observing the published data on some platforms/optimizations, the exact *it depends* Russ warns about.
+**Example 2: Acquire/Release is not global sequential consistency**
 
-##### Example 2: Acquire/Release is not global sequential consistency
+A spicy detail from the language-memory-model world: Acquire/Release does 
+not impose a single total order across different memory locations.
+Russ Cox shows the store-buffering litmus test remains possible under 
+C++11 acquire/release atomics, even though it is disallowed under 
+sequentially consistent atomics. 
+That means: you can correctly synchronize publication on one atomic, and 
+still not get *whole-program sequential consistency* for free.
+This is why SeqCst exists: sometimes you want fewer degrees of freedom for the 
+machine, because you want fewer degrees of freedom in your own head.
 
-A spicy detail from the language-memory-model world: Acquire/Release does not impose a single total order across different memory locations.
-
-Russ Cox shows the store-buffering litmus test remains possible under C++11 acquire/release atomics, even though it is disallowed under sequentially consistent atomics. 
-
-That means: you can correctly synchronize publication on one atomic, and still not get *whole-program sequential consistency* for free.
-
-This is why SeqCst exists: sometimes you want fewer degrees of freedom for the machine, because you want fewer degrees of freedom in your own head.
-
-#### The unsafe cliff: memory ordering is only half the story
+**The unsafe cliff: memory ordering is only half the story**
 
 Memory model can *be* two different beasts:
-
 * Concurrency ordering (atomics, fences, visibility)
 * Aliasing & provenance (what references mean; what the optimizer may assume)
 
-Rust's aliasing rules are why `&T` implies *not being mutated* and `&mut T` implies *unique*. When you build interior mutability (like Cell, RefCell, Mutex), Rust requires you to go through `UnsafeCell<T>`, it’s the sanctioned escape hatch. 
-
+Rust's aliasing rules are why `&T` implies *not being mutated* and `&mut T` 
+implies *unique*. When you build interior mutability (like Cell, RefCell, Mutex), 
+Rust requires you to go through `UnsafeCell<T>`, it’s the sanctioned escape 
+hatch. 
 Key point from the UnsafeCell docs:
-
 * `UnsafeCell` relaxes the immutability guarantee behind `&T`
-* but it does not make aliasing `&mut` references okay (uniqueness is still required). 
+* but it does not make aliasing `&mut` references okay (uniqueness is still 
+  required). 
 
-Researchers and the Rust unsafe-code community have proposed operational models like Stacked Borrows and Tree Borrows to formalize which pointer uses are allowed and which become UB. 
+Researchers and the Rust unsafe-code community have proposed operational models 
+like Stacked Borrows and Tree Borrows to formalize which pointer uses are allowed 
+and which become UB. 
 
-If you write unsafe abstractions, this is the layer that decides whether your code is *works on my machine* or *silently illegal*.
+If you write unsafe abstractions, this is the layer that decides whether your code 
+is *works on my machine* or *silently illegal*.
 
-#### How to build confidence: Loom + Miri
+**How to build confidence: Loom + Miri**
 
-Loom is a concurrency testing tool that repeatedly runs your test while exploring possible thread schedules under the C11-style memory model used for Rust atomics in practice. 
+Loom is a concurrency testing tool that repeatedly runs your test while exploring 
+possible thread schedules under the C11-style memory model used for Rust atomics 
+in practice. 
 
 * Great for: custom mutexes, channels, lock-free structures, tricky state machines.
 * Not great for: *just add Loom to everything* (it’s targeted, and can explode in complexity).
 
-Miri interprets Rust and detects many classes of UB (out-of-bounds, use-after-free, invalid aliasing patterns, etc.). 
+Miri interprets Rust and detects many classes of UB (out-of-bounds, use-after-free, 
+invalid aliasing patterns, etc.). 
 
-If your project has unsafe, running cargo miri test is a very direct *are we lying to the compiler?* check.
+If your project has unsafe, running cargo miri test is a very direct *are we lying
+to the compiler?* check.
 
-#### A tiny ordering cheat-sheet
+**A tiny ordering cheat-sheet**
 
-* Just sharing read-only data across threads
-  * Prefer: Arc<T> + immutable data.
-  * No atomics needed.
+Just sharing read-only data across threads
+* Prefer: Arc<T> + immutable data.
+* No atomics needed.
 
-* Shared mutable state
-  * Prefer: Mutex, RwLock, channels (higher-level synchronization).
-  * Atomics only when you’re building primitives or chasing specific perf needs.
+Shared mutable state
+* Prefer: Mutex, RwLock, channels (higher-level synchronization).
+* Atomics only when you’re building primitives or chasing specific 
+  perf needs.
 
-* Counters / metrics
-  * Often: Relaxed.
+Counters / metrics
+* Often: Relaxed.
 
-* Publish–subscribe / “ready flag”
-  * Writer: Release store
-  * Reader: Acquire load 
+Publish–subscribe / “ready flag”
+* Writer: Release store
+* Reader: Acquire load 
 
-* You want the simplest reasoning model
-  * Use: SeqCst (until profiling proves you need weaker).
+You want the simplest reasoning model
+* Use: SeqCst (until profiling proves you need weaker).
 
-The hardware wants speed. The compiler wants freedom. Our job is to write down the constraints that make your program actually mean what you think it means.
+The hardware wants speed. The compiler wants freedom. Our job is to 
+write down the constraints that make your program actually mean what
+you think it means.
 
-Rust helps by making *accidentally racy* code hard to express, and by giving you the same atomic tools used to build the rest of the ecosystem. The cost is that when you go low-level, you're now negotiating with three contracts at once: CPU, compiler, and Rust's own rules.
+Rust helps by making *accidentally racy* code hard to express, and by 
+giving you the same atomic tools used to build the rest of the ecosystem. 
+The cost is that when you go low-level, you're now negotiating with three
+contracts at once: CPU, compiler, and Rust's own rules.

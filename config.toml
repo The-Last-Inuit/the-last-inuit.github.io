@@ -3,7 +3,7 @@ base_url = "https://idunnowhatiamdoing.engineering"
 title = "i dunno what i am doing"
 description = "Software engineering à la Mexicana"
 default_language = "en"
-theme = "serene"
+theme = "void"
 output_dir = "public"
 compile_sass = true
 minify_html = false # Keep this false, as it may cause issues with some styles
@@ -15,10 +15,10 @@ taxonomies = [{ name = "tags" }, { name = "categories" }]
 [markdown]
 highlight_code = true
 highlight_theme = "css"
-extra_syntaxes_and_themes = ["themes/serene/highlight_themes"]
+extra_syntaxes_and_themes = ["themes/void/highlight_themes"]
 highlight_themes_css = [
-  { theme = "serene-light", filename = "hl-light.css" },
-  { theme = "serene-dark", filename = "hl-dark.css" },
+  { theme = "void-light", filename = "hl-light.css" },
+  { theme = "void-dark", filename = "hl-dark.css" },
 ]
 render_emoji = false
 external_links_target_blank = false

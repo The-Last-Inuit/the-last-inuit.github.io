@@ -1,28 +1,25 @@
-← back
 
-rusty
 
-Jan 4, 2026
+    ← back
 
-I'm a bit rusty, and in a few days I have a technical interview. Time to
-drag those skeletons into the sun for a proper sunbath.
+    rusty
+    Jan 4, 2026
 
-We are going to code (raw-dogging mode) a few elixir modules:
+    I'm a bit rusty, and in a few days I have a technical interview. Time to drag
+    those skeletons into the sun for a proper sunbath.
+    We are going to code (raw-dogging mode) a few elixir modules:
 
-- LRU Cache
-- Top-K frequent (map + heap/PQ)
-- Subarray sum equals K (prefix sums)
-- Merge intervals
-- BFS shortest path (grid)
-- Binary search variants
-- Rate limiter (token bucket, in-memory)
+    LRU Cache
+    Top-K frequent (map + heap/PQ)
+    Subarray sum equals K (prefix sums)
+    Merge intervals
+    BFS shortest path (grid)
+    Binary search variants
+    Rate limiter (token bucket, in-memory)
 
-LRU Cache
-
-link: code
-
-To run:
-
+    LRU Cache
+    link: code
+    To run:
     $ elixir raw-dogged-lru.exs
 
     defmodule LRU do
@@ -1581,11 +1578,3 @@ To run:
         end
       end
     end
-
-∅ 2026 n0um3n4
-
-RSS
-
-https://idunnowhatiamdoing.engineering/posts/feed.xml
-
-[]

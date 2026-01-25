@@ -3,7 +3,8 @@ title = "GLOG: Guns, Lots Of Guns"
 date = 2026-01-03
 +++
 
-A few days ago, I started working on GLOG, a simple multiplayer shooter. I needed a project that:
+A few days ago, I started working on GLOG, a simple multiplayer shooter. I needed
+a project that:
 
 * lets me use Elixir for the server
 * is a game for our studio
@@ -15,7 +16,8 @@ glog/
   glog-server/  # Elixir
 ```
 
-So far, I have [multiplayer working](https://app.radicle.xyz/nodes/seed.radicle.garden/rad%3Az2PiX58ZYwoqG3QXMyCKsuKDztKsS), no assets yet, and lots of functionality still pending but it runs smoothly.
+So far, I have [multiplayer working](https://app.radicle.xyz/nodes/seed.radicle.garden/rad%3Az2PiX58ZYwoqG3QXMyCKsuKDztKsS), no assets yet, and lots of functionality
+still pending but it runs smoothly.
 
 And from that, a handy cheatsheet:
 

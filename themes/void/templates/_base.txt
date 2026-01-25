@@ -1,0 +1,4 @@
+{% if not config.extra.force_theme %}
+
+{% endif %} {% block content %}{% endblock content %} {% block script
+%}{% endblock script %}

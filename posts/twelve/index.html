@@ -20,64 +20,114 @@
   <style>
   @import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
 
-  /* light mode colors */
-  body {
-    --primary-color: #5871a2;
-    --primary-pale-color: #5871a233;
-    --primary-decoration-color: #5871a210;
-    --bg-color: #ffffff;
-    --text-color: #2f3030;
-    --text-pale-color: #767676;
-    --text-decoration-color: #a9a9a9;
-    --highlight-mark-color: #5f75b020;
-
-    --callout-note-color: #5871a2;
-    --callout-tip-color: #268556;
-    --callout-important-color: #885fc9;
-    --callout-warning-color: #ab6632;
-    --callout-caution-color: #c64e4e;
+  :root {
+    --bg-top: #ffffff;
+    --bg-bottom: #ffffff;
+    --ink: #141414;
+    --muted: #6a6358;
+    --link: #1d4f8c;
+    --max: 88ch;
+    --pad: clamp(1rem, 3vw, 2.5rem);
   }
 
-  /* dark mode colors */
-  body.dark {
-    --primary-color: #6f8fd1;
-    --primary-pale-color: #6f8fd166;
-    --primary-decoration-color: #6f8fd112;
-    --bg-color: #1c1c1c;
-    --text-color: #c1c1c1;
-    --text-pale-color: #848484;
-    --text-decoration-color: #5f5f5f;
-    --highlight-mark-color: #8296cb3b;
-
-    --callout-note-color: #6f8fd1;
-    --callout-tip-color: #47976f;
-    --callout-important-color: #9776cd;
-    --callout-warning-color: #ad7a52;
-    --callout-caution-color: #d06161;
+  * {
+    box-sizing: border-box;
   }
 
-  /* typography */
+  html {
+    font-size: 100%;
+  }
+
   body {
-    --main-font: "Share Tech Mono", monospace;
-    --code-font: "Share Tech Mono", monospace;
-    --homepage-max-width: 81ch;
-    --main-max-width: 81ch;
-    --avatar-size: 60px;
-    --font-size: 16px;
-    --line-height: 1.75;
-    --img-border-radius: 0px;
-    --detail-border-radius: 0px;
-    --dark-mode-img-brightness: 0.75;
-    --dark-mode-chart-brightness: 0.75;
-    --inline-code-border-radius: 2px;
-    --inline-code-bg-color: var(--primary-decoration-color);
-    --block-code-border-radius: 0px;
-    --block-code-border-color: var(--primary-color);
-    --detail-border-color: var(--primary-color);
+    margin: 0;
+    min-height: 100%;
+    padding: var(--pad);
+    background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+    color: var(--ink);
+    font-family: "Share Tech Mono", monospace;
+    font-size: 16px;
+    line-height: 1.5;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  main.txt {
+    max-width: var(--max);
+    margin: 0 auto;
+  }
+
+  pre {
+    font-family: "Share Tech Mono", monospace;
+  }
+  pre.txt-block {
+    margin: 0;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  a:visited {
+    color: inherit;
+  }
+
+  a:where(:hover, :focus) {
+    color: var(--link);
+  }
+
+  ::selection {
+    background: rgba(29, 79, 140, 0.18);
+  }
+  p {
+    margin: 0;
+    line-height: 16pt;
+  }
+  ul,
+  ol {
+    margin: 0;
+    line-height: 10pt;
+  }
+  li {
+    line-height: 16pt;
+  }
+  blockquote {
+    margin: 0 16pt;
+    line-height: 16pt;
+  }
+  img {
+    max-width: 64ch;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    main.txt {
+      animation: fade-in 600ms ease-out both;
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+
+  @media (max-width: 700px) {
+    body {
+      font-size: 15px;
+      padding: 1rem;
+    }
   }
 </style>
 
-  <link rel="stylesheet" href="https://idunnowhatiamdoing.engineering/main.css">
   
 
 <link id="hl" rel="stylesheet" type="text/css" href="/hl-light.css" />
@@ -90,142 +140,29 @@
 <body class="post">
   
   
-<div id="wrapper">
-  <div id="blank"></div>
-  <aside>
-    
-    
-    <nav>
-      <ul>
-        
-        <li>
-          <a class="h2" href="#12-factor-methology">12-Factor Methology</a>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#factor-i-codebase-one-codebase-many-deploys">Factor I — Codebase: one codebase, many deploys</a>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#factor-ii-dependencies-declare-and-isolate">Factor II — Dependencies: declare and isolate</a>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#factor-iii-config-store-config-in-the-environment">Factor III — Config: store config in the environment</a>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#factor-iv-backing-services-treat-them-as-attached-resources">Factor IV — Backing services: treat them as attached resources</a>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#factor-v-build-release-run-strictly-separate">Factor V — Build, release, run: strictly separate</a>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#factor-vi-processes-stateless-share-nothing">Factor VI — Processes: stateless, share-nothing</a>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#factor-vii-port-binding-export-services-via-a-port">Factor VII — Port binding: export services via a port</a>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#factor-viii-concurrency-scale-out-via-the-process-model">Factor VIII — Concurrency: scale out via the process model</a>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#factor-ix-disposability-fast-startup-graceful-shutdown">Factor IX — Disposability: fast startup, graceful shutdown</a>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#factor-x-dev-prod-parity-keep-them-similar">Factor X — Dev&#x2F;prod parity: keep them similar</a>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#factor-xi-logs-treat-logs-as-event-streams">Factor XI — Logs: treat logs as event streams</a>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#factor-xii-admin-processes-run-one-off-tasks-as-one-off-processes">Factor XII — Admin processes: run one-off tasks as one-off processes</a>
-          
-          <ul>
-            
-            <li>
-              <a class="h3" href="#sqlx-cli">sqlx-cli</a>
-            </li>
-            
-            <li>
-              <a class="h3" href="#a-dedicated-admin-binary">A dedicated admin binary</a>
-            </li>
-            
-          </ul>
-          
-        </li>
-        
-      </ul>
-    </nav>
-    
-    
-    <button id="back-to-top" aria-label="back to top">
-      
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+<main class="txt">
+  <pre class="txt-block">
 
-    </button>
-    
-  </aside>
-  <main>
-    
-<header>
-  <nav>
-    <a id="back-link" href="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts">← back</a>
-  </nav>
-</header>
+<a id="back-link" href="/">← back</a>
 
+<b>12</b>
+<span id="publish">Oct 24, 2025</span>
 
-    <div>
-      
-      
-      
-      
-      <div id="copy-cfg" style="display: none;" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-"></div>
-      
-      <article class="prose">
-        <h1>12</h1>
-        <div id="post-info">
-          <div id="date">
-            <span id="publish">Oct 24, 2025</span>
-            </div>
-
-          
-        </div>
-
-        
-        
-
-        
-
-        <p>I'll be honest: I like order and organization as much as the next obsessive person. But sometimes I think we invent complexity just to justify... well, whatever.</p>
+<p>I'll be honest: I like order and organization as much as the next obsessive
+person. But sometimes I think we invent complexity just to justify...
+well, whatever.</p>
 <p>The same goes for jargon.</p>
-<p>Today, however, I won't complain about that. I find <a rel="nofollow noreferrer" href="https://12factor.net/">The Twelve-Factor methology</a> to hit the sweet spot (though the jargon bothers me).</p>
-<h4 id="12-factor-methology">12-Factor Methology<a class="zola-anchor" href="#12-factor-methology" aria-label="Anchor link for: 12-factor-methology" style="visibility: hidden;"></a>
-</h4>
-<p>It's a practical set of constraints for building services that deploy cleanly, scale predictably, and don't turn into <em>works on my laptop</em> folklore. The core ideas map extremely well to modern Rust services running in containers, Kubernetes, Nomad, systemd, or basically anything that can start a process and feed it environment variables.</p>
-<p>This post walks through all 12 factors with a concrete Rust shape: a small HTTP API using <code>axum</code>, <code>tokio</code>, and <code>sqlx</code>.</p>
+<p>Today, however, I won't complain about that. I find
+<a rel="nofollow noreferrer" href="https://12factor.net/">The Twelve-Factor methology</a> to hit the sweet spot (though the
+jargon bothers me).</p>
+<p><strong>12-Factor Methology</strong></p>
+<p>It's a practical set of constraints for building services that deploy
+cleanly, scale predictably, and don't turn into <em>works on my laptop</em> folklore.
+The core ideas map extremely well to modern Rust services running in
+containers, Kubernetes, Nomad, systemd, or basically anything that can start a
+process and feed it environment variables.</p>
+<p>This post walks through all 12 factors with a concrete Rust shape: a small HTTP
+API using <code>axum</code>, <code>tokio</code>, and <code>sqlx</code>.</p>
 <p>A tiny service that:</p>
 <ul>
 <li>exposes HTTP on a port (<code>/healthz</code>, <code>/v1/echo</code>)</li>
@@ -234,22 +171,27 @@
 <li>supports graceful shutdown (<code>SIGTERM</code>)</li>
 <li>runs migrations as a one-off admin process</li>
 </ul>
-<h4 id="factor-i-codebase-one-codebase-many-deploys">Factor I — Codebase: one codebase, many deploys<a class="zola-anchor" href="#factor-i-codebase-one-codebase-many-deploys" aria-label="Anchor link for: factor-i-codebase-one-codebase-many-deploys" style="visibility: hidden;"></a>
-</h4>
-<p>One service = one codebase tracked in version control. If you have <em>multiple codebases for one app</em>, you're already in distributed-system territory; treat each component as its own app.</p>
-<p><strong>Rust fit</strong>: a single repo can still contain multiple binaries (like <code>server</code> + <code>migrate</code>) via <code>src/bin/*</code> and shared modules via <code>src/*</code>. That's still one codebase.</p>
-<h4 id="factor-ii-dependencies-declare-and-isolate">Factor II — Dependencies: declare and isolate<a class="zola-anchor" href="#factor-ii-dependencies-declare-and-isolate" aria-label="Anchor link for: factor-ii-dependencies-declare-and-isolate" style="visibility: hidden;"></a>
-</h4>
-<p>A twelve-factor app declares dependencies explicitly and avoids assuming system-wide packages exist.</p>
+<p><strong>Factor I — Codebase: one codebase, many deploys</strong></p>
+<p>One service = one codebase tracked in version control. If you have
+<em>multiple codebases for one app</em>, you're already in distributed-system territory;
+treat each component as its own app.</p>
+<p><strong>Rust fit</strong>: a single repo can still contain multiple binaries (like <code>server</code></p>
+<ul>
+<li><code>migrate</code>) via <code>src/bin/*</code> and shared modules via <code>src/*</code>. That's still one codebase.</li>
+</ul>
+<p><strong>Factor II — Dependencies: declare and isolate</strong></p>
+<p>A twelve-factor app declares dependencies explicitly and avoids assuming
+system-wide packages exist.</p>
 <p><strong>Rust fit</strong>:</p>
 <ul>
 <li><code>Cargo.toml</code> declares dependencies</li>
 <li><code>Cargo.lock</code> pins versions for reproducible builds</li>
-<li>for native dependencies: prefer pure-Rust stacks when reasonable (e.g., <code>rustls</code> vs OpenSSL), or make system deps explicit in your build image.</li>
+<li>for native dependencies: prefer pure-Rust stacks when reasonable (e.g.,
+<code>rustls</code> vs OpenSSL), or make system deps explicit in your build image.</li>
 </ul>
-<h4 id="factor-iii-config-store-config-in-the-environment">Factor III — Config: store config in the environment<a class="zola-anchor" href="#factor-iii-config-store-config-in-the-environment" aria-label="Anchor link for: factor-iii-config-store-config-in-the-environment" style="visibility: hidden;"></a>
-</h4>
-<p>Configuration that varies between deploys (ports, DB URLs, API keys) should come from environment variables.</p>
+<p><strong>Factor III — Config: store config in the environment</strong></p>
+<p>Configuration that varies between deploys (ports, DB URLs, API keys) should
+come from environment variables.</p>
 <p>A practical Rust pattern: deserialize env into a typed <code>Settings</code> struct.</p>
 <p><code>src/config.rs</code>:</p>
 <pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-keyword z-other z-rust">use</span> <span class="z-meta z-path z-rust">serde<span class="z-punctuation z-accessor z-rust">::</span></span>Deserialize<span class="z-punctuation z-terminator z-rust">;</span>
@@ -270,10 +212,11 @@
 </span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-support z-type z-rust">Ok</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>cfg<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">try_deserialize</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-keyword z-operator z-rust">?</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
 </span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
 </span></code></pre>
-<p>Local dev convenience: use a <code>.env</code> file <em>locally</em>, but treat it as developer tooling, not <em>the deployment system</em>.</p>
-<h4 id="factor-iv-backing-services-treat-them-as-attached-resources">Factor IV — Backing services: treat them as attached resources<a class="zola-anchor" href="#factor-iv-backing-services-treat-them-as-attached-resources" aria-label="Anchor link for: factor-iv-backing-services-treat-them-as-attached-resources" style="visibility: hidden;"></a>
-</h4>
-<p>Databases, caches, queues, and object storage are backing services and should be treated as swappable attached resources.</p>
+<p>Local dev convenience: use a <code>.env</code> file <em>locally</em>, but treat it as developer
+tooling, not <em>the deployment system</em>.</p>
+<p><strong>Factor IV — Backing services: treat them as attached resources</strong></p>
+<p>Databases, caches, queues, and object storage are backing services and should
+be treated as swappable attached resources.</p>
 <p><strong>Rust fit</strong>:</p>
 <ul>
 <li>put <code>DATABASE_URL</code> in env</li>
@@ -293,13 +236,13 @@
 </span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-support z-type z-rust">Ok</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>pool</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
 </span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
 </span></code></pre>
-<h4 id="factor-v-build-release-run-strictly-separate">Factor V — Build, release, run: strictly separate<a class="zola-anchor" href="#factor-v-build-release-run-strictly-separate" aria-label="Anchor link for: factor-v-build-release-run-strictly-separate" style="visibility: hidden;"></a>
-</h4>
+<p><strong>Factor V — Build, release, run: strictly separate</strong></p>
 <p>The methodology wants strict separation between build, release, and run.</p>
 <p><strong>Rust fit</strong>:</p>
 <ul>
 <li>Build: compile a binary (<code>cargo build --release</code>)</li>
-<li>Release: package that build artifact + attach config (env vars, secrets, release metadata)</li>
+<li>Release: package that build artifact + attach config (env vars, secrets,
+release metadata)</li>
 <li>Run: execute the same artifact with the release’s environment</li>
 </ul>
 <p>A simple container flow:</p>
@@ -307,20 +250,20 @@
 <li>build stage compiles <code>tiny-svc</code></li>
 <li>runtime stage runs <code>./tiny-svc</code> and receives env from orchestrator</li>
 </ul>
-<p>Key idea: no <em>SSH into prod and edit code</em>. If you changed code, you made a new build.</p>
-<h4 id="factor-vi-processes-stateless-share-nothing">Factor VI — Processes: stateless, share-nothing<a class="zola-anchor" href="#factor-vi-processes-stateless-share-nothing" aria-label="Anchor link for: factor-vi-processes-stateless-share-nothing" style="visibility: hidden;"></a>
-</h4>
-<p>Processes should be stateless and share-nothing; persistent state belongs in backing services.
-12factor</p>
+<p>Key idea: no <em>SSH into prod and edit code</em>. If you changed code, you made
+a new build.</p>
+<p><strong>Factor VI — Processes: stateless, share-nothing</strong></p>
+<p>Processes should be stateless and share-nothing; persistent state belongs
+in backing services.</p>
 <p><strong>Rust fit</strong>:</p>
 <ul>
 <li>don't store sessions on disk</li>
 <li>don't rely on local filesystem as durable storage</li>
 <li>treat local memory as cache only (and disposable)</li>
 </ul>
-<p>If you need sessions, use Redis or the DB. If you need files, use object storage.</p>
-<h4 id="factor-vii-port-binding-export-services-via-a-port">Factor VII — Port binding: export services via a port<a class="zola-anchor" href="#factor-vii-port-binding-export-services-via-a-port" aria-label="Anchor link for: factor-vii-port-binding-export-services-via-a-port" style="visibility: hidden;"></a>
-</h4>
+<p>If you need sessions, use Redis or the DB. If you need files, use object
+storage.</p>
+<p><strong>Factor VII — Port binding: export services via a port</strong></p>
 <p>The app should be self-contained and bind to a port to serve requests.</p>
 <p><strong>Rust fit (axum)</strong>:</p>
 <pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-keyword z-other z-rust">use</span> <span class="z-meta z-path z-rust">axum<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span><span class="z-meta z-path z-rust">routing<span class="z-punctuation z-accessor z-rust">::</span></span>get<span class="z-punctuation z-separator z-rust">,</span> Router</span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span><span class="z-punctuation z-terminator z-rust">;</span>
@@ -337,18 +280,19 @@
 </span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-support z-type z-rust">Ok</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
 </span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
 </span></code></pre>
-<h4 id="factor-viii-concurrency-scale-out-via-the-process-model">Factor VIII — Concurrency: scale out via the process model<a class="zola-anchor" href="#factor-viii-concurrency-scale-out-via-the-process-model" aria-label="Anchor link for: factor-viii-concurrency-scale-out-via-the-process-model" style="visibility: hidden;"></a>
-</h4>
+<p><strong>Factor VIII — Concurrency: scale out via the process model</strong></p>
 <p>The factor emphasizes scaling out by running more processes.</p>
-<p>Rust reality check: Rust async can handle high concurrency inside one process, but twelve-factor wants you to be able to scale horizontally anyway.</p>
+<p>Rust reality check: Rust async can handle high concurrency inside one
+process, but twelve-factor wants you to be able to scale horizontally
+anyway.</p>
 <p>So you do both:</p>
 <ul>
 <li>use async I/O for efficient per-process concurrency</li>
 <li>scale with more replicas when needed (N processes behind a load balancer)</li>
 </ul>
-<h4 id="factor-ix-disposability-fast-startup-graceful-shutdown">Factor IX — Disposability: fast startup, graceful shutdown<a class="zola-anchor" href="#factor-ix-disposability-fast-startup-graceful-shutdown" aria-label="Anchor link for: factor-ix-disposability-fast-startup-graceful-shutdown" style="visibility: hidden;"></a>
-</h4>
-<p>Processes should start quickly and shut down gracefully for resilience and rapid deploys.</p>
+<p><strong>Factor IX — Disposability: fast startup, graceful shutdown</strong></p>
+<p>Processes should start quickly and shut down gracefully for resilience
+and rapid deploys.</p>
 <p><strong>Rust fit</strong>: handle <code>SIGTERM/CTRL-C</code> and allow in-flight requests to finish.</p>
 <p>Tokio provides guidance for graceful shutdown patterns.</p>
 <p>Axum includes a graceful shutdown example you can adapt.</p>
@@ -380,10 +324,11 @@
 </span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-storage z-type z-rust">let</span> <span class="z-keyword z-operator z-rust">_</span> <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-meta z-path z-rust">signal<span class="z-punctuation z-accessor z-rust">::</span></span>ctrl_c<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-accessor z-dot z-rust">.</span>await<span class="z-punctuation z-terminator z-rust">;</span>
 </span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
 </span></code></pre>
-<p>In production you'll also want <code>SIGTERM</code> handling on Unix; the axum example shows the pattern.</p>
-<h4 id="factor-x-dev-prod-parity-keep-them-similar">Factor X — Dev/prod parity: keep them similar<a class="zola-anchor" href="#factor-x-dev-prod-parity-keep-them-similar" aria-label="Anchor link for: factor-x-dev-prod-parity-keep-them-similar" style="visibility: hidden;"></a>
-</h4>
-<p>Minimize gaps between dev/staging/prod; avoid <em>SQLite locally, Postgres in prod</em> surprises.</p>
+<p>In production you'll also want <code>SIGTERM</code> handling on Unix; the axum example shows
+the pattern.</p>
+<p><strong>Factor X — Dev/prod parity: keep them similar</strong></p>
+<p>Minimize gaps between dev/staging/prod; avoid <em>SQLite locally, Postgres
+in prod</em> surprises.</p>
 <p><strong>Rust fit</strong>:</p>
 <ul>
 <li>run the same DB engine locally via Docker Compose</li>
@@ -395,9 +340,9 @@
 <li><code>postgres:16</code></li>
 <li>tiny-svc with <code>DATABASE_URL=postgres://...</code></li>
 </ul>
-<h4 id="factor-xi-logs-treat-logs-as-event-streams">Factor XI — Logs: treat logs as event streams<a class="zola-anchor" href="#factor-xi-logs-treat-logs-as-event-streams" aria-label="Anchor link for: factor-xi-logs-treat-logs-as-event-streams" style="visibility: hidden;"></a>
-</h4>
-<p>A twelve-factor app should not manage log files, it writes its event stream to stdout and the environment routes/aggregates it.</p>
+<p><strong>Factor XI — Logs: treat logs as event streams</strong></p>
+<p>A twelve-factor app should not manage log files, it writes its event stream to
+stdout and the environment routes/aggregates it.</p>
 <p><strong>Rust fit</strong>: <code>tracing</code> + <code>tracing-subscriber</code> with JSON to stdout.</p>
 <p><code>tracing-subscriber</code>'s <code>fmt</code> subscriber formats events and logs them to stdout.</p>
 <p>Good defaults:</p>
@@ -405,21 +350,20 @@
 <li>structured logs (JSON)</li>
 <li>log level from env (<code>RUST_LOG=info</code>)</li>
 </ul>
-<h4 id="factor-xii-admin-processes-run-one-off-tasks-as-one-off-processes">Factor XII — Admin processes: run one-off tasks as one-off processes<a class="zola-anchor" href="#factor-xii-admin-processes-run-one-off-tasks-as-one-off-processes" aria-label="Anchor link for: factor-xii-admin-processes-run-one-off-tasks-as-one-off-processes" style="visibility: hidden;"></a>
-</h4>
-<p>Migrations, data backfills, and maintenance tasks should run in the same environment (same code + config) as the app.</p>
+<p><strong>Factor XII — Admin processes: run one-off tasks as one-off processes</strong></p>
+<p>Migrations, data backfills, and maintenance tasks should run in the same
+environment (same code + config) as the app.</p>
 <p>Two common Rust approaches:</p>
-<h5 id="sqlx-cli"><code>sqlx-cli</code><a class="zola-anchor" href="#sqlx-cli" aria-label="Anchor link for: sqlx-cli" style="visibility: hidden;"></a>
-</h5>
-<p><code>sqlx migrate run</code> compares the DB migration history with <code>migrations/</code> and runs pending migrations.
-Docs.rs</p>
+<p><strong><code>sqlx-cli</code></strong></p>
+<p><code>sqlx migrate run</code> compares the DB migration history with <code>migrations/</code> and runs
+pending migrations.</p>
+<p><strong>Docs.rs</strong></p>
 <p>This is often perfect in CI/CD:</p>
 <ul>
 <li>run migrations as a job</li>
 <li>then deploy the app</li>
 </ul>
-<h5 id="a-dedicated-admin-binary">A dedicated admin binary<a class="zola-anchor" href="#a-dedicated-admin-binary" aria-label="Anchor link for: a-dedicated-admin-binary" style="visibility: hidden;"></a>
-</h5>
+<p><strong>A dedicated admin binary</strong></p>
 <p><code>src/bin/migrate.rs</code>:</p>
 <pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-meta z-annotation z-rust"><span class="z-punctuation z-definition z-annotation z-rust">#</span><span class="z-punctuation z-section z-group z-begin z-rust">[</span><span class="z-variable z-annotation z-rust">tokio</span>::<span class="z-variable z-annotation z-rust">main</span><span class="z-punctuation z-section z-group z-end z-rust">]</span></span>
 </span><span class="z-source z-rust">async <span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">main</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> <span class="z-meta z-function z-return-type z-rust"><span class="z-punctuation z-separator z-rust">-&gt;</span> <span class="z-meta z-path z-rust">anyhow<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-generic z-rust"><span class="z-support z-type z-rust">Result</span><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-punctuation z-section z-group z-end z-rust">)</span><span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span></span> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
@@ -436,65 +380,11 @@ Docs.rs</p>
 <p>(And yes, <code>cargo run -- ...</code> passes args to your binary if you need them.)</p>
 <p>:tada:</p>
 
-      </article>
-
-      
-      
-
-      
-      
-    </div>
-
-    
-
-
-<footer>
-  <div class="left">
-    <div class="copyright">
-      ∅ 2026 n0um3n4
-      
-    </div>
-  </div>
-
-  <div class="right">
-    
-    
-      
-    
-    
-    <a id="rss-btn" href="https://idunnowhatiamdoing.engineering/posts/feed.xml">RSS</a>
-    
-    
-
-    
-  </div>
-</footer>
-
-
-
-
-<dialog id="rss-mask">
-  <div>
-    <a href="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml">https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml</a>
-    
-    
-    <button autofocus aria-label="copy" data-link="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-" >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z" fill="currentColor"></path></svg>
-
-    </button>
-  </div>
-</dialog>
-
-
-
-  </main>
-</div>
+  </pre>
+</main>
 
   
 <script src="/js/lightense.min.js"></script>
-
 
   <script src="https://idunnowhatiamdoing.engineering/js/main.js"></script>
 </body>

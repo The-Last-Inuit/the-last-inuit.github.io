@@ -1,138 +1,247 @@
-← back
 
-projects
 
-A short list of things I build and learn from.
+    ← back
 
-DYNOSTIC []
+    A short list of things I build and learn from.
 
-Dynostic is a reusable deterministic tactical-sim core in Rust with a
-LÖVE (LuaJIT) front-end. The design goal is fast iteration on UI/feel in
-LÖVE while keeping the simulation pure, deterministic, and event-sourced
-in Rust.
+      
+          
+            DYNOSTIC
+          
+          
+          
+            Dynostic is a reusable deterministic tactical-sim core in Rust with a LÖVE (LuaJIT)
+            front-end. The design goal is fast iteration on UI/feel in LÖVE while keeping the
+            simulation pure, deterministic, and event-sourced in Rust.
+          
+          
+            [ rust | lua ]
+          
+        
+      
+        
+          kailinnel
+        
+        
+        
+          a Rust + libp2p project for spinning up ad-hoc “flash institutions”, the kind of temporary, ownerless coordination layer you want at a hackathon, festival, or pop-up clinic. No accounts, no servers; the network appears when you need it, disappears when you don’t.
+        
+        
+          [ rust ]
+        
+      
+      
+        
+          steer
+        
+        
+        
+          a small but opinionated experiment in local‑first collaboration.
+        
+        
+          [ rust ]
+        
+      
+      
+        
+          kaíven
+        
+        
+        
+          an episodic adventure game (and custom in-house engine).
+        
+        
+          [ lua | rust ]
+        
+      
+      
+        
+          ëëntïï
+        
+        
+        
+          an entomologist against interdimensional beings, single player.
+        
+        
+          [ rust ]
+        
+      
+      
+        
+          sääl
+        
+        
+        
+          p2p social network 
+        
+        
+          [ rust ]
+        
+      
+      
+        
+          lõvi
+        
+        
+        
+          lõvi scans targets and reports what it finds with a small set of probes.
+        
+        
+          [ rust ]
+        
+      
+      
+        
+          TaskNet
+        
+        
+        
+          TaskNet is a minimal, privacy‑preserving protocol for rendering and invoking trusted service tasks across diverse clients.
+        
+        
+          [ rust ]
+        
+      
+      
+        
+          tal-hel
+        
+        
+        
+          No-server-storage P2P text and file sharing.
+        
+        
+          [ rust ]
+        
+      
+      
+        
+          GLOG: Guns, Lots Of Guns
+        
+        
+        Multiplayer · Roguelike · PC / Steam / Switch
+        
+          [ lua | rust ]
+        
+      
+      
+        
+          ë
+        
+        
+        A minimal CSS + vanilla JS UI kit with a cyan sci‑fi aesthetic (glass panels, glow accents, scanlines), designed for dashboards, settings, explorers, auth, and onboarding.
+        
+          [ css ]
+        
+      
+      
+        
+          kai-rem
+        
+        
+        
+          Realtime synth engine with a sci-fi minimalist UI (iced) and MIDI input.
+        
+        
+          [ rust ]
+        
+      
+      
+        
+          Dr. Nose
+        
+        
+        
+          This is a forensics-oriented Wi-Fi capture viewer.
+        
+        
+          [ rust ]
+        
+      
+      
+        
+          solënna
+        
+        
+        
+          A small peer-to-peer node for publishing and browsing geotagged datapoints
+        
+        
+          [ rust | html | css ]
+        
+      
+      
+        
+          varënna
+        
+        
+        
+          Futuristic Theme for CSS, RatatUI Components and Iced Components.
+        
+        
+          [ rust | css ]
+        
+      
+      
+        
+          rustamp
+        
+        
+        
+          Minimal Winamp-like MP3 player.
+        
+        
+          [ rust ]
+        
+      
+      
+        
+          mei
+        
+        
+        
+          An experimental framework for user-own communication.
+        
+        
+          [ rust | elixir ]
+        
+       
+      
+        
+          röyksopp
+        
+        
+        
+          A toy of blockchain, merely for personal purposes. All buggy, all reckless, full fun.
+        
+        
+          [ rust ]
+        
+      
+      
+        
+          phenomena
+        
+        
+        
+          a fediverse application
+        
+        
+          [ elixir ]
+        
+      
+      
+        
+          World of Noumena
+        
+        
+        
+          A MUD game.
+        
+        
+          [ elixir ]
+        
+      
 
-[ rust | lua ]
 
-kailinnel []
-
-a Rust + libp2p project for spinning up ad-hoc “flash institutions”, the
-kind of temporary, ownerless coordination layer you want at a hackathon,
-festival, or pop-up clinic. No accounts, no servers; the network appears
-when you need it, disappears when you don’t.
-
-[ rust ]
-
-steer []
-
-a small but opinionated experiment in local‑first collaboration.
-
-[ rust ]
-
-kaíven []
-
-an episodic adventure game (and custom in-house engine).
-
-[ lua | rust ]
-
-ëëntïï []
-
-an entomologist against interdimensional beings, single player.
-
-[ rust ]
-
-sääl []
-
-p2p social network
-
-[ rust ]
-
-lõvi []
-
-lõvi scans targets and reports what it finds with a small set of probes.
-
-[ rust ]
-
-TaskNet []
-
-TaskNet is a minimal, privacy‑preserving protocol for rendering and
-invoking trusted service tasks across diverse clients.
-
-[ rust ]
-
-tal-hel []
-
-No-server-storage P2P text and file sharing.
-
-[ rust ]
-
-GLOG: Guns, Lots Of Guns []
-
-Multiplayer · Roguelike · PC / Steam / Switch
-
-[ lua | rust ]
-
-ë []
-
-A minimal CSS + vanilla JS UI kit with a cyan sci‑fi aesthetic (glass
-panels, glow accents, scanlines), designed for dashboards, settings,
-explorers, auth, and onboarding.
-
-[ css ]
-
-kai-rem []
-
-Realtime synth engine with a sci-fi minimalist UI (iced) and MIDI input.
-
-[ rust ]
-
-Dr. Nose []
-
-This is a forensics-oriented Wi-Fi capture viewer.
-
-[ rust ]
-
-solënna []
-
-A small peer-to-peer node for publishing and browsing geotagged
-datapoints
-
-[ rust | html | css ]
-
-varënna []
-
-Futuristic Theme for CSS, RatatUI Components and Iced Components.
-
-[ rust | css ]
-
-rustamp []
-
-Minimal Winamp-like MP3 player.
-
-[ rust ]
-
-mei []
-
-An experimental framework for user-own communication.
-
-[ rust | elixir ]
-
-röyksopp []
-
-A toy of blockchain, merely for personal purposes. All buggy, all
-reckless, full fun.
-
-[ rust ]
-
-phenomena []
-
-a fediverse application
-
-[ elixir ]
-
-World of Noumena []
-
-A MUD game.
-
-[ elixir ]
-
-∅ 2026 n0um3n4
+        

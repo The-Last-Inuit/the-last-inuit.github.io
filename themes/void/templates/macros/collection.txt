@@ -1,0 +1,133 @@
+{% macro card(item) %}
+
+  {% if item.icon %}
+
+  [icon]
+
+  {% endif %} {% if item.link %} {{ item.title }} {% else %}
+
+  {{ item.title }}
+
+  {% endif %} {% if item.date %}
+
+  {{ item.date }}
+
+  {% endif %}
+
+  {% if item.subtitle %}
+
+  {{ item.subtitle }}
+
+  {% endif %}
+
+  {{ item.content | trim | markdown | safe }}
+
+  {% if item.tags %}
+
+  {% for tag in item.tags %}
+
+  #{{ tag }}
+
+  {% endfor %}
+
+  {% endif %}
+
+{% endmacro %} {% macro card_simple(item) %}
+
+  {% if item.icon %}
+
+  [icon]
+
+  {% endif %} {% if item.link %} {{ item.title }} {% else %}
+
+  {{ item.title }}
+
+  {% endif %}
+
+  {{ item.content | trim | markdown | safe }}
+
+  {% if item.date %}
+
+  {{ item.date }}
+
+  {% endif %}
+
+  {{ item.content | trim | markdown | safe }}
+
+{% endmacro %} {% macro entry(item) %} {% if item.link %} {% else %}
+
+  {% endif %} {% if item.icon %}
+
+  [icon]
+
+  {% endif %} {% if item.title or item.subtitle %}
+
+  {% if item.title %}
+
+  {{ item.title }}
+
+  {% endif %} {% if item.subtitle %}
+
+  {{ item.subtitle }}
+
+  {% endif %}
+
+  {% endif %} {% if item.link %} {% else %}
+
+{% endif %} {% endmacro %} {% macro box(item) %}
+
+{% if item.link %} {% else %}
+
+  {% endif %}
+
+  {{ item.title }}
+
+  {% if item.subtitle %}
+
+  {{ item.subtitle }}
+
+  {% endif %}
+
+  {% if item.img %} [{{ item.title }}] {% else %}
+
+  {% endif %} {% if item.link %} {% else %}
+
+{% endif %}
+
+{% endmacro %} {% macro art(item) %}
+
+  [{{ item.title }}]
+
+  {% if item.link %} {{ item.title }} {% else %}
+
+  {{ item.title }}
+
+  {% endif %} {% if item.subtitle %}
+
+  {{ item.subtitle }}
+
+  {% endif %} {% if item.content %}
+
+  {{ item.content }}
+
+  {% endif %} {% if item.footer %}
+
+  {{ item.footer }}
+
+  {% endif %}
+
+{% endmacro %} {% macro art_simple(item) %}
+
+  [{{ item.title }}]
+
+  {% if item.link %} {{ item.title }} {% else %}
+
+  {{ item.title }}
+
+  {% endif %} {% if item.subtitle %}
+
+  {{ item.subtitle }}
+
+  {% endif %}
+
+{% endmacro %}

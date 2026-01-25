@@ -20,64 +20,114 @@
   <style>
   @import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
 
-  /* light mode colors */
-  body {
-    --primary-color: #5871a2;
-    --primary-pale-color: #5871a233;
-    --primary-decoration-color: #5871a210;
-    --bg-color: #ffffff;
-    --text-color: #2f3030;
-    --text-pale-color: #767676;
-    --text-decoration-color: #a9a9a9;
-    --highlight-mark-color: #5f75b020;
-
-    --callout-note-color: #5871a2;
-    --callout-tip-color: #268556;
-    --callout-important-color: #885fc9;
-    --callout-warning-color: #ab6632;
-    --callout-caution-color: #c64e4e;
+  :root {
+    --bg-top: #ffffff;
+    --bg-bottom: #ffffff;
+    --ink: #141414;
+    --muted: #6a6358;
+    --link: #1d4f8c;
+    --max: 88ch;
+    --pad: clamp(1rem, 3vw, 2.5rem);
   }
 
-  /* dark mode colors */
-  body.dark {
-    --primary-color: #6f8fd1;
-    --primary-pale-color: #6f8fd166;
-    --primary-decoration-color: #6f8fd112;
-    --bg-color: #1c1c1c;
-    --text-color: #c1c1c1;
-    --text-pale-color: #848484;
-    --text-decoration-color: #5f5f5f;
-    --highlight-mark-color: #8296cb3b;
-
-    --callout-note-color: #6f8fd1;
-    --callout-tip-color: #47976f;
-    --callout-important-color: #9776cd;
-    --callout-warning-color: #ad7a52;
-    --callout-caution-color: #d06161;
+  * {
+    box-sizing: border-box;
   }
 
-  /* typography */
+  html {
+    font-size: 100%;
+  }
+
   body {
-    --main-font: "Share Tech Mono", monospace;
-    --code-font: "Share Tech Mono", monospace;
-    --homepage-max-width: 81ch;
-    --main-max-width: 81ch;
-    --avatar-size: 60px;
-    --font-size: 16px;
-    --line-height: 1.75;
-    --img-border-radius: 0px;
-    --detail-border-radius: 0px;
-    --dark-mode-img-brightness: 0.75;
-    --dark-mode-chart-brightness: 0.75;
-    --inline-code-border-radius: 2px;
-    --inline-code-bg-color: var(--primary-decoration-color);
-    --block-code-border-radius: 0px;
-    --block-code-border-color: var(--primary-color);
-    --detail-border-color: var(--primary-color);
+    margin: 0;
+    min-height: 100%;
+    padding: var(--pad);
+    background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+    color: var(--ink);
+    font-family: "Share Tech Mono", monospace;
+    font-size: 16px;
+    line-height: 1.5;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  main.txt {
+    max-width: var(--max);
+    margin: 0 auto;
+  }
+
+  pre {
+    font-family: "Share Tech Mono", monospace;
+  }
+  pre.txt-block {
+    margin: 0;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  a:visited {
+    color: inherit;
+  }
+
+  a:where(:hover, :focus) {
+    color: var(--link);
+  }
+
+  ::selection {
+    background: rgba(29, 79, 140, 0.18);
+  }
+  p {
+    margin: 0;
+    line-height: 16pt;
+  }
+  ul,
+  ol {
+    margin: 0;
+    line-height: 10pt;
+  }
+  li {
+    line-height: 16pt;
+  }
+  blockquote {
+    margin: 0 16pt;
+    line-height: 16pt;
+  }
+  img {
+    max-width: 64ch;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    main.txt {
+      animation: fade-in 600ms ease-out both;
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+
+  @media (max-width: 700px) {
+    body {
+      font-size: 15px;
+      padding: 1rem;
+    }
   }
 </style>
 
-  <link rel="stylesheet" href="https://idunnowhatiamdoing.engineering/main.css">
   
 
 <link id="hl" rel="stylesheet" type="text/css" href="/hl-light.css" />
@@ -90,133 +140,43 @@
 <body class="post">
   
   
-<div id="wrapper">
-  <div id="blank"></div>
-  <aside>
-    
-    
-    <nav>
-      <ul>
-        
-        <li>
-          <a class="h2" href="#using-dynostic-a-practical-guide-to-the-deterministic-tactical-sim-core">Using Dynostic: A Practical Guide to the Deterministic Tactical-Sim Core</a>
-          
-          <ul>
-            
-            <li>
-              <a class="h3" href="#what-you-are-running">What you are running</a>
-            </li>
-            
-            <li>
-              <a class="h3" href="#prerequisites">Prerequisites</a>
-            </li>
-            
-            <li>
-              <a class="h3" href="#quick-start-build-and-run">Quick start: build and run</a>
-            </li>
-            
-            <li>
-              <a class="h3" href="#create-a-new-game-scaffold">Create a new game scaffold</a>
-            </li>
-            
-            <li>
-              <a class="h3" href="#profile-the-simulation">Profile the simulation</a>
-            </li>
-            
-            <li>
-              <a class="h3" href="#work-with-mods-experimental">Work with mods (experimental)</a>
-            </li>
-            
-            <li>
-              <a class="h3" href="#speed-up-loads-with-pack-cache">Speed up loads with pack cache</a>
-            </li>
-            
-            <li>
-              <a class="h3" href="#cutscenes-and-previews">Cutscenes and previews</a>
-            </li>
-            
-            <li>
-              <a class="h3" href="#package-and-ship">Package and ship</a>
-            </li>
-            
-            <li>
-              <a class="h3" href="#optional-offline-replay-rendering">Optional: offline replay rendering</a>
-            </li>
-            
-          </ul>
-          
-        </li>
-        
-      </ul>
-    </nav>
-    
-    
-    <button id="back-to-top" aria-label="back to top">
-      
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+<main class="txt">
+  <pre class="txt-block">
 
-    </button>
-    
-  </aside>
-  <main>
-    
-<header>
-  <nav>
-    <a id="back-link" href="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts">← back</a>
-  </nav>
-</header>
+<a id="back-link" href="/">← back</a>
 
+<b>DynOSTiC</b>
+<span id="publish">Jan 23, 2026</span>
 
-    <div>
-      
-      
-      
-      
-      <div id="copy-cfg" style="display: none;" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-"></div>
-      
-      <article class="prose">
-        <h1>DynOSTiC</h1>
-        <div id="post-info">
-          <div id="date">
-            <span id="publish">Jan 23, 2026</span>
-            </div>
-
-          
-        </div>
-
-        
-        
-
-        
-
-        <p>After working on <a rel="nofollow noreferrer" href="https://quiene.studio/#games">Kaíven and ëëntïï</a>, I realized I needed an engine. What I was doing with those two projects wasn’t good enough—something was missing.</p>
-<p>After a few back-and-forths, I remembered an idea from another story: DYNamics Of the Space-Time Continuum. Reusing the name just felt right. In that story, the machine lets you travel through time and space, and it can even change your DNA. I could keep going, but that’s probably for another time.</p>
+<p>After working on <a rel="nofollow noreferrer" href="https://quiene.studio/#games">Kaíven and ëëntïï</a>, I realized I needed an engine. What I was
+doing with those two projects wasn’t good enough, something was missing.</p>
+<p>After a few back-and-forths, I remembered an idea from another story:
+DYNamics Of the Space TIme Continuum. Reusing the name just felt right. In that
+story, the machine lets you travel through time and space, and it can even
+hange your DNA. I could keep going, but that’s probably for another time.</p>
 <p>Anyway, I present DYNOSTIC.</p>
-<h1 id="using-dynostic-a-practical-guide-to-the-deterministic-tactical-sim-core">Using Dynostic: A Practical Guide to the Deterministic Tactical-Sim Core<a class="zola-anchor" href="#using-dynostic-a-practical-guide-to-the-deterministic-tactical-sim-core" aria-label="Anchor link for: using-dynostic-a-practical-guide-to-the-deterministic-tactical-sim-core" style="visibility: hidden;"></a>
-</h1>
-<p>Dynostic is a reusable deterministic tactical-sim core in Rust with a LÖVE (LuaJIT)
-front-end. The design goal is fast iteration on UI/feel in LÖVE while keeping the
-simulation pure, deterministic, and event-sourced in Rust. This post focuses on
-how to get it running and how to use the CLI and packaging pipeline day to day.</p>
-<h2 id="what-you-are-running">What you are running<a class="zola-anchor" href="#what-you-are-running" aria-label="Anchor link for: what-you-are-running" style="visibility: hidden;"></a>
-</h2>
+<p><strong>Using Dynostic: A Practical Guide to the Deterministic Tactical-Sim Core</strong></p>
+<p>Dynostic is a reusable deterministic tactical-sim core in Rust with a LÖVE
+(LuaJIT) front-end. The design goal is fast iteration on UI/feel in LÖVE while
+keeping the simulation pure, deterministic, and event-sourced in Rust. This
+post focuses on how to get it running and how to use the CLI and packaging
+pipeline day to day.</p>
+<p><strong>What you are running</strong></p>
 <ul>
-<li><code>rust/</code> contains the Cargo workspace for the sim core, FFI boundary, and CLI.</li>
+<li><code>rust/</code> contains the Cargo workspace for the sim core, FFI boundary, and
+CLI.</li>
 <li><code>love/</code> is the LÖVE project that loads the Rust library and renders the UI.</li>
-<li>Data is pack-driven, so you can create and ship content without changing engine code.</li>
+<li>Data is pack-driven, so you can create and ship content without changing
+engine code.</li>
 </ul>
-<h2 id="prerequisites">Prerequisites<a class="zola-anchor" href="#prerequisites" aria-label="Anchor link for: prerequisites" style="visibility: hidden;"></a>
-</h2>
+<p><strong>Prerequisites</strong></p>
 <ul>
 <li>Rust toolchain (stable) with Cargo</li>
 <li>LÖVE (LuaJIT build)</li>
 <li><code>make</code> for the convenience targets (optional)</li>
 <li><code>ffmpeg</code> only if you want offline video encoding</li>
 </ul>
-<h2 id="quick-start-build-and-run">Quick start: build and run<a class="zola-anchor" href="#quick-start-build-and-run" aria-label="Anchor link for: quick-start-build-and-run" style="visibility: hidden;"></a>
-</h2>
+<p><strong>Quick start: build and run</strong></p>
 <p>From the repo root:</p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">make</span></span><span class="z-meta z-function-call z-arguments z-shell"> build-native</span>
 </span></code></pre>
@@ -228,49 +188,50 @@ how to get it running and how to use the CLI and packaging pipeline day to day.<
 </span></code></pre>
 <p>You should see a small window with a moving dot driven by the Rust sim. If the
 native library is missing or mismatched, the LÖVE app will fail to load the FFI.</p>
-<h2 id="create-a-new-game-scaffold">Create a new game scaffold<a class="zola-anchor" href="#create-a-new-game-scaffold" aria-label="Anchor link for: create-a-new-game-scaffold" style="visibility: hidden;"></a>
-</h2>
+<p><strong>Create a new game scaffold</strong></p>
 <p>Generate a pack skeleton with the CLI:</p>
-<pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cargo</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> dynostic_cli<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>manifest-path</span> rust/Cargo.toml<span class="z-keyword z-operator z-end-of-options z-shell"> --</span></span><span class="z-meta z-function-call z-arguments z-shell"> new <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>My Game<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> --out games</span>
+<pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cargo</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> dynostic_cli<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>manifest-path</span> rust/Cargo.toml<span class="z-keyword z-operator z-end-of-options z-shell"> --</span></span><span class="z-meta z-function-call z-arguments z-shell"> new <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>My Game<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-punctuation z-separator z-continuation z-line z-shell">\
+</span></span></span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-arguments z-shell">  --out games</span>
 </span></code></pre>
 <p>Explore the reference game for data layout and conventions:</p>
 <pre class="z-code"><code><span class="z-text z-plain">examples/reference_game
 </span></code></pre>
 <p>Packs are data-driven, so you can iterate on JSON content without touching the
 engine. This is the fastest path to new units, abilities, and scenarios.</p>
-<h2 id="profile-the-simulation">Profile the simulation<a class="zola-anchor" href="#profile-the-simulation" aria-label="Anchor link for: profile-the-simulation" style="visibility: hidden;"></a>
-</h2>
+<p><strong>Profile the simulation</strong></p>
 <p>The CLI can run headless and dump hot-path counters:</p>
-<pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cargo</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> dynostic_cli<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>manifest-path</span> rust/Cargo.toml<span class="z-keyword z-operator z-end-of-options z-shell"> --</span></span><span class="z-meta z-function-call z-arguments z-shell"> --ticks 200 --profile</span>
+<pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cargo</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> dynostic_cli<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>manifest-path</span> rust/Cargo.toml<span class="z-keyword z-operator z-end-of-options z-shell"> --</span></span><span class="z-meta z-function-call z-arguments z-shell"> --ticks 200 <span class="z-punctuation z-separator z-continuation z-line z-shell">\
+</span></span></span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-arguments z-shell">  --profile</span>
 </span></code></pre>
 <p>Use this when tuning pathfinding, line-of-sight, or ability targeting rules.</p>
-<h2 id="work-with-mods-experimental">Work with mods (experimental)<a class="zola-anchor" href="#work-with-mods-experimental" aria-label="Anchor link for: work-with-mods-experimental" style="visibility: hidden;"></a>
-</h2>
+<p><strong>Work with mods (experimental)</strong></p>
 <p>Mods live under <code>mods/</code> and are enabled via <code>mods/mods.json</code>. Use the CLI to add
 and toggle them:</p>
-<pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cargo</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> dynostic_cli<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>manifest-path</span> rust/Cargo.toml<span class="z-keyword z-operator z-end-of-options z-shell"> --</span></span><span class="z-meta z-function-call z-arguments z-shell"> mod add --id cool_mod --path mods/cool_mod/pack.json --enable</span>
+<pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cargo</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> dynostic_cli<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>manifest-path</span> rust/Cargo.toml<span class="z-keyword z-operator z-end-of-options z-shell"> --</span></span><span class="z-meta z-function-call z-arguments z-shell"> mod add <span class="z-punctuation z-separator z-continuation z-line z-shell">\
+</span></span></span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-arguments z-shell">  --id cool_mod --path mods/cool_mod/pack.json --enable</span>
 </span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cargo</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> dynostic_cli<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>manifest-path</span> rust/Cargo.toml<span class="z-keyword z-operator z-end-of-options z-shell"> --</span></span><span class="z-meta z-function-call z-arguments z-shell"> mod list</span>
-</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cargo</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> dynostic_cli<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>manifest-path</span> rust/Cargo.toml<span class="z-keyword z-operator z-end-of-options z-shell"> --</span></span><span class="z-meta z-function-call z-arguments z-shell"> mod disable cool_mod</span>
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cargo</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> dynostic_cli<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>manifest-path</span> rust/Cargo.toml <span class="z-punctuation z-separator z-continuation z-line z-shell">\
+</span></span></span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-arguments z-shell"><span class="z-keyword z-operator z-end-of-options z-shell">  --</span></span><span class="z-meta z-function-call z-arguments z-shell"> mod disable cool_mod</span>
 </span></code></pre>
-<p>When a mod is enabled, its pack is merged after the base pack. Script permissions
-are gated by <code>pack.permissions.scripts</code> (default false).</p>
-<h2 id="speed-up-loads-with-pack-cache">Speed up loads with pack cache<a class="zola-anchor" href="#speed-up-loads-with-pack-cache" aria-label="Anchor link for: speed-up-loads-with-pack-cache" style="visibility: hidden;"></a>
-</h2>
+<p>When a mod is enabled, its pack is merged after the base pack. Script
+permissions are gated by <code>pack.permissions.scripts</code> (default false).</p>
+<p><strong>Speed up loads with pack cache</strong></p>
 <p>Compile pack data into a deterministic cache blob:</p>
-<pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cargo</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> dynostic_cli<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>manifest-path</span> rust/Cargo.toml<span class="z-keyword z-operator z-end-of-options z-shell"> --</span></span><span class="z-meta z-function-call z-arguments z-shell"> pack cache --pack love/content/pack.json</span>
+<pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cargo</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> dynostic_cli<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>manifest-path</span> rust/Cargo.toml<span class="z-keyword z-operator z-end-of-options z-shell"> --</span></span><span class="z-meta z-function-call z-arguments z-shell"> pack cache <span class="z-punctuation z-separator z-continuation z-line z-shell">\
+</span></span></span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-arguments z-shell">  --pack love/content/pack.json</span>
 </span></code></pre>
 <p>The runtime uses <code>pack.cache.json</code> automatically when present. Disable with
 <code>DYNOSTIC_PACK_CACHE=0</code> if you need to test cold loads.</p>
-<h2 id="cutscenes-and-previews">Cutscenes and previews<a class="zola-anchor" href="#cutscenes-and-previews" aria-label="Anchor link for: cutscenes-and-previews" style="visibility: hidden;"></a>
-</h2>
+<p><strong>Cutscenes and previews</strong></p>
 <p>Validate and run a deterministic cutscene timeline:</p>
-<pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cargo</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> dynostic_cli<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>manifest-path</span> rust/Cargo.toml<span class="z-keyword z-operator z-end-of-options z-shell"> --</span></span><span class="z-meta z-function-call z-arguments z-shell"> cine validate --timeline tools/cutscene_demo.json</span>
-</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cargo</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> dynostic_cli<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>manifest-path</span> rust/Cargo.toml<span class="z-keyword z-operator z-end-of-options z-shell"> --</span></span><span class="z-meta z-function-call z-arguments z-shell"> cine run --timeline tools/cutscene_demo.json</span>
+<pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cargo</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> dynostic_cli<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>manifest-path</span> rust/Cargo.toml<span class="z-keyword z-operator z-end-of-options z-shell"> --</span></span><span class="z-meta z-function-call z-arguments z-shell"> cine validate <span class="z-punctuation z-separator z-continuation z-line z-shell">\
+</span></span></span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-arguments z-shell">  --timeline tools/cutscene_demo.json</span>
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cargo</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> dynostic_cli<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>manifest-path</span> rust/Cargo.toml<span class="z-keyword z-operator z-end-of-options z-shell"> --</span></span><span class="z-meta z-function-call z-arguments z-shell"> cine run <span class="z-punctuation z-separator z-continuation z-line z-shell">\
+</span></span></span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-arguments z-shell">  --timeline tools/cutscene_demo.json</span>
 </span></code></pre>
-<p>For the LÖVE preview tool, launch the app and press <code>F7</code>. Use <code>DYNOSTIC_CINE</code> to
-load a different timeline.</p>
-<h2 id="package-and-ship">Package and ship<a class="zola-anchor" href="#package-and-ship" aria-label="Anchor link for: package-and-ship" style="visibility: hidden;"></a>
-</h2>
+<p>For the LÖVE preview tool, launch the app and press <code>F7</code>. Use <code>DYNOSTIC_CINE</code>
+to load a different timeline.</p>
+<p><strong>Package and ship</strong></p>
 <p>Build a portable <code>.love</code> archive and a platform folder with native libs:</p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">make</span></span><span class="z-meta z-function-call z-arguments z-shell"> package-love</span>
 </span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">make</span></span><span class="z-meta z-function-call z-arguments z-shell"> package</span>
@@ -283,79 +244,29 @@ load a different timeline.</p>
 </span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">make</span></span><span class="z-meta z-function-call z-arguments z-shell"> release-verify</span>
 </span></code></pre>
 <p>Dynostic can sign packs and release manifests with an ed25519 key:</p>
-<pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cargo</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> dynostic_cli<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>manifest-path</span> rust/Cargo.toml<span class="z-keyword z-operator z-end-of-options z-shell"> --</span></span><span class="z-meta z-function-call z-arguments z-shell"> pack keygen --out-public keys/pack.pub --out-secret keys/pack.secret</span>
-</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cargo</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> dynostic_cli<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>manifest-path</span> rust/Cargo.toml<span class="z-keyword z-operator z-end-of-options z-shell"> --</span></span><span class="z-meta z-function-call z-arguments z-shell"> pack sign --pack dist/pack/pack.json --key keys/pack.secret</span>
-</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cargo</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> dynostic_cli<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>manifest-path</span> rust/Cargo.toml<span class="z-keyword z-operator z-end-of-options z-shell"> --</span></span><span class="z-meta z-function-call z-arguments z-shell"> release sign --manifest dist/release_manifest.json --key keys/pack.secret</span>
+<pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cargo</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> dynostic_cli<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>manifest-path</span> rust/Cargo.toml<span class="z-keyword z-operator z-end-of-options z-shell"> --</span></span><span class="z-meta z-function-call z-arguments z-shell"> pack keygen <span class="z-punctuation z-separator z-continuation z-line z-shell">\
+</span></span></span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-arguments z-shell">  --out-public keys/pack.pub --out-secret keys/pack.secret</span>
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cargo</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> dynostic_cli<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>manifest-path</span> rust/Cargo.toml<span class="z-keyword z-operator z-end-of-options z-shell"> --</span></span><span class="z-meta z-function-call z-arguments z-shell"> pack sign <span class="z-punctuation z-separator z-continuation z-line z-shell">\
+</span></span></span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-arguments z-shell">  --pack dist/pack/pack.json --key keys/pack.secret</span>
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cargo</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> dynostic_cli<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>manifest-path</span> rust/Cargo.toml<span class="z-keyword z-operator z-end-of-options z-shell"> --</span></span><span class="z-meta z-function-call z-arguments z-shell"> release sign <span class="z-punctuation z-separator z-continuation z-line z-shell">\
+</span></span></span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-arguments z-shell">  --manifest dist/release_manifest.json --key keys/pack.secret</span>
 </span></code></pre>
 <p>Note: dynamic libraries cannot be loaded from inside a zipped <code>.love</code> archive.
 Ship platform builds with the native library next to the executable/app bundle.</p>
-<h2 id="optional-offline-replay-rendering">Optional: offline replay rendering<a class="zola-anchor" href="#optional-offline-replay-rendering" aria-label="Anchor link for: optional-offline-replay-rendering" style="visibility: hidden;"></a>
-</h2>
+<p><strong>Optional: offline replay rendering</strong></p>
 <p>To render deterministic replays into PNG frames (or video with ffmpeg):</p>
-<pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">DYNOSTIC_RENDER</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">1</span> <span class="z-variable z-other z-readwrite z-assignment z-shell">DYNOSTIC_RENDER_REPLAY</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">../tools/golden/replay_combat.json</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">make</span></span><span class="z-meta z-function-call z-arguments z-shell"> run</span>
-</span><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">DYNOSTIC_RENDER</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">1</span> <span class="z-variable z-other z-readwrite z-assignment z-shell">DYNOSTIC_RENDER_REPLAY</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">../tools/golden/replay_combat.json</span> <span class="z-variable z-other z-readwrite z-assignment z-shell">DYNOSTIC_RENDER_FFMPEG</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">ffmpeg</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">make</span></span><span class="z-meta z-function-call z-arguments z-shell"> run</span>
+<pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">DYNOSTIC_RENDER</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">1</span> <span class="z-variable z-other z-readwrite z-assignment z-shell">DYNOSTIC_RENDER_REPLAY</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">../tools/golden/replay_combat.json</span> <span class="z-punctuation z-separator z-continuation z-line z-shell">\
+</span></span><span class="z-source z-shell z-bash">  <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">make</span></span><span class="z-meta z-function-call z-arguments z-shell"> run</span>
+</span><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">DYNOSTIC_RENDER</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">1</span> <span class="z-variable z-other z-readwrite z-assignment z-shell">DYNOSTIC_RENDER_REPLAY</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">../tools/golden/replay_combat.json</span> <span class="z-punctuation z-separator z-continuation z-line z-shell">\
+</span></span><span class="z-source z-shell z-bash">  <span class="z-variable z-other z-readwrite z-assignment z-shell">DYNOSTIC_RENDER_FFMPEG</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">ffmpeg</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">make</span></span><span class="z-meta z-function-call z-arguments z-shell"> run</span>
 </span></code></pre>
 <p>This is useful for capture pipelines, trailers, and visual regression testing.</p>
 
-      </article>
-
-      
-      
-
-      
-      
-    </div>
-
-    
-
-
-<footer>
-  <div class="left">
-    <div class="copyright">
-      ∅ 2026 n0um3n4
-      
-    </div>
-  </div>
-
-  <div class="right">
-    
-    
-      
-    
-    
-    <a id="rss-btn" href="https://idunnowhatiamdoing.engineering/posts/feed.xml">RSS</a>
-    
-    
-
-    
-  </div>
-</footer>
-
-
-
-
-<dialog id="rss-mask">
-  <div>
-    <a href="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml">https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml</a>
-    
-    
-    <button autofocus aria-label="copy" data-link="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-" >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z" fill="currentColor"></path></svg>
-
-    </button>
-  </div>
-</dialog>
-
-
-
-  </main>
-</div>
+  </pre>
+</main>
 
   
 <script src="/js/lightense.min.js"></script>
-
 
   <script src="https://idunnowhatiamdoing.engineering/js/main.js"></script>
 </body>

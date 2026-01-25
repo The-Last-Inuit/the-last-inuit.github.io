@@ -1,0 +1,23 @@
+{% extends "base.html" %} {% import "macros/ui.html" as ui %} {% block
+content %}
+
+{{ section.title | default(value="Section") }}
+
+{% if section.description %}
+
+{{ section.description }}
+
+{% endif %}
+
+{% if section.content %}
+
+{{ section.content | safe }}
+
+{% endif %} {% set pages = section.pages %} {% if paginator is defined
+%} {% set pages = paginator.pages %} {% endif %} {% if pages | length >
+0 %}
+
+{% for p in pages %} {{ ui::post_card(p=p) }} {% endfor %}
+
+{% if paginator is defined %} {{ ui::paginate(paginator=paginator) }} {%
+endif %} {% endif %} {% endblock content %}

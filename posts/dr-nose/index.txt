@@ -1,60 +1,52 @@
-← back
 
-Dr. Nose | updates
 
-Jan 22, 2026
+    ← back
 
-[dr-nose]
+    Dr. Nose | updates
+    Jan 22, 2026
 
-Wi-Fi recon is mostly about observation: detect beacons, learn BSSIDs,
-map channels, and track signal behavior over time. Dr. Nose is a small
-Rust app that stays strictly passive while giving you an
-operator-friendly view of 802.11 captures. It reads monitor-mode PCAPs
-(radiotap + 802.11), aggregates access points, and lets you save and
-export frames for deeper analysis.
 
-Data flow overview
+    Wi-Fi recon is mostly about observation: detect beacons, learn BSSIDs,
+    map channels, and track signal behavior over time. Dr. Nose is a small
+    Rust app that stays strictly passive while giving you an
+    operator-friendly view of 802.11 captures. It reads monitor-mode
+    PCAPs (radiotap + 802.11), aggregates access points, and lets you save
+    and export frames for deeper analysis.
+    Data flow overview
+    Dr. Nose runs a decode loop in a background thread:
 
-Dr. Nose runs a decode loop in a background thread:
+    Read packets from a PCAP file.
+    Decode radiotap (RSSI, channel MHz) and 802.11 headers.
+    Build a frame summary for UI and aggregation.
+    Optionally save a selected frame to SQLite for later export.
 
-1.  Read packets from a PCAP file.
-2.  Decode radiotap (RSSI, channel MHz) and 802.11 headers.
-3.  Build a frame summary for UI and aggregation.
-4.  Optionally save a selected frame to SQLite for later export.
+    The UI shows a live timeline and a rolling AP list. It never transmits
+    or injects; it's read-only on captures.
+    Radiotap and 802.11 decoding
+    The decoder handles two linktypes:
 
-The UI shows a live timeline and a rolling AP list. It never transmits
-or injects; it's read-only on captures.
+    LINKTYPE_IEEE802_11 (105)
+    LINKTYPE_IEEE802_11_RADIOTAP (127)
 
-Radiotap and 802.11 decoding
+    Radiotap parsing is intentionally minimal. It extracts only:
 
-The decoder handles two linktypes:
+    Channel frequency in MHz
+    Antenna signal in dBm
 
-- LINKTYPE_IEEE802_11 (105)
-- LINKTYPE_IEEE802_11_RADIOTAP (127)
+    802.11 header parsing is "MVP-correct" for management and data frames.
+    It parses frame control fields, addresses, and subtype, and then infers
+    BSSID using the DS flags.
+    This is enough to support most recon tasks:
 
-Radiotap parsing is intentionally minimal. It extracts only:
+    Identify BSSID and SSID associations.
+    Track channel usage per AP.
+    Watch signal strength shifts over time.
 
-- Channel frequency in MHz
-- Antenna signal in dBm
-
-802.11 header parsing is "MVP-correct" for management and data frames.
-It parses frame control fields, addresses, and subtype, and then infers
-BSSID using the DS flags.
-
-This is enough to support most recon tasks:
-
-- Identify BSSID and SSID associations.
-- Track channel usage per AP.
-- Watch signal strength shifts over time.
-
-Live tailing a growing PCAP
-
-On macOS, Wireless Diagnostics Sniffer writes to /var/tmp/*.pcap. Dr.
-Nose can tail a growing capture by periodically reopening the file and
-advancing to the last processed index.
-
-The loop pattern is:
-
+    Live tailing a growing PCAP
+    On macOS, Wireless Diagnostics Sniffer writes to /var/tmp/*.pcap.
+    Dr. Nose can tail a growing capture by periodically reopening the file
+    and advancing to the last processed index.
+    The loop pattern is:
     open pcap
     skip N packets already seen
     read new packets until EOF
@@ -137,11 +129,3 @@ Dr. Nose is designed for ethical recon and troubleshooting:
 Always ensure you have authorization for the airspace you are
 monitoring. Passive observation can still fall under regulatory and
 organizational rules.
-
-∅ 2026 n0um3n4
-
-RSS
-
-https://idunnowhatiamdoing.engineering/posts/feed.xml
-
-[]

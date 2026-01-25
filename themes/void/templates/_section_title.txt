@@ -1,0 +1,13 @@
+{% if section.extra.title or section.extra.subtitle %}
+
+{% if section.extra.title %}
+
+{{ section.extra.title }}
+
+{% endif %} {% if section.extra.subtitle %}
+
+{{ section.extra.subtitle }}
+
+{% endif %}
+
+{% endif %}

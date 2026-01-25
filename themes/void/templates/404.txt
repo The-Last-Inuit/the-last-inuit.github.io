@@ -1,0 +1,9 @@
+{% extends "base.html" %} {% block content %}
+
+404
+
+That page fell out of spacetime.
+
+Return home
+
+{% endblock content %}

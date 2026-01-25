@@ -8,7 +8,7 @@ We add supports local actor types
 objects and basic activity types (`Create`, `Update`, `Delete`, `Follow`, `Undo`,
 `Like`, `Announce`).
 
-## ActivityPub endpoints
+**ActivityPub endpoints**
 
 - `POST /oauth/token`
 - `GET /.well-known/webfinger`
@@ -25,16 +25,17 @@ objects and basic activity types (`Create`, `Update`, `Delete`, `Follow`, `Undo`
 - `GET /objects/:id`
 - `GET /activities/:id`
 
-## C2S example
+**C2S example**
 
 ```bash
 curl -X POST http://localhost:4000/users/alice/outbox \
   -H "content-type: application/activity+json" \
   -H "authorization: Bearer ACCESS_TOKEN" \
-  -d '{"type":"Note","content":"Hello ActivityPub!","to":["https://www.w3.org/ns/activitystreams#Public"]}'
+  -d '{"type":"Note","content":"Hello ActivityPub!", \
+     "to":["https://www.w3.org/ns/activitystreams#Public"]}'
 ```
 
-## Outbox image upload
+**Outbox image upload**
 
 ```bash
 curl -X POST http://localhost:4000/users/alice/outbox \
@@ -43,7 +44,7 @@ curl -X POST http://localhost:4000/users/alice/outbox \
   -F "to=https://www.w3.org/ns/activitystreams#Public"
 ```
 
-## Media upload example
+**Media upload example**
 
 ```bash
 curl -X POST http://localhost:4000/users/alice/media \
@@ -53,8 +54,8 @@ curl -X POST http://localhost:4000/users/alice/media \
 
 Use the returned `url` and `mediaType` when creating an `Image` object in the outbox.
 
-## Collection pagination
+**Collection pagination**
 
-Outbox, followers, and following collections return an `OrderedCollection` with `first`
-and `last` links by default. Add `?page=1` (or `?page=true`) to receive an
-`OrderedCollectionPage` response.
+Outbox, followers, and following collections return an `OrderedCollection` 
+with `first` and `last` links by default. Add `?page=1` (or `?page=true`) to 
+receive an `OrderedCollectionPage` response.

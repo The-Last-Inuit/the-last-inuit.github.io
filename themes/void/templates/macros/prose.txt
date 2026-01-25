@@ -1,0 +1,19 @@
+{% macro back_link(path) %} ← {{ config.extra.back_link_text }} {%
+endmacro %} {% macro callout(name) %}
+
+  {% set icon = load_data(path="icon/" ~ name ~ ".svg") %} {% if title
+  %}
+
+  {{ icon | safe }} {{ title }}
+
+  {{ body | markdown | safe }}
+
+  {% else %}
+
+  {{ icon | safe }}
+
+  {{ body | markdown | safe }}
+
+  {% endif %}
+
+{% endmacro %}

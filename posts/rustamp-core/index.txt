@@ -1,13 +1,12 @@
-← back
 
-rustamp | core + (Iced || RatatUI)
 
-Nov 12, 2025
+    ← back
 
-We are going with both UI engines. I like the idea of maintaining both.
+    rustamp | core + (Iced || RatatUI)
+    Nov 12, 2025
 
-So, we need to restructure our mp3 player:
-
+    We are going with both UI engines. I like the idea of maintaining both.
+    So, we need to restructure our mp3 player:
     rustamp/
       Cargo.toml
       crates/
@@ -1193,11 +1192,3 @@ Next
 - Fix bugs
 - Better aesthetics without losing the minimalism of it
 - Add more decoders, maybe?
-
-∅ 2026 n0um3n4
-
-RSS
-
-https://idunnowhatiamdoing.engineering/posts/feed.xml
-
-[]

@@ -1,47 +1,44 @@
-← back
 
-kailinnel
 
-Jan 19, 2026
+    ← back
 
-kailinnel is a Rust + libp2p project for spinning up ad-hoc “flash
-institutions”, the kind of temporary, ownerless coordination layer you
-want at a hackathon, festival, or pop-up clinic. No accounts, no
-servers; the network appears when you need it, disappears when you
-don’t.
+    kailinnel
+    Jan 19, 2026
 
-- Spec-first: Protocol lives in ./specs, so implementation and design
-  stay aligned.
-- Pure P2P: Discovery via mDNS on local nets, with optional
-  Kademlia/relay/AutoNAT for wider reach.
-- Sealed by room code: A shared code derives the key for payload
-  sealing; ops are signed per message.
-- Abuse controls: Rate limits, quotas, payload caps,
-  allowlists/blocklists, optional proof-of-work, and kiosk quorum mode.
-- Applets out of the box: Announcements, voting, queueing, lost+found,
-  and resource requests.
-- Op-log sync: Digest-based anti-entropy plus snapshotting so peers can
-  catch up without a central source of truth.
+    kailinnel is a Rust + libp2p project for spinning up ad-hoc
+    "flash institutions", the kind of temporary, ownerless coordination layer you
+    want at a hackathon, festival, or pop-up clinic. No accounts, no servers;
+    the network appears when you need it, disappears when you don’t.
 
-Minimal architecture tour
+    Spec-first: Protocol lives in ./specs, so implementation and design stay
+    aligned.
+    Pure P2P: Discovery via mDNS on local nets, with optional
+    Kademlia/relay/AutoNAT for wider reach.
+    Sealed by room code: A shared code derives the key for payload sealing; ops
+    are signed per message.
+    Abuse controls: Rate limits, quotas, payload caps, allowlists/blocklists,
+    optional proof-of-work, and kiosk quorum mode.
+    Applets out of the box: Announcements, voting, queueing, lost+found, and
+    resource requests.
+    Op-log sync: Digest-based anti-entropy plus snapshotting so peers can catch
+    up without a central source of truth.
 
-1.  Transport stack: TCP + Noise + Yamux and QUIC for multiplexed,
-    encrypted links.
-2.  Discovery: mDNS for LAN, with optional DHT rendezvous + relays if
-    you want to stretch across networks.
-3.  State layer: Append-only op-log with anti-entropy sync; snapshots
-    reduce catch-up time and storage churn.
-4.  Security posture: Shared secret sealing, per-message signatures,
-    optional PoW gating, kiosk witnesses, and local block/allow lists.
-5.  UI surface: Today it’s CLI-first; bindings + UI will come later, but
-    the core events are already exposed for integrations.
+    Minimal architecture tour
 
-Run the quick manual demo
+    Transport stack: TCP + Noise + Yamux and QUIC for multiplexed, encrypted
+    links.
+    Discovery: mDNS for LAN, with optional DHT rendezvous + relays if you want
+    to stretch across networks.
+    State layer: Append-only op-log with anti-entropy sync; snapshots reduce
+    catch-up time and storage churn.
+    Security posture: Shared secret sealing, per-message signatures, optional
+    PoW gating, kiosk witnesses, and local block/allow lists.
+    UI surface: Today it’s CLI-first; bindings + UI will come later, but the
+    core events are already exposed for integrations.
 
-Requires a recent Rust toolchain.
-
-Terminal 1:
-
+    Run the quick manual demo
+    Requires a recent Rust toolchain.
+    Terminal 1:
     cargo run -- start --room "BERLIN-COFFEE" --nick "A"
 
 Terminal 2 (same LAN):
@@ -127,11 +124,3 @@ If you build something on top of this, drop in your own applet logic or
 UI; the transport, security, and sync layers are already doing the heavy
 lifting. Enjoy running pop-up networks without begging a server to stick
 around.
-
-∅ 2026 n0um3n4
-
-RSS
-
-https://idunnowhatiamdoing.engineering/posts/feed.xml
-
-[]

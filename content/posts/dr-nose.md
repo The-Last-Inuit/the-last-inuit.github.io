@@ -5,9 +5,14 @@ date = 2026-01-22
 
 ![dr-nose](/img/dr-nose.png)
 
-Wi-Fi recon is mostly about observation: detect beacons, learn BSSIDs, map channels, and track signal behavior over time. Dr. Nose is a small Rust app that stays strictly passive while giving you an operator-friendly view of 802.11 captures. It reads monitor-mode PCAPs (radiotap + 802.11), aggregates access points, and lets you save and export frames for deeper analysis.
+Wi-Fi recon is mostly about observation: detect beacons, learn BSSIDs, 
+map channels, and track signal behavior over time. Dr. Nose is a small 
+Rust app that stays strictly passive while giving you an 
+operator-friendly view of 802.11 captures. It reads monitor-mode 
+PCAPs (radiotap + 802.11), aggregates access points, and lets you save
+and export frames for deeper analysis.
 
-## Data flow overview
+**Data flow overview**
 
 Dr. Nose runs a decode loop in a background thread:
 
@@ -16,9 +21,10 @@ Dr. Nose runs a decode loop in a background thread:
 3. Build a frame summary for UI and aggregation.
 4. Optionally save a selected frame to SQLite for later export.
 
-The UI shows a live timeline and a rolling AP list. It never transmits or injects; it's read-only on captures.
+The UI shows a live timeline and a rolling AP list. It never transmits 
+or injects; it's read-only on captures.
 
-## Radiotap and 802.11 decoding
+**Radiotap and 802.11 decoding**
 
 The decoder handles two linktypes:
 
@@ -30,7 +36,9 @@ Radiotap parsing is intentionally minimal. It extracts only:
 - Channel frequency in MHz
 - Antenna signal in dBm
 
-802.11 header parsing is "MVP-correct" for management and data frames. It parses frame control fields, addresses, and subtype, and then infers BSSID using the DS flags.
+802.11 header parsing is "MVP-correct" for management and data frames. 
+It parses frame control fields, addresses, and subtype, and then infers 
+BSSID using the DS flags.
 
 This is enough to support most recon tasks:
 
@@ -38,9 +46,11 @@ This is enough to support most recon tasks:
 - Track channel usage per AP.
 - Watch signal strength shifts over time.
 
-## Live tailing a growing PCAP
+**Live tailing a growing PCAP**
 
-On macOS, Wireless Diagnostics Sniffer writes to `/var/tmp/*.pcap`. Dr. Nose can tail a growing capture by periodically reopening the file and advancing to the last processed index.
+On macOS, Wireless Diagnostics Sniffer writes to `/var/tmp/*.pcap`. 
+Dr. Nose can tail a growing capture by periodically reopening the file 
+and advancing to the last processed index.
 
 The loop pattern is:
 
@@ -51,20 +61,25 @@ read new packets until EOF
 sleep briefly and repeat
 ```
 
-This is safe, simple, and good enough for a live feed. It avoids external dependencies and works with long-running captures while staying passive.
+This is safe, simple, and good enough for a live feed. It avoids 
+external dependencies and works with long-running captures while 
+staying passive.
 
-## Aggregation and memory hygiene
+**Aggregation and memory hygiene**
 
 For operational clarity, the app keeps two rolling data structures:
 
 - A timeline of recent frames (bounded by `MAX_TIMELINE`).
 - An AP map keyed by BSSID (bounded by `MAX_APS`).
 
-AP pruning is LRU-like, based on the last seen timestamp. This prevents unbounded memory use when capturing in dense RF environments.
+AP pruning is LRU-like, based on the last seen timestamp. This 
+prevents unbounded memory use when capturing in dense RF 
+environments.
 
-## Persistence and export
+**Persistence and export**
 
-Saved frames go into SQLite with metadata plus raw bytes. The schema includes:
+Saved frames go into SQLite with metadata plus raw bytes. The 
+schema includes:
 
 - `dot11_type`, `dot11_subtype`
 - `bssid`, `ssid`
@@ -75,7 +90,8 @@ Saved frames go into SQLite with metadata plus raw bytes. The schema includes:
 
 Exports are supported for:
 
-- PCAP: rehydrates `frame_blob` with stored timestamps and linktype.
+- PCAP: rehydrates `frame_blob` with stored timestamps and 
+  linktype.
 - CSV/JSON: metadata-focused for quick analysis pipelines.
 
 This setup works well for triage and later deep dives:
@@ -84,9 +100,10 @@ This setup works well for triage and later deep dives:
 - Pipe CSV into a recon notebook
 - Run JSON through custom automation
 
-## Filtering and frame inspection
+**Filtering and frame inspection**
 
-The UI includes filters for BSSID, SSID, channel, and frame type. Matching happens in-app without database queries.
+The UI includes filters for BSSID, SSID, channel, and frame 
+type. Matching happens in-app without database queries.
 
 Inspect mode surfaces:
 
@@ -101,7 +118,7 @@ This makes it easy to spot patterns like:
 - Rogue AP beacons on unexpected channels
 - RSSI shifts that suggest AP movement or spoofing
 
-## Testing the decoder
+**Testing the decoder**
 
 Unit tests cover:
 
@@ -109,9 +126,10 @@ Unit tests cover:
 - 802.11 header parsing and BSSID inference
 - Radiotap fields (channel, RSSI)
 
-Tiny synthetic fixtures are enough to lock in parsing behavior without large PCAP fixtures in the repo.
+Tiny synthetic fixtures are enough to lock in parsing 
+behavior without large PCAP fixtures in the repo.
 
-## Operational guidance
+**Operational guidance**
 
 Dr. Nose is designed for ethical recon and troubleshooting:
 
@@ -119,4 +137,6 @@ Dr. Nose is designed for ethical recon and troubleshooting:
 - Verify capture quality and channel coverage
 - Archive evidence for incident response
 
-Always ensure you have authorization for the airspace you are monitoring. Passive observation can still fall under regulatory and organizational rules.
+Always ensure you have authorization for the airspace you 
+are monitoring. Passive observation can still fall under 
+regulatory and organizational rules.

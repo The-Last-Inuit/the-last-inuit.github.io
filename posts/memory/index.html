@@ -20,64 +20,114 @@
   <style>
   @import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
 
-  /* light mode colors */
-  body {
-    --primary-color: #5871a2;
-    --primary-pale-color: #5871a233;
-    --primary-decoration-color: #5871a210;
-    --bg-color: #ffffff;
-    --text-color: #2f3030;
-    --text-pale-color: #767676;
-    --text-decoration-color: #a9a9a9;
-    --highlight-mark-color: #5f75b020;
-
-    --callout-note-color: #5871a2;
-    --callout-tip-color: #268556;
-    --callout-important-color: #885fc9;
-    --callout-warning-color: #ab6632;
-    --callout-caution-color: #c64e4e;
+  :root {
+    --bg-top: #ffffff;
+    --bg-bottom: #ffffff;
+    --ink: #141414;
+    --muted: #6a6358;
+    --link: #1d4f8c;
+    --max: 88ch;
+    --pad: clamp(1rem, 3vw, 2.5rem);
   }
 
-  /* dark mode colors */
-  body.dark {
-    --primary-color: #6f8fd1;
-    --primary-pale-color: #6f8fd166;
-    --primary-decoration-color: #6f8fd112;
-    --bg-color: #1c1c1c;
-    --text-color: #c1c1c1;
-    --text-pale-color: #848484;
-    --text-decoration-color: #5f5f5f;
-    --highlight-mark-color: #8296cb3b;
-
-    --callout-note-color: #6f8fd1;
-    --callout-tip-color: #47976f;
-    --callout-important-color: #9776cd;
-    --callout-warning-color: #ad7a52;
-    --callout-caution-color: #d06161;
+  * {
+    box-sizing: border-box;
   }
 
-  /* typography */
+  html {
+    font-size: 100%;
+  }
+
   body {
-    --main-font: "Share Tech Mono", monospace;
-    --code-font: "Share Tech Mono", monospace;
-    --homepage-max-width: 81ch;
-    --main-max-width: 81ch;
-    --avatar-size: 60px;
-    --font-size: 16px;
-    --line-height: 1.75;
-    --img-border-radius: 0px;
-    --detail-border-radius: 0px;
-    --dark-mode-img-brightness: 0.75;
-    --dark-mode-chart-brightness: 0.75;
-    --inline-code-border-radius: 2px;
-    --inline-code-bg-color: var(--primary-decoration-color);
-    --block-code-border-radius: 0px;
-    --block-code-border-color: var(--primary-color);
-    --detail-border-color: var(--primary-color);
+    margin: 0;
+    min-height: 100%;
+    padding: var(--pad);
+    background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+    color: var(--ink);
+    font-family: "Share Tech Mono", monospace;
+    font-size: 16px;
+    line-height: 1.5;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  main.txt {
+    max-width: var(--max);
+    margin: 0 auto;
+  }
+
+  pre {
+    font-family: "Share Tech Mono", monospace;
+  }
+  pre.txt-block {
+    margin: 0;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  a:visited {
+    color: inherit;
+  }
+
+  a:where(:hover, :focus) {
+    color: var(--link);
+  }
+
+  ::selection {
+    background: rgba(29, 79, 140, 0.18);
+  }
+  p {
+    margin: 0;
+    line-height: 16pt;
+  }
+  ul,
+  ol {
+    margin: 0;
+    line-height: 10pt;
+  }
+  li {
+    line-height: 16pt;
+  }
+  blockquote {
+    margin: 0 16pt;
+    line-height: 16pt;
+  }
+  img {
+    max-width: 64ch;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    main.txt {
+      animation: fade-in 600ms ease-out both;
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+
+  @media (max-width: 700px) {
+    body {
+      font-size: 15px;
+      padding: 1rem;
+    }
   }
 </style>
 
-  <link rel="stylesheet" href="https://idunnowhatiamdoing.engineering/main.css">
   
 
 <link id="hl" rel="stylesheet" type="text/css" href="/hl-light.css" />
@@ -90,157 +140,56 @@
 <body class="post">
   
   
-<div id="wrapper">
-  <div id="blank"></div>
-  <aside>
-    
-    
-    <nav>
-      <ul>
-        
-        <li>
-          <a class="h2" href="#memory">Memory</a>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#contract-1-hardware-does-not-promise-as-written-execution">Contract 1: Hardware does not promise as-written execution</a>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#contract-2-the-language-memory-model-is-where-compilers-get-permission">Contract 2: The language memory model is where compilers get permission</a>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#contract-3-rust-s-type-system-tries-to-prevent-you-from-writing-data-races">Contract 3: Rust&#x27;s type system tries to prevent you from writing data races</a>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#rust-atomics-what-they-are-actually-for">Rust atomics: what they are actually for</a>
-          
-          <ul>
-            
-            <li>
-              <a class="h3" href="#relaxed-atomicity-without-ordering">Relaxed: atomicity without ordering</a>
-            </li>
-            
-            <li>
-              <a class="h3" href="#release-acquire-publish-subscribe">Release &#x2F; Acquire: publish–subscribe</a>
-            </li>
-            
-          </ul>
-          
-        </li>
-        
-        <li>
-          <a class="h2" href="#seqcst-the-everyone-agrees-mode">SeqCst: the everyone agrees mode</a>
-          
-          <ul>
-            
-            <li>
-              <a class="h3" href="#example-1-a-clean-publish-subscribe-in-rust-no-unsafe">Example 1: A clean publish–subscribe in Rust (no unsafe)</a>
-            </li>
-            
-            <li>
-              <a class="h3" href="#example-2-acquire-release-is-not-global-sequential-consistency">Example 2: Acquire&#x2F;Release is not global sequential consistency</a>
-            </li>
-            
-            <li>
-              <a class="h3" href="#the-unsafe-cliff-memory-ordering-is-only-half-the-story">The unsafe cliff: memory ordering is only half the story</a>
-            </li>
-            
-            <li>
-              <a class="h3" href="#how-to-build-confidence-loom-miri">How to build confidence: Loom + Miri</a>
-            </li>
-            
-            <li>
-              <a class="h3" href="#a-tiny-ordering-cheat-sheet">A tiny ordering cheat-sheet</a>
-            </li>
-            
-          </ul>
-          
-        </li>
-        
-      </ul>
-    </nav>
-    
-    
-    <button id="back-to-top" aria-label="back to top">
-      
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+<main class="txt">
+  <pre class="txt-block">
 
-    </button>
-    
-  </aside>
-  <main>
-    
-<header>
-  <nav>
-    <a id="back-link" href="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts">← back</a>
-  </nav>
-</header>
+<a id="back-link" href="/">← back</a>
 
+<b>Hardware Memory</b>
+<span id="publish">Oct 19, 2025</span>
 
-    <div>
-      
-      
-      
-      
-      <div id="copy-cfg" style="display: none;" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-"></div>
-      
-      <article class="prose">
-        <h1>Hardware Memory</h1>
-        <div id="post-info">
-          <div id="date">
-            <span id="publish">Oct 19, 2025</span>
-            </div>
-
-          
-        </div>
-
-        
-        
-
-        
-
-        <p>I recently binged Halt and Catch Fire <strong>again</strong>. The episode where they reverse-engineered the BIOS took me right back to when I'd watch my dad with his oscilloscopes like he was doing magic from another universe.</p>
-<p>It got me thinking about chips and memory. I took a microprocessors class in college, it was a blast.</p>
-<p>For the first post on my new, new, new blog, I'm starting with <a rel="nofollow noreferrer" href="https://research.swtch.com/hwmm">hardware memory</a>.</p>
-<h4 id="memory">Memory<a class="zola-anchor" href="#memory" aria-label="Anchor link for: memory" style="visibility: hidden;"></a>
-</h4>
-<p>Rust doesn't magically remove the problem. What it <em>does</em> do is give you unusually strong leverage: safe code is designed to avoid data races (which Rust treats as Undefined Behavior), and when you need atomics, Rust exposes the same fundamental ordering toolbox used by other systems languages.</p>
+<p>I recently binged Halt and Catch Fire <strong>again</strong>. The episode where they
+reverse-engineered the BIOS took me right back to when I'd watch my dad with
+his oscilloscopes like he was doing magic from another universe.
+It got me thinking about chips and memory. I took a microprocessors class in
+college, it was a blast.
+For the first post on my new, new, new blog, I'm starting with <a rel="nofollow noreferrer" href="https://research.swtch.com/hwmm">hardware memory</a>.</p>
+<p><strong>Memory</strong></p>
+<p>Rust doesn't magically remove the problem. What it <em>does</em> do is give you
+unusually strong leverage: safe code is designed to avoid data races (which
+Rust treats as Undefined Behavior), and when you need atomics, Rust exposes
+the same fundamental ordering toolbox used by other systems languages.</p>
 <p><strong>three contracts</strong>:</p>
-<ol>
+<ul>
 <li><strong>Hardware contract</strong>: what CPUs may do.</li>
 <li><strong>Language contract</strong>: what the compiler may assume and reorder.</li>
 <li><strong>Type contract</strong>: what Rust will (and won't) let you express safely.</li>
-</ol>
-<h4 id="contract-1-hardware-does-not-promise-as-written-execution">Contract 1: Hardware does not promise as-written execution<a class="zola-anchor" href="#contract-1-hardware-does-not-promise-as-written-execution" aria-label="Anchor link for: contract-1-hardware-does-not-promise-as-written-execution" style="visibility: hidden;"></a>
-</h4>
-<p>Russ Cox opens his hardware memory model series with the key punchline: optimizations that were invisible in single-threaded programs become <em>visible</em> with threads, and it depends becomes the default unless you have a contract.</p>
+</ul>
+<p><strong>Contract 1: Hardware does not promise as-written execution</strong></p>
+<p>Russ Cox opens his hardware memory model series with the key punchline:
+optimizations that were invisible in single-threaded programs become
+<em>visible</em> with threads, and it depends becomes the default unless you have a
+contract.</p>
 <p>A classic litmus test is <strong>message passing</strong>:</p>
 <blockquote>
-<p>Thread 1 # Thread 2</p>
-<p>x = 1 r1 = y</p>
-<p>y = 1 r2 = x</p>
+<p>Thread 1 # Thread 2
+x = 1 r1 = y
+y = 1 r2 = x</p>
 </blockquote>
 <p>Can Thread 2 observe <code>r1 = 1</code> but <code>r2 = 0</code>?</p>
 <ul>
 <li>On a sequentially consistent machine: <strong>no</strong>.</li>
 <li>On x86 TSO: <strong>no</strong>.</li>
-<li>On weaker hardware like ARM/POWER: it can be <strong>yes</strong> without extra barriers/fences.</li>
+<li>On weaker hardware like ARM/POWER: it can be <strong>yes</strong> without extra
+barriers/fences.</li>
 </ul>
-<p>So even before we talk about compilers, <em>my writes become visible to other cores in program order</em> is not a universal hardware law.</p>
-<p>Another famous one is <strong>store buffering</strong> (a.k.a. store buffer / write queue):</p>
+<p>So even before we talk about compilers, <em>my writes become visible to other
+cores in program order</em> is not a universal hardware law.
+Another famous one is <strong>store buffering</strong> (a.k.a. store buffer / write queue):</p>
 <blockquote>
-<p>Thread 1 # Thread 2</p>
-<p>x = 1 y = 1</p>
-<p>r1 = y r2 = x</p>
+<p>Thread 1 # Thread 2
+x = 1 y = 1
+r1 = y r2 = x</p>
 </blockquote>
 <p>Can we end with <code>r1 = 0</code> and <code>r2 = 0</code>?</p>
 <ul>
@@ -248,56 +197,66 @@
 <li>x86 TSO: <strong>yes</strong> (both stores sit in per-core buffers; both reads miss them).</li>
 <li>ARM/POWER: <strong>yes</strong>.</li>
 </ul>
-<p>If your brain is screaming <em>but that's illegal</em>, good, your brain is sequentially consistent. Your CPU is not required to be.</p>
-<h4 id="contract-2-the-language-memory-model-is-where-compilers-get-permission">Contract 2: The language memory model is where compilers get permission<a class="zola-anchor" href="#contract-2-the-language-memory-model-is-where-compilers-get-permission" aria-label="Anchor link for: contract-2-the-language-memory-model-is-where-compilers-get-permission" style="visibility: hidden;"></a>
-</h4>
-<p>Even if hardware were perfectly sequentially consistent, the compiler still wants to reorder, eliminate, and fuse loads/stores for speed. Those transformations were <em>invisible</em> in single-threaded code. With threads, they become visible.</p>
+<p>If your brain is screaming <em>but that's illegal</em>, good, your brain is sequentially
+consistent. Your CPU is not required to be.</p>
+<p><strong>Contract 2: The language memory model is where compilers get permission</strong></p>
+<p>Even if hardware were perfectly sequentially consistent, the compiler still wants
+to reorder, eliminate, and fuse loads/stores for speed. Those transformations
+were <em>invisible</em> in single-threaded code. With threads, they become visible.</p>
 <p>Language memory models generally converge on a pragmatic deal often summarized as:</p>
 <blockquote>
 <p><strong>DRF-SC</strong>: <em>Data-race-free programs behave as if sequentially consistent.</em></p>
 </blockquote>
-<p>Russ Cox describes that as a major goal in mainstream language memory models (Java, C/C++, Rust, etc.).</p>
-<p>But: <strong>DRF-SC is a conditional promise</strong>. If you have a data race, the language may give you anything from <em>we define a weak-but-sane behavior</em> (Java historically tried) to <em>the program has no defined meaning</em> (C/C++ land).</p>
-<p>Rust lands firmly in the <em>no defined meaning</em> camp for data races.</p>
-<h4 id="contract-3-rust-s-type-system-tries-to-prevent-you-from-writing-data-races">Contract 3: Rust's type system tries to prevent you from <em>writing</em> data races<a class="zola-anchor" href="#contract-3-rust-s-type-system-tries-to-prevent-you-from-writing-data-races" aria-label="Anchor link for: contract-3-rust-s-type-system-tries-to-prevent-you-from-writing-data-races" style="visibility: hidden;"></a>
-</h4>
+<p>Russ Cox describes that as a major goal in mainstream language memory models
+(Java, C/C++, Rust, etc.).</p>
+<p>But: <strong>DRF-SC is a conditional promise</strong>. If you have a data race, the language
+may give you anything from <em>we define a weak-but-sane behavior</em> (Java historically
+tried) to <em>the program has no defined meaning</em> (C/C++ land).
+Rust lands firmly in the <em>no defined meaning</em> camp for data races.</p>
+<p><strong>Contract 3: Rust's type system tries to prevent you from <em>writing</em> data races</strong></p>
 <p>Rust's unsafe book states it plainly:</p>
 <ul>
 <li>A <strong>data race is Undefined Behavior</strong></li>
-<li>And safe Rust is designed to make data races impossible to express (mostly through ownership/borrowing; with <code>Send</code>/<code>Sync</code> controlling what can cross threads).</li>
+<li>And safe Rust is designed to make data races impossible to express (mostly
+through ownership/borrowing; with <code>Send</code>/<code>Sync</code> controlling what can cross threads).</li>
 </ul>
 <p>Important nuance:</p>
 <ul>
-<li>Rust does <strong>not</strong> prevent <em>all</em> race conditions (logic races, lost updates, timing bugs).</li>
-<li>It targets <strong>data races</strong>: unsynchronized concurrent access where at least one access is a write.</li>
+<li>Rust does <strong>not</strong> prevent <em>all</em> race conditions (logic races, lost updates,
+timing bugs).</li>
+<li>It targets <strong>data races</strong>: unsynchronized concurrent access where at least
+one access is a write.</li>
 </ul>
 <p>This is why Rust concurrency often feels like:</p>
 <blockquote>
 <p>You don't get to share mutable stuff unless you prove how you're coordinating it.</p>
 </blockquote>
-<p>And the moment you <em>do</em> want to coordinate at a lower level (lock-free structures, custom primitives), you end up using <strong>atomics</strong> (safe) or <code>unsafe</code> (very sharp).</p>
-<h4 id="rust-atomics-what-they-are-actually-for">Rust atomics: what they are actually for<a class="zola-anchor" href="#rust-atomics-what-they-are-actually-for" aria-label="Anchor link for: rust-atomics-what-they-are-actually-for" style="visibility: hidden;"></a>
-</h4>
-<p>Atomics are not <em>faster mutexes</em>. They are the <em>vocabulary</em> used to build synchronization: the tool that creates <strong>happens-before</strong> edges and constrains reordering.</p>
-<p>Rust's atomic orderings (<code>Relaxed</code>, <code>Acquire</code>, <code>Release</code>, <code>AcqRel</code>, <code>SeqCst</code>) are documented in <code>std::sync::atomic::Ordering</code>.</p>
-<p>Here's the practical mental model I recommend:</p>
-<h5 id="relaxed-atomicity-without-ordering"><code>Relaxed</code>: atomicity without ordering<a class="zola-anchor" href="#relaxed-atomicity-without-ordering" aria-label="Anchor link for: relaxed-atomicity-without-ordering" style="visibility: hidden;"></a>
-</h5>
-<p>Good for counters, stats, <em>eventually consistent</em> observations.</p>
-<p>It prevents torn reads/writes of that atomic variable, but does not promise when other memory becomes visible.</p>
-<h5 id="release-acquire-publish-subscribe"><code>Release</code> / <code>Acquire</code>: publish–subscribe<a class="zola-anchor" href="#release-acquire-publish-subscribe" aria-label="Anchor link for: release-acquire-publish-subscribe" style="visibility: hidden;"></a>
-</h5>
+<p>And the moment you <em>do</em> want to coordinate at a lower level (lock-free structures,
+custom primitives), you end up using <strong>atomics</strong> (safe) or <code>unsafe</code> (very sharp).</p>
+<p><strong>Rust atomics: what they are actually for</strong></p>
+<p>Atomics are not <em>faster mutexes</em>. They are the <em>vocabulary</em> used to build
+synchronization: the tool that creates <strong>happens-before</strong> edges and constrains
+reordering.</p>
+<p>Rust's atomic orderings (<code>Relaxed</code>, <code>Acquire</code>, <code>Release</code>, <code>AcqRel</code>, <code>SeqCst</code>) are
+documented in <code>std::sync::atomic::Ordering</code>.
+Here's the practical mental model I recommend:</p>
+<p><strong><code>Relaxed</code>: atomicity without ordering</strong>
+Good for counters, stats, <em>eventually consistent</em> observations.
+It prevents torn reads/writes of that atomic variable, but does not promise when
+other memory becomes visible.</p>
+<p><strong><code>Release</code> / <code>Acquire</code>: publish–subscribe</strong></p>
 <ul>
 <li>Writer: do regular work, then <strong>Release-store</strong> a flag.</li>
 <li>Reader: <strong>Acquire-load</strong> the flag, then it can safely observe what was published.</li>
 </ul>
-<p>Rust docs describe <code>Release</code> as making prior operations ordered before an <code>Acquire</code> load that observes that value.</p>
-<h3 id="seqcst-the-everyone-agrees-mode"><code>SeqCst</code>: the <em>everyone agrees</em> mode<a class="zola-anchor" href="#seqcst-the-everyone-agrees-mode" aria-label="Anchor link for: seqcst-the-everyone-agrees-mode" style="visibility: hidden;"></a>
-</h3>
-<p>Same synchronization power as Acquire/Release, plus a single global order of all <code>SeqCst</code> operations (simplifies reasoning; can cost more). :contentReference[oaicite:11]{index=11}</p>
-<h5 id="example-1-a-clean-publish-subscribe-in-rust-no-unsafe">Example 1: A clean publish–subscribe in Rust (no <code>unsafe</code>)<a class="zola-anchor" href="#example-1-a-clean-publish-subscribe-in-rust-no-unsafe" aria-label="Anchor link for: example-1-a-clean-publish-subscribe-in-rust-no-unsafe" style="visibility: hidden;"></a>
-</h5>
-<p>This example uses only atomics, so it stays fully safe. It shows the shape of the pattern:</p>
+<p>Rust docs describe <code>Release</code> as making prior operations ordered before an <code>Acquire</code>
+load that observes that value.</p>
+<p><strong><code>SeqCst</code>: the <em>everyone agrees</em> mode</strong></p>
+<p>Same synchronization power as Acquire/Release, plus a single global order of all
+<code>SeqCst</code> operations (simplifies reasoning; can cost more).</p>
+<p><strong>Example 1: A clean publish–subscribe in Rust (no <code>unsafe</code>)</strong></p>
+<p>This example uses only atomics, so it stays fully safe. It shows the shape of
+the pattern:</p>
 <pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-keyword z-other z-rust">use</span> <span class="z-meta z-path z-rust">std<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-path z-rust">sync<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-path z-rust">atomic<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>AtomicBool<span class="z-punctuation z-separator z-rust">,</span> AtomicUsize<span class="z-punctuation z-separator z-rust">,</span> Ordering</span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span><span class="z-punctuation z-terminator z-rust">;</span>
 </span><span class="z-source z-rust"><span class="z-keyword z-other z-rust">use</span> <span class="z-meta z-path z-rust">std<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-path z-rust">sync<span class="z-punctuation z-accessor z-rust">::</span></span>Arc<span class="z-punctuation z-terminator z-rust">;</span>
 </span><span class="z-source z-rust"><span class="z-keyword z-other z-rust">use</span> <span class="z-meta z-path z-rust">std<span class="z-punctuation z-accessor z-rust">::</span></span>thread<span class="z-punctuation z-terminator z-rust">;</span>
@@ -334,137 +293,92 @@
 </span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    t2<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">join</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">unwrap</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
 </span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
 </span></code></pre>
-<p>The Release store on ready ensures the prior write to data becomes visible to any thread that sees <code>ready == true</code> via an <code>Acquire</code> load.</p>
-<p>Where I usually go wrong: I make ready relaxed too, and then the reader can observe the flag without observing the published data on some platforms/optimizations, the exact <em>it depends</em> Russ warns about.</p>
-<h5 id="example-2-acquire-release-is-not-global-sequential-consistency">Example 2: Acquire/Release is not global sequential consistency<a class="zola-anchor" href="#example-2-acquire-release-is-not-global-sequential-consistency" aria-label="Anchor link for: example-2-acquire-release-is-not-global-sequential-consistency" style="visibility: hidden;"></a>
-</h5>
-<p>A spicy detail from the language-memory-model world: Acquire/Release does not impose a single total order across different memory locations.</p>
-<p>Russ Cox shows the store-buffering litmus test remains possible under C++11 acquire/release atomics, even though it is disallowed under sequentially consistent atomics.</p>
-<p>That means: you can correctly synchronize publication on one atomic, and still not get <em>whole-program sequential consistency</em> for free.</p>
-<p>This is why SeqCst exists: sometimes you want fewer degrees of freedom for the machine, because you want fewer degrees of freedom in your own head.</p>
-<h4 id="the-unsafe-cliff-memory-ordering-is-only-half-the-story">The unsafe cliff: memory ordering is only half the story<a class="zola-anchor" href="#the-unsafe-cliff-memory-ordering-is-only-half-the-story" aria-label="Anchor link for: the-unsafe-cliff-memory-ordering-is-only-half-the-story" style="visibility: hidden;"></a>
-</h4>
+<p>The Release store on ready ensures the prior write to data becomes visible
+to any thread that sees <code>ready == true</code> via an <code>Acquire</code> load.
+Where I usually go wrong: I make ready relaxed too, and then the reader can
+observe the flag without observing the published data on some
+platforms/optimizations, the exact <em>it depends</em> Russ warns about.</p>
+<p><strong>Example 2: Acquire/Release is not global sequential consistency</strong></p>
+<p>A spicy detail from the language-memory-model world: Acquire/Release does
+not impose a single total order across different memory locations.
+Russ Cox shows the store-buffering litmus test remains possible under
+C++11 acquire/release atomics, even though it is disallowed under
+sequentially consistent atomics.
+That means: you can correctly synchronize publication on one atomic, and
+still not get <em>whole-program sequential consistency</em> for free.
+This is why SeqCst exists: sometimes you want fewer degrees of freedom for the
+machine, because you want fewer degrees of freedom in your own head.</p>
+<p><strong>The unsafe cliff: memory ordering is only half the story</strong></p>
 <p>Memory model can <em>be</em> two different beasts:</p>
 <ul>
 <li>Concurrency ordering (atomics, fences, visibility)</li>
 <li>Aliasing &amp; provenance (what references mean; what the optimizer may assume)</li>
 </ul>
-<p>Rust's aliasing rules are why <code>&amp;T</code> implies <em>not being mutated</em> and <code>&amp;mut T</code> implies <em>unique</em>. When you build interior mutability (like Cell, RefCell, Mutex), Rust requires you to go through <code>UnsafeCell&lt;T&gt;</code>, it’s the sanctioned escape hatch.</p>
-<p>Key point from the UnsafeCell docs:</p>
+<p>Rust's aliasing rules are why <code>&amp;T</code> implies <em>not being mutated</em> and <code>&amp;mut T</code>
+implies <em>unique</em>. When you build interior mutability (like Cell, RefCell, Mutex),
+Rust requires you to go through <code>UnsafeCell&lt;T&gt;</code>, it’s the sanctioned escape
+hatch.
+Key point from the UnsafeCell docs:</p>
 <ul>
 <li><code>UnsafeCell</code> relaxes the immutability guarantee behind <code>&amp;T</code></li>
-<li>but it does not make aliasing <code>&amp;mut</code> references okay (uniqueness is still required).</li>
+<li>but it does not make aliasing <code>&amp;mut</code> references okay (uniqueness is still
+required).</li>
 </ul>
-<p>Researchers and the Rust unsafe-code community have proposed operational models like Stacked Borrows and Tree Borrows to formalize which pointer uses are allowed and which become UB.</p>
-<p>If you write unsafe abstractions, this is the layer that decides whether your code is <em>works on my machine</em> or <em>silently illegal</em>.</p>
-<h4 id="how-to-build-confidence-loom-miri">How to build confidence: Loom + Miri<a class="zola-anchor" href="#how-to-build-confidence-loom-miri" aria-label="Anchor link for: how-to-build-confidence-loom-miri" style="visibility: hidden;"></a>
-</h4>
-<p>Loom is a concurrency testing tool that repeatedly runs your test while exploring possible thread schedules under the C11-style memory model used for Rust atomics in practice.</p>
+<p>Researchers and the Rust unsafe-code community have proposed operational models
+like Stacked Borrows and Tree Borrows to formalize which pointer uses are allowed
+and which become UB.</p>
+<p>If you write unsafe abstractions, this is the layer that decides whether your code
+is <em>works on my machine</em> or <em>silently illegal</em>.</p>
+<p><strong>How to build confidence: Loom + Miri</strong></p>
+<p>Loom is a concurrency testing tool that repeatedly runs your test while exploring
+possible thread schedules under the C11-style memory model used for Rust atomics
+in practice.</p>
 <ul>
 <li>Great for: custom mutexes, channels, lock-free structures, tricky state machines.</li>
 <li>Not great for: <em>just add Loom to everything</em> (it’s targeted, and can explode in complexity).</li>
 </ul>
-<p>Miri interprets Rust and detects many classes of UB (out-of-bounds, use-after-free, invalid aliasing patterns, etc.).</p>
-<p>If your project has unsafe, running cargo miri test is a very direct <em>are we lying to the compiler?</em> check.</p>
-<h4 id="a-tiny-ordering-cheat-sheet">A tiny ordering cheat-sheet<a class="zola-anchor" href="#a-tiny-ordering-cheat-sheet" aria-label="Anchor link for: a-tiny-ordering-cheat-sheet" style="visibility: hidden;"></a>
-</h4>
-<ul>
-<li>
+<p>Miri interprets Rust and detects many classes of UB (out-of-bounds, use-after-free,
+invalid aliasing patterns, etc.).</p>
+<p>If your project has unsafe, running cargo miri test is a very direct <em>are we lying
+to the compiler?</em> check.</p>
+<p><strong>A tiny ordering cheat-sheet</strong></p>
 <p>Just sharing read-only data across threads</p>
 <ul>
 <li>Prefer: Arc<T> + immutable data.</li>
 <li>No atomics needed.</li>
 </ul>
-</li>
-<li>
 <p>Shared mutable state</p>
 <ul>
 <li>Prefer: Mutex, RwLock, channels (higher-level synchronization).</li>
-<li>Atomics only when you’re building primitives or chasing specific perf needs.</li>
+<li>Atomics only when you’re building primitives or chasing specific
+perf needs.</li>
 </ul>
-</li>
-<li>
 <p>Counters / metrics</p>
 <ul>
 <li>Often: Relaxed.</li>
 </ul>
-</li>
-<li>
 <p>Publish–subscribe / “ready flag”</p>
 <ul>
 <li>Writer: Release store</li>
 <li>Reader: Acquire load</li>
 </ul>
-</li>
-<li>
 <p>You want the simplest reasoning model</p>
 <ul>
 <li>Use: SeqCst (until profiling proves you need weaker).</li>
 </ul>
-</li>
-</ul>
-<p>The hardware wants speed. The compiler wants freedom. Our job is to write down the constraints that make your program actually mean what you think it means.</p>
-<p>Rust helps by making <em>accidentally racy</em> code hard to express, and by giving you the same atomic tools used to build the rest of the ecosystem. The cost is that when you go low-level, you're now negotiating with three contracts at once: CPU, compiler, and Rust's own rules.</p>
+<p>The hardware wants speed. The compiler wants freedom. Our job is to
+write down the constraints that make your program actually mean what
+you think it means.</p>
+<p>Rust helps by making <em>accidentally racy</em> code hard to express, and by
+giving you the same atomic tools used to build the rest of the ecosystem.
+The cost is that when you go low-level, you're now negotiating with three
+contracts at once: CPU, compiler, and Rust's own rules.</p>
 
-      </article>
-
-      
-      
-
-      
-      
-    </div>
-
-    
-
-
-<footer>
-  <div class="left">
-    <div class="copyright">
-      ∅ 2026 n0um3n4
-      
-    </div>
-  </div>
-
-  <div class="right">
-    
-    
-      
-    
-    
-    <a id="rss-btn" href="https://idunnowhatiamdoing.engineering/posts/feed.xml">RSS</a>
-    
-    
-
-    
-  </div>
-</footer>
-
-
-
-
-<dialog id="rss-mask">
-  <div>
-    <a href="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml">https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml</a>
-    
-    
-    <button autofocus aria-label="copy" data-link="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-" >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z" fill="currentColor"></path></svg>
-
-    </button>
-  </div>
-</dialog>
-
-
-
-  </main>
-</div>
+  </pre>
+</main>
 
   
 <script src="/js/lightense.min.js"></script>
-
 
   <script src="https://idunnowhatiamdoing.engineering/js/main.js"></script>
 </body>

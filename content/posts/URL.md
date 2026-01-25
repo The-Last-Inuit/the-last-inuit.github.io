@@ -5,11 +5,19 @@ date = 2025-11-26
 
 Today's a fun day. Let's talk about frontend development.
 
-One of the first things I tried to code a loooong time ago was buttons (in Visual Basic) dancing around on your screen. And if they overlapped, they would clone themselves and create a new breed of buttons. In my quite naive teenage mind, I wanted to make life. Why? Who knows... most teenagers are masturbating or making out with women, me I was playing with my computer.
+One of the first things I tried to code a loooong time ago was buttons 
+(in Visual Basic) dancing around on your screen. And if they overlapped, 
+they would clone themselves and create a new breed of buttons. In my quite 
+naive teenage mind, I wanted to make life. Why? Who knows... most teenagers 
+are masturbating or making out with women, me I was playing with my computer.
 
-Eventually, I found my way to web technology. I must confess I liked it until I met someone who was very anal about having the *right* position and pixels. Then I learned the hard truth about browsers and standardization (more like bastardization).
+Eventually, I found my way to web technology. I must confess I liked it until 
+I met someone who was very anal about having the *right* position and pixels.
+Then I learned the hard truth about browsers and standardization (more like 
+bastardization).
 
-I did, however, enjoy learning about URLs and their parts. So, let’s create a URL manager in Rust.
+I did, however, enjoy learning about URLs and their parts. So, let’s create a 
+URL manager in Rust.
 
 Our `Cargo.toml`:
 
@@ -24,7 +32,8 @@ idna = "1"
 percent-encoding = "2"
 ```
 
-The struct is quite simple, nothing fancy. I always dislike complexity as an excuse for things to be justified:
+The struct is quite simple, nothing fancy. I always dislike complexity as 
+an excuse for things to be justified:
 
 ```bash
 ├── src

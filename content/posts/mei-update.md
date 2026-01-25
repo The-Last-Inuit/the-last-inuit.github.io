@@ -3,23 +3,35 @@ title = "mei | updates"
 date = 2026-01-19
 +++
 
-# Shipping a smoother Mei demo (and a few protocol fixes)
+**Shipping a smoother Mei demo (and a few protocol fixes)**
 
-We just cut a small but useful set of updates to the Mei prototype. This post walks through what changed, why, and how to run the new demo flow.
+We just cut a small but useful set of updates to the Mei prototype. This post 
+walks through what changed, why, and how to run the new demo flow.
 
-## What changed
+**What changed**
 
-- **Spec alignment:** HKDF labels now match the written spec (`proto-v1/*`), so other implementations can interop without surprises.
-- **Configurable relay ports:** The Elixir relay reads `RELAY_PORT`/`PORT` (default 4000). Handy for running multiple relays or avoiding conflicts.
-- **CLI quality-of-life:** Added `--verbose` to log every relay call, and the client now remembers relays you publish so inbox polling works even before you have contacts.
-- **Demo script hardening:** `scripts/demo.sh` spins up a relay on a free local port, preserves your host `CARGO_HOME`/`RUSTUP_HOME`, supports tracing (`TRACE=1`), and cleans up temp state unless you keep it.
-- **Docs and hygiene:** README now documents the relay API + demo troubleshooting, threat model calls out relay abuse/traffic-analysis limits, and we added Elixir ignores (`_build/`, `deps/`, PLTs, `.elixir_ls/`) to `.gitignore`.
+- **Spec alignment:** HKDF labels now match the written spec (`proto-v1/*`), 
+  so other implementations can interop without surprises.
+- **Configurable relay ports:** The Elixir relay reads `RELAY_PORT`/`PORT` 
+  (default 4000). Handy for running multiple relays or avoiding conflicts.
+- **CLI quality-of-life:** Added `--verbose` to log every relay call, and 
+  the client now remembers relays you publish so inbox polling works even 
+  before you have contacts.
+- **Demo script hardening:** `scripts/demo.sh` spins up a relay on a free local 
+  port, preserves your host `CARGO_HOME`/`RUSTUP_HOME`, supports tracing 
+  (`TRACE=1`), and cleans up temp state unless you keep it.
+- **Docs and hygiene:** README now documents the relay API + demo 
+  troubleshooting, threat model calls out relay abuse/traffic-analysis 
+  limits, and we added Elixir ignores (`_build/`, `deps/`, PLTs, 
+  `.elixir_ls/`) to `.gitignore`.
 
-## Running the demo
+**Running the demo**
 
-The demo sets up two temp clients (Alice/Bob) and a temp relay, runs the invite/handshake, and sends a message.
+The demo sets up two temp clients (Alice/Bob) and a temp relay, runs the 
+invite/handshake, and sends a message.
 
-Requirements: `cargo`, `mix`, `curl`, and `python3` on PATH. Rust toolchain should be installed (`rustup default stable` if not).
+Requirements: `cargo`, `mix`, `curl`, and `python3` on PATH. Rust toolchain 
+should be installed (`rustup default stable` if not).
 
 ```bash
 # from repo root
@@ -34,14 +46,17 @@ TRACE=1 KEEP_STATE=1 make demo
 
 Useful env toggles:
 
-- `RELAY_URL=http://127.0.0.1:5005` – force a specific relay URL/port (otherwise the script finds a free port).
-- `USE_EXISTING_RELAY=1 RELAY_URL=http://127.0.0.1:4000` – skip starting a relay and point at one you already run (`mix run --no-halt`).
+- `RELAY_URL=http://127.0.0.1:5005` – force a specific relay URL/port 
+  (otherwise the script finds a free port).
+- `USE_EXISTING_RELAY=1 RELAY_URL=http://127.0.0.1:4000` – skip starting a 
+  relay and point at one you already run (`mix run --no-halt`).
 - `KEEP_STATE=1` – keep temp dirs under `/tmp` instead of cleaning them up.
 - `TRACE=1` – bash trace for the script.
 
-During the demo the CLI prints the `peer=` value after handshake; that’s the key to use with `send`.
+During the demo the CLI prints the `peer=` value after handshake; that’s 
+the key to use with `send`.
 
-## Manual quickstart (without the script)
+**Manual quickstart (without the script)**
 
 ```bash
 # start relay on a chosen port

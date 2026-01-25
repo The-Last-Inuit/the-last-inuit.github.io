@@ -1,0 +1,58 @@
+{# UI macros for Terminal Void #} {% macro header(config, current_path,
+lang) %}
+
+{{ config.title }} {% if config.description %}
+
+{{ config.description }}
+
+{% endif %}
+
+{% set menu = config.extra.menu | default(value=[]) %} {% if menu |
+length > 0 %}
+
+{% for item in menu %} {% set url = item.url %} {% if item.external |
+default(value=false) %} {{ item.name }} {% else %} {{ item.name }} {%
+endif %} {% endfor %}
+
+{% endif %}
+
+{% endmacro header %} {% macro footer(config) %}
+
+{% set social = config.extra.social | default(value=[]) %} {% if social
+| length > 0 %}
+
+{% for item in social %} {{ item.name }} {% endfor %}
+
+{% endif %}
+
+© {{ now() | date(format="%Y") }} {{ config.title }} · Built with Zola
+
+{% endmacro footer %} {% macro post_card(p) %}
+
+{{ p.title }}
+
+{% if p.date %} {{ p.date | date(format="%Y-%m-%d") }} · {% endif %} {{
+p.reading_time }} min read {% if p.taxonomies.tags is defined and
+(p.taxonomies.tags | length > 0) %} · {% for t in p.taxonomies.tags %}
+#{{ t }} {% endfor %} {% endif %}
+
+{% if p.summary %} {{ p.summary | safe }} {% elif p.description %}
+
+{{ p.description }}
+
+{% endif %}
+
+{% endmacro post_card %} {% macro paginate(paginator) %}
+
+{% if paginator.previous %} ← Newer {% else %} {% endif %} Page {{
+paginator.current_index }} / {{ paginator.number_pagers }} {% if
+paginator.next %} Older → {% else %} {% endif %}
+
+{% endmacro paginate %} {% macro toc(headers) %}
+
+- {% for h in headers %}
+- {{ h.title }} {% if h.children and (h.children | length > 0) %} {{
+  self::toc(headers=h.children) }} {% endif %}
+  {% endfor %}
+
+{% endmacro toc %}

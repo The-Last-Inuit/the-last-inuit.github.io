@@ -1,0 +1,4 @@
+
+    {{ macros::back_link(path = get_url(path="/")) }}
+    {{ section.content | safe }}
+        

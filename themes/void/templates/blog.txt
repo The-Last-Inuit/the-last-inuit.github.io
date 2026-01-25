@@ -1,0 +1,18 @@
+{% if section.extra.categorized %} {% for category,posts in
+section.pages | sort(attribute="taxonomies.categories.0") |
+group_by(attribute="taxonomies.categories.0") %} {% set category_name =
+category %} {% if category is matching("^__[0-9]{2}__") %} {% set
+category_name = category | split(pat="") | slice(start=7) | join(sep="")
+%} {% endif %}
+
+{{ category_name }}
+
+{% for post in posts %} {{ post.title }} {{ post.date |
+date(format=section.extra.date_format) }} {% endfor %}
+
+{% endfor %} {% else %}
+
+{% for post in section.pages %} {{ post.title }} {{ post.date |
+date(format=section.extra.date_format) }} {% endfor %}
+
+{% endif %}

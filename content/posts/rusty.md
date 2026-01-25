@@ -3,7 +3,8 @@ title = "rusty"
 date = 2026-01-04
 +++
 
-I'm a bit **rust**y, and in a few days I have a technical interview. Time to drag those skeletons into the sun for a proper sunbath.
+I'm a bit **rust**y, and in a few days I have a technical interview. Time to drag 
+those skeletons into the sun for a proper sunbath.
 
 We are going to code (raw-dogging mode) a few elixir modules:
 
@@ -15,7 +16,7 @@ We are going to code (raw-dogging mode) a few elixir modules:
 * Binary search variants
 * Rate limiter (token bucket, in-memory)
 
-#### LRU Cache
+**LRU Cache**
 
 link: <a href="raw-dogged-lru.exs">code</a>
 
@@ -400,7 +401,7 @@ defmodule LRUTest do
 end
 ```
 
-#### Top-K frequent
+**Top-K frequent**
 
 link: <a href="raw-dogged-topk.exs">code</a>
 
@@ -539,7 +540,7 @@ defmodule TopKTest do
 end
 ```
 
-#### Subarray sum equals K
+**Subarray sum equals K**
 
 link: <a href="raw-dogged-sub.exs">code</a>
 
@@ -668,7 +669,7 @@ defmodule SubarraySumTest do
 end
 ```
 
-#### Merge intervals
+**Merge intervals**
 
 link: <a href="raw-dogged-merge.exs">code</a>
 
@@ -826,7 +827,7 @@ defmodule IntervalsTest do
 end
 ```
 
-#### BFS shortest path
+**BFS shortest path**
 
 link: <a href="raw-dogged-bfs.exs">code</a>
 
@@ -1121,7 +1122,7 @@ defmodule BFSGridTest do
 end
 ```
 
-#### Binary search variants
+**Binary search variants**
 
 link: <a href="raw-dogged-bin.exs">code</a>
 
@@ -1397,7 +1398,7 @@ defmodule BinSearchTest do
 end
 ```
 
-#### Rate limiter
+**Rate limiter**
 
 
 link: <a href="raw-dogged-rate.exs">code</a>

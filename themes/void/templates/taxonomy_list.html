@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <header class="tv-pagehead">
+    <h1 class="tv-h1">{{ taxonomy.name | title }}</h1>
+    <p class="tv-lede">All {{ taxonomy.name }}.</p>
+  </header>
+
+  {% if terms | length > 0 %}
+    <ul class="tv-terms">
+      {% for t in terms %}
+        <li class="tv-terms__item">
+          <a class="tv-terms__link" href="{{ t.permalink }}">#{{ t.name }}</a>
+          <span class="tv-terms__count">{{ t.page_count }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="tv-muted">No terms found.</p>
+  {% endif %}
+{% endblock content %}

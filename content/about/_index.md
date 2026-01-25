@@ -17,14 +17,28 @@ comment = false
 reaction = false
 +++
 
-Hello there. This is n0um3n4. I have this blog about software engineering. I created my first product back in 2009: a POS system that's still kicking ass with zero maintenance.
+Hello there. This is n0um3n4. I have this blog about software engineering. 
+I created my first product back in 2009: a POS system that's still kicking 
+ass with zero maintenance.
 
-I started in junior high. A friend taught me to code in BASIC. Around the same time, I was learning how to connect computers locally, for gaming, of course. I'd gotten internet about a year earlier, back when those dial-up tones were basically music. I got hooked on everything computer-related.
+I started in junior high. A friend taught me to code in BASIC. Around the 
+same time, I was learning how to connect computers locally, for gaming, of 
+course. I'd gotten internet about a year earlier, back when those dial-up 
+tones were basically music. I got hooked on everything computer-related.
 
-Funny thing: I'm a curious person, but stopping at computers didn't feel like the right path, so I majored in theoretical physics. I never left my precious computers, though.
+Funny thing: I'm a curious person, but stopping at computers didn't feel 
+like the right path, so I majored in theoretical physics. I never left my 
+precious computers, though.
 
-During college, I made some money doing laptop maintenance and the usual stuff. A few years earlier, my father helped me get a gig repairing computers in an industrial complex, so I already kind of knew what I was doing when it came to fixing things. My father was, and still is, a tech junkie. I remember my favorite device was the oscilloscope. Majestic beast.
+During college, I made some money doing laptop maintenance and the usual 
+stuff. A few years earlier, my father helped me get a gig repairing computers 
+in an industrial complex, so I already kind of knew what I was doing when it 
+came to fixing things. My father was, and still is, a tech junkie. I remember 
+my favorite device was the oscilloscope. Majestic beast.
 
-One thing led to another, and in 2013 I decided to change careers and go back to coding, this time as a profession.
+One thing led to another, and in 2013 I decided to change careers and go back 
+to coding, this time as a profession.
 
-Now I want to explore more. Fail more. Break more. And I want to document everything on this blog. I figure someone, or something, out there might benefit from it.
+Now I want to explore more. Fail more. Break more. And I want to document 
+everything on this blog. I figure someone, or something, out there might 
+benefit from it.

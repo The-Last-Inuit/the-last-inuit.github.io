@@ -3,71 +3,96 @@ title = "Layoffs"
 date = 2025-12-19
 +++
 
-Today I have an interview. I was expecting to look for a job in a few years, but sadly, layoffs started happening at my current company. There have been two waves already. It was supposed to be over, but it got me thinking: maybe it's time to move on. So I started interviewing. The current climate isn't great, but well... I have to.
+Today I have an interview. I was expecting to look for a job in a few years, 
+but sadly, layoffs started happening at my current company. There have been 
+two waves already. It was supposed to be over, but it got me thinking: maybe 
+it's time to move on. So I started interviewing. The current climate isn't 
+great, but well... I have to.
 
-Today's interview was for a company that uses Go. I played with Go a long time ago, and nothing since then. Still, it's just a language. One of the nice things about getting older (and hopefully wiser) is realizing that languages are just tools. As long as you understand algorithms, design approaches, and so on, the language isn't a barrier or at least, that's what I believe.
+Today's interview was for a company that uses Go. I played with Go a long time 
+ago, and nothing since then. Still, it's just a language. One of the nice 
+things about getting older (and hopefully wiser) is realizing that languages 
+are just tools. As long as you understand algorithms, design approaches, and 
+so on, the language isn't a barrier or at least, that's what I believe.
 
-Anyway, I picked up Go again to prepare for the next interview, which will happen next year. It's kind of weird, since it'll be an interview with seven software engineers. I don't feel pressure, but... it's weird.
+Anyway, I picked up Go again to prepare for the next interview, which will 
+happen next year. It's kind of weird, since it'll be an interview with seven 
+software engineers. I don't feel pressure, but... it's weird.
 
-Anyhow, I really love how Elixir handles asynchronous tasks. Revisiting Go reminded me why I find it a bit off-putting.
+Anyhow, I really love how Elixir handles asynchronous tasks. Revisiting Go 
+reminded me why I find it a bit off-putting.
 
 Here's what I've learned.
 
-#### Go vs Elixir
+**Go vs Elixir**
 
-This is a practical comparison of how **Go** and **Elixir (BEAM/OTP)** approach doing many things at once: concurrent I/O, background jobs, fan-out/fan-in pipelines, and fault-tolerant workers.
+This is a practical comparison of how **Go** and **Elixir (BEAM/OTP)** approach 
+doing many things at once: concurrent I/O, background jobs, fan-out/fan-in 
+pipelines, and fault-tolerant workers.
 
-> Terminology note: both ecosystems often say **concurrency** rather than asynchronous. In practice, async tasks usually means run work concurrently without blocking the caller.
+> Terminology note: both ecosystems often say **concurrency** rather than 
+asynchronous. In practice, async tasks usually means run work concurrently 
+without blocking the caller.
 
-##### TL;DR
+**TL;DR**
 
-- **Go**: you build concurrency explicitly with **goroutines + channels** (and `context` for cancellation). You also build your own supervision patterns (restart, isolation, backoff) or use libraries.
-- **Elixir**: the runtime is built around **isolated lightweight processes + message passing + OTP supervision**. Starting concurrent work is easy, and *restarts/fault-handling are first-class*.
+- **Go**: you build concurrency explicitly with **goroutines + channels** (and 
+  `context` for cancellation). You also build your own supervision patterns 
+  (restart, isolation, backoff) or use libraries.
+- **Elixir**: the runtime is built around **isolated lightweight processes + 
+  message passing + OTP supervision**. Starting concurrent work is easy, and 
+  *restarts/fault-handling are first-class*.
 
 Both can be excellent, they just optimize for different defaults.
 
-##### Core mental model
+**Core mental model**
 
-###### Go
+**Go**
 
 - Concurrency primitive: **goroutine** (cheap thread-like unit).
 - Communication: **channels** (typed queues) or shared memory with locks.
-- Failure model: panics exist, but **errors are usually returned**, goroutine crashes don't automatically restart.
+- Failure model: panics exist, but **errors are usually returned**, 
+  goroutine crashes don't automatically restart.
 - You typically implement:
   - cancellation via `context.Context`
   - structured concurrency via `errgroup`
   - restart/backoff via your own loops or orchestration (systemd/K8s)
 
-###### Elixir (BEAM/OTP)
+**Elixir (BEAM/OTP)**
 
-- Concurrency primitive: **process** (even cheaper, isolated, preemptively scheduled).
+- Concurrency primitive: **process** (even cheaper, isolated, preemptively 
+  scheduled).
 - Communication: **message passing** (`send/2`, `receive`), mailboxes.
 - Failure model: “**let it crash**” + supervisors restart children.
 - Structured concurrency & lifecycle are built into OTP:
   - `Supervisor`, `Task.Supervisor`, `GenServer`, `GenStage`, `Broadway`
 
-##### Side-by-side mapping
+**Side-by-side mapping**
 
-| Goal                         | Go                                     | Elixir                                                                 |
-| ---------------------------- | -------------------------------------- | ---------------------------------------------------------------------- |
-| Start a concurrent task      | `go fn()`                              | `Task.async(fn -> ... end)` / `Task.start_link`                        |
-| Wait for result              | channel receive / `WaitGroup`          | `Task.await(task, timeout)`                                            |
-| Run N tasks, collect results | fan-out channels / `errgroup.Group`    | `Task.async_stream/3`                                                  |
-| Cancel work                  | `context.WithCancel/Timeout`           | `Task.shutdown/2`, process exit signals, timeouts, `receive ... after` |
-| Backpressure                 | bounded channels, semaphores           | `Task.async_stream(max_concurrency:)`, GenStage/Broadway               |
-| Supervise & restart          | DIY + systemd/K8s / libraries          | OTP `Supervisor` strategies, retries, backoff                          |
-| Queue jobs                   | external (Redis/SQS/etc) + worker pool | Oban/Que/Exq + supervised workers                                      |
-| Distributed concurrency      | explicit RPC, gRPC, etc.               | built-in distribution (`Node`, `GenServer.call` across nodes)          |
+| Goal                         | Go                                     |
+| ---------------------------- | -------------------------------------- |
+| Start a concurrent task      | `go fn()`                              |
+| Wait for result              | channel receive / `WaitGroup`          |
+| Run N tasks, collect results | fan-out channels / `errgroup.Group`    |
+| Cancel work                  | `context.WithCancel/Timeout`           |
+| Backpressure                 | bounded channels, semaphores           |
+| Supervise & restart          | DIY + systemd/K8s / libraries          |
+| Queue jobs                   | external (Redis/SQS/etc) + worker pool |
+| Distributed concurrency      | explicit RPC, gRPC, etc.               |
 
-##### 1) “Fire-and-forget” background work
-
-###### Go
-
-```go
-go func() {
-    // do work
-}()
-```
+| Goal                         | Elixir                                                                 |
+| ---------------------------- | ---------------------------------------------------------------------- |
+| Start a concurrent task      | `Task.async(fn -> ... end)` / `Task.start_link`                        |
+| Wait for result              | `Task.await(task, timeout)`                                            |
+| Run N tasks, collect results | `Task.async_stream/3`                                                  |
+| Cancel work                  | `Task.shutdown/2`, process exit signals, timeouts,                     |
+|                              |  `receive... after`                                                    |
+| Backpressure                 | `Task.async_stream(max_concurrency:)`,                                 |
+|                              | GenStage/Broadway                                                      |
+| Supervise & restart          | OTP `Supervisor` strategies, retries, backoff                          |
+| Queue jobs                   | Oban/Que/Exq + supervised workers                                      |
+| Distributed concurrency      | built-in distribution (`Node`, `GenServer.call`                        |
+|                              | across nodes)                                                          |
 
 Concerns:
 
@@ -75,7 +100,7 @@ Concerns:
 - how do you stop it on shutdown?
 - who restarts it if it dies?
 
-###### Elixir
+**Elixir**
 
 ```elixir
 Task.start(fn ->
@@ -91,9 +116,9 @@ Task.Supervisor.start_child(MyTaskSup, fn ->
 end)
 ```
 
-##### 2) Run a task and await result (with timeout)
+**2) Run a task and await result (with timeout)**
 
-###### Go (channel + timeout)
+**Go (channel + timeout)**
 
 ```go
 resultCh := make(chan int, 1)
@@ -110,16 +135,16 @@ case <-time.After(2 * time.Second):
 }
 ```
 
-###### Elixir
+**Elixir**
 
 ```elixir
 task = Task.async(fn -> slow_computation() end)
 value = Task.await(task, 2_000)
 ```
 
-##### 3) Fan-out/fan-in with cancellation + error propagation
+**3) Fan-out/fan-in with cancellation + error propagation**
 
-###### Go (structured concurrency with errgroup)
+**Go (structured concurrency with errgroup)**
 
 ```go
 g, ctx := errgroup.WithContext(parentCtx)
@@ -136,7 +161,7 @@ if err := g.Wait(); err != nil {
 }
 ```
 
-###### Elixir (`Task.async_stream`)
+**Elixir (`Task.async_stream`)**
 
 ```elixir
 items
@@ -152,11 +177,12 @@ items
 Notes:
 
 - `async_stream` gives you controlled concurrency + backpressure knobs.
-- Errors come back as `{:exit, reason}` or `{:error, reason}` depending on your function.
+- Errors come back as `{:exit, reason}` or `{:error, reason}` depending on 
+  your function.
 
-##### Cancellation and timeouts
+**Cancellation and timeouts**
 
-###### Go: `context.Context` is the contract
+**Go: `context.Context` is the contract**
 
 - Functions accept `ctx context.Context`
 - You cancel via `cancel()` or deadline expiry
@@ -175,7 +201,7 @@ for {
 }
 ```
 
-###### Elixir: processes can be told to stop
+**Elixir: processes can be told to stop**
 
 - You can:
   - use timeouts in `GenServer.call/3` and `Task.await/2`
@@ -199,11 +225,12 @@ Shutdown a task:
 Task.shutdown(task, :brutal_kill)
 ```
 
-##### Error handling and what happens if it crashes?
+**Error handling and what happens if it crashes?**
 
-###### Go
+**Go**
 
-- If a goroutine returns an error, you must **send it somewhere** (channel, `errgroup`, etc.).
+- If a goroutine returns an error, you must **send it somewhere** (channel, 
+  `errgroup`, etc.).
 - A panic in a goroutine can crash the whole program if not recovered.
 - Restart strategies are **not automatic** at the language/runtime level.
 
@@ -214,15 +241,17 @@ Typical approach:
 - retry with backoff
 - rely on process supervisor (systemd/Kubernetes) to restart the service
 
-###### Elixir
+**Elixir**
 
-- If a process crashes, its supervisor can **restart it automatically** (with strategies like `:one_for_one`, etc.).
-- Crashes are expected, you isolate work in processes and design clean restarts.
+- If a process crashes, its supervisor can **restart it automatically** 
+  (with strategies like `:one_for_one`, etc.).
+- Crashes are expected, you isolate work in processes and design clean 
+  restarts.
 - This is a big reason Elixir shines for always-on systems.
 
-##### Backpressure and throughput control
+**Backpressure and throughput control**
 
-###### Go
+**Go**
 
 Common tools:
 
@@ -243,31 +272,33 @@ for _, item := range items {
 }
 ```
 
-###### Elixir
+**Elixir**
 
 Common tools:
 
 - `Task.async_stream(max_concurrency:)`
 - GenStage/Broadway pipelines (explicit demand-driven flow)
-- OTP mailboxes (be careful: unbounded mailbox can become a memory pressure point)
+- OTP mailboxes (be careful: unbounded mailbox can become a memory 
+  pressure point)
 
-##### CPU-bound vs I/O-bound work
+**CPU-bound vs I/O-bound work**
 
-###### Go
+**Go**
 
 - Great for I/O concurrency.
-- CPU-bound work scales with GOMAXPROCS; goroutines run on OS threads managed by the scheduler.
+- CPU-bound work scales with GOMAXPROCS; goroutines run on OS threads 
+  managed by the scheduler.
 
-###### Elixir
+**Elixir**
 
 - BEAM is excellent for I/O and many concurrent processes.
 - CPU-heavy workloads can still work well, but:
   - long CPU loops can hurt scheduler responsiveness
   - you often move heavy numeric work to **NIFs** (Rust/C) or ports if needed
 
-##### Observability and debugging
+**Observability and debugging**
 
-###### Go
+**Go**
 
 - Standard: `pprof`, tracing, metrics, logs.
 - Concurrency bugs often involve:
@@ -275,7 +306,7 @@ Common tools:
   - deadlocks
   - races (use `-race`)
 
-###### Elixir
+**Elixir**
 
 - The runtime provides introspection tools:
   - process listings, mailbox sizes, reductions, traces
@@ -284,64 +315,73 @@ Common tools:
   - message ordering assumptions
   - supervision misconfiguration
 
-##### When one is a better fit
+**When one is a better fit**
 
-###### Pick Go when...
+**Pick Go when...**
 
 - you want a small static binary, simple deployment footprint
 - you're building system/network services with explicit concurrency control
 - you're in an ecosystem heavily invested in gRPC/K8s and Go tooling
-- you want close-to-the-metal performance with relatively simple concurrency primitives
+- you want close-to-the-metal performance with relatively simple concurrency 
+  primitives
 
-###### Pick Elixir when...
+**Pick Elixir when...**
 
 - you need **fault tolerance** as a default (telecom-style always up)
 - you want thousands/millions of concurrent lightweight processes
-- you benefit from OTP patterns: supervision, hot code upgrades (rare), distributed messaging
-- you want restartable components inside the app, not just at the container level
+- you benefit from OTP patterns: supervision, hot code upgrades (rare), 
+  distributed messaging
+- you want restartable components inside the app, not just at the container 
+  level
 
-##### Practical guidance: translating patterns
+**Practical guidance: translating patterns**
 
-###### I have background jobs
+**I have background jobs**
 
-- Go: worker pool + queue (Redis/SQS/etc) + process-level restart by K8s/systemd
+- Go: worker pool + queue (Redis/SQS/etc) + process-level restart by 
+  K8s/systemd
 - Elixir: Oban/Que + supervised workers + retries/backoff built-in
 
-###### I need a pipeline with backpressure
+**I need a pipeline with backpressure**
 
 - Go: bounded channels + workers + careful select logic
-- Elixir: GenStage/Broadway (demand-driven) or `async_stream` for simpler cases
+- Elixir: GenStage/Broadway (demand-driven) or `async_stream` for simpler 
+  cases
 
-###### I need request-scoped cancellation
+**I need request-scoped cancellation**
 
 - Go: `context` everywhere
-- Elixir: timeouts and process links/monitors; pass deadlines explicitly as data
+- Elixir: timeouts and process links/monitors; pass deadlines explicitly 
+  as data
 
-##### Common footguns
+**Common footguns**
 
-###### Go
+**Go**
 
 - goroutine leaks (started, never stopped)
 - forgetting to respect `ctx.Done()`
 - data races from shared memory (use `-race`)
 - unbuffered channels causing deadlocks in production
 
-###### Elixir
+**Elixir**
 
 - mailbox growth (slow consumer, too many messages)
 - blocking the scheduler with long CPU loops
 - misusing `Task.await` (awaiting from process that must remain responsive)
 - everything is a GenServer (over-serialization)
 
-##### Mini cheat-sheet: what's the equivalent of...?
+**Mini cheat-sheet: what's the equivalent of...?**
 
 - **goroutine** → Elixir **process** (`spawn`, `Task`, GenServer)
-- **channel** → Elixir **mailbox** (message passing); for queues use `:queue`, GenStage, or external queues
-- **WaitGroup** → `Task.yield_many` / `Task.async_stream` / supervised child tracking
+- **channel** → Elixir **mailbox** (message passing); for queues use `:queue`, 
+  GenStage, or external queues
+- **WaitGroup** → `Task.yield_many` / `Task.async_stream` / supervised child 
+  tracking
 - **select** → `receive` with pattern matching + `after`
-- **context cancellation** → shutdown signals, timeouts, explicit stop messages, `Task.shutdown`
+- **context cancellation** → shutdown signals, timeouts, explicit stop 
+  messages, `Task.shutdown`
 
-###### Go: request handler that fans out with cancellation
+**Go: request handler that fans out with cancellation**
 
 ```go
 func Handler(w http.ResponseWriter, r *http.Request) {
@@ -360,7 +400,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-###### Elixir: concurrent calls with timeout + supervised isolation
+**Elixir: concurrent calls with timeout + supervised isolation**
 
 ```elixir
 def handle_call(:fetch, _from, state) do
@@ -373,7 +413,7 @@ def handle_call(:fetch, _from, state) do
 end
 ```
 
-###### Go Cheatsheet
+**Go Cheatsheet**
 
 <object data="/go-cs.pdf" type="application/pdf" style="width:100%; height:100vh;">
   <p>

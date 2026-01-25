@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% import "macros/ui.html" as ui %}
+
+{% block content %}
+  <section class="tv-hero">
+    {% if section.title %}
+      <h1 class="tv-h1">{{ section.title }}</h1>
+    {% endif %}
+    {% if section.content %}
+      <div class="tv-prose">
+        {{ section.content | safe }}
+      </div>
+    {% endif %}
+  </section>
+
+  {% set pages = section.pages %}
+  {% if paginator is defined %}
+    {% set pages = paginator.pages %}
+  {% endif %}
+
+  {% if pages | length > 0 %}
+    <div class="tv-stack">
+      {% for p in pages %}
+        {{ ui::post_card(p=p) }}
+      {% endfor %}
+    </div>
+
+    {% if paginator is defined %}
+      {{ ui::paginate(paginator=paginator) }}
+    {% endif %}
+  {% else %}
+    <p class="tv-muted">No posts yet.</p>
+  {% endif %}
+{% endblock content %}

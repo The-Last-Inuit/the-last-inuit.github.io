@@ -1,0 +1,7 @@
+{% if title %}
+
+{{ title }}
+
+{% endif %}
+
+{{ body | markdown | safe }}

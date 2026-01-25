@@ -20,64 +20,114 @@
   <style>
   @import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
 
-  /* light mode colors */
-  body {
-    --primary-color: #5871a2;
-    --primary-pale-color: #5871a233;
-    --primary-decoration-color: #5871a210;
-    --bg-color: #ffffff;
-    --text-color: #2f3030;
-    --text-pale-color: #767676;
-    --text-decoration-color: #a9a9a9;
-    --highlight-mark-color: #5f75b020;
-
-    --callout-note-color: #5871a2;
-    --callout-tip-color: #268556;
-    --callout-important-color: #885fc9;
-    --callout-warning-color: #ab6632;
-    --callout-caution-color: #c64e4e;
+  :root {
+    --bg-top: #ffffff;
+    --bg-bottom: #ffffff;
+    --ink: #141414;
+    --muted: #6a6358;
+    --link: #1d4f8c;
+    --max: 88ch;
+    --pad: clamp(1rem, 3vw, 2.5rem);
   }
 
-  /* dark mode colors */
-  body.dark {
-    --primary-color: #6f8fd1;
-    --primary-pale-color: #6f8fd166;
-    --primary-decoration-color: #6f8fd112;
-    --bg-color: #1c1c1c;
-    --text-color: #c1c1c1;
-    --text-pale-color: #848484;
-    --text-decoration-color: #5f5f5f;
-    --highlight-mark-color: #8296cb3b;
-
-    --callout-note-color: #6f8fd1;
-    --callout-tip-color: #47976f;
-    --callout-important-color: #9776cd;
-    --callout-warning-color: #ad7a52;
-    --callout-caution-color: #d06161;
+  * {
+    box-sizing: border-box;
   }
 
-  /* typography */
+  html {
+    font-size: 100%;
+  }
+
   body {
-    --main-font: "Share Tech Mono", monospace;
-    --code-font: "Share Tech Mono", monospace;
-    --homepage-max-width: 81ch;
-    --main-max-width: 81ch;
-    --avatar-size: 60px;
-    --font-size: 16px;
-    --line-height: 1.75;
-    --img-border-radius: 0px;
-    --detail-border-radius: 0px;
-    --dark-mode-img-brightness: 0.75;
-    --dark-mode-chart-brightness: 0.75;
-    --inline-code-border-radius: 2px;
-    --inline-code-bg-color: var(--primary-decoration-color);
-    --block-code-border-radius: 0px;
-    --block-code-border-color: var(--primary-color);
-    --detail-border-color: var(--primary-color);
+    margin: 0;
+    min-height: 100%;
+    padding: var(--pad);
+    background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+    color: var(--ink);
+    font-family: "Share Tech Mono", monospace;
+    font-size: 16px;
+    line-height: 1.5;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  main.txt {
+    max-width: var(--max);
+    margin: 0 auto;
+  }
+
+  pre {
+    font-family: "Share Tech Mono", monospace;
+  }
+  pre.txt-block {
+    margin: 0;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  a:visited {
+    color: inherit;
+  }
+
+  a:where(:hover, :focus) {
+    color: var(--link);
+  }
+
+  ::selection {
+    background: rgba(29, 79, 140, 0.18);
+  }
+  p {
+    margin: 0;
+    line-height: 16pt;
+  }
+  ul,
+  ol {
+    margin: 0;
+    line-height: 10pt;
+  }
+  li {
+    line-height: 16pt;
+  }
+  blockquote {
+    margin: 0 16pt;
+    line-height: 16pt;
+  }
+  img {
+    max-width: 64ch;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    main.txt {
+      animation: fade-in 600ms ease-out both;
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+
+  @media (max-width: 700px) {
+    body {
+      font-size: 15px;
+      padding: 1rem;
+    }
   }
 </style>
 
-  <link rel="stylesheet" href="https://idunnowhatiamdoing.engineering/main.css">
   
 
 <link id="hl" rel="stylesheet" type="text/css" href="/hl-light.css" />
@@ -90,95 +140,39 @@
 <body class="post">
   
   
-<div id="wrapper">
-  <div id="blank"></div>
-  <aside>
-    
-    
-    <nav>
-      <ul>
-        
-        <li>
-          <a class="h2" href="#shipping-a-smoother-mei-demo-and-a-few-protocol-fixes">Shipping a smoother Mei demo (and a few protocol fixes)</a>
-          
-          <ul>
-            
-            <li>
-              <a class="h3" href="#what-changed">What changed</a>
-            </li>
-            
-            <li>
-              <a class="h3" href="#running-the-demo">Running the demo</a>
-            </li>
-            
-            <li>
-              <a class="h3" href="#manual-quickstart-without-the-script">Manual quickstart (without the script)</a>
-            </li>
-            
-          </ul>
-          
-        </li>
-        
-      </ul>
-    </nav>
-    
-    
-    <button id="back-to-top" aria-label="back to top">
-      
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+<main class="txt">
+  <pre class="txt-block">
 
-    </button>
-    
-  </aside>
-  <main>
-    
-<header>
-  <nav>
-    <a id="back-link" href="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts">← back</a>
-  </nav>
-</header>
+<a id="back-link" href="/">← back</a>
 
+<b>mei | updates</b>
+<span id="publish">Jan 19, 2026</span>
 
-    <div>
-      
-      
-      
-      
-      <div id="copy-cfg" style="display: none;" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-"></div>
-      
-      <article class="prose">
-        <h1>mei | updates</h1>
-        <div id="post-info">
-          <div id="date">
-            <span id="publish">Jan 19, 2026</span>
-            </div>
-
-          
-        </div>
-
-        
-        
-
-        
-
-        <h1 id="shipping-a-smoother-mei-demo-and-a-few-protocol-fixes">Shipping a smoother Mei demo (and a few protocol fixes)<a class="zola-anchor" href="#shipping-a-smoother-mei-demo-and-a-few-protocol-fixes" aria-label="Anchor link for: shipping-a-smoother-mei-demo-and-a-few-protocol-fixes" style="visibility: hidden;"></a>
-</h1>
-<p>We just cut a small but useful set of updates to the Mei prototype. This post walks through what changed, why, and how to run the new demo flow.</p>
-<h2 id="what-changed">What changed<a class="zola-anchor" href="#what-changed" aria-label="Anchor link for: what-changed" style="visibility: hidden;"></a>
-</h2>
+<p><strong>Shipping a smoother Mei demo (and a few protocol fixes)</strong></p>
+<p>We just cut a small but useful set of updates to the Mei prototype. This post
+walks through what changed, why, and how to run the new demo flow.</p>
+<p><strong>What changed</strong></p>
 <ul>
-<li><strong>Spec alignment:</strong> HKDF labels now match the written spec (<code>proto-v1/*</code>), so other implementations can interop without surprises.</li>
-<li><strong>Configurable relay ports:</strong> The Elixir relay reads <code>RELAY_PORT</code>/<code>PORT</code> (default 4000). Handy for running multiple relays or avoiding conflicts.</li>
-<li><strong>CLI quality-of-life:</strong> Added <code>--verbose</code> to log every relay call, and the client now remembers relays you publish so inbox polling works even before you have contacts.</li>
-<li><strong>Demo script hardening:</strong> <code>scripts/demo.sh</code> spins up a relay on a free local port, preserves your host <code>CARGO_HOME</code>/<code>RUSTUP_HOME</code>, supports tracing (<code>TRACE=1</code>), and cleans up temp state unless you keep it.</li>
-<li><strong>Docs and hygiene:</strong> README now documents the relay API + demo troubleshooting, threat model calls out relay abuse/traffic-analysis limits, and we added Elixir ignores (<code>_build/</code>, <code>deps/</code>, PLTs, <code>.elixir_ls/</code>) to <code>.gitignore</code>.</li>
+<li><strong>Spec alignment:</strong> HKDF labels now match the written spec (<code>proto-v1/*</code>),
+so other implementations can interop without surprises.</li>
+<li><strong>Configurable relay ports:</strong> The Elixir relay reads <code>RELAY_PORT</code>/<code>PORT</code>
+(default 4000). Handy for running multiple relays or avoiding conflicts.</li>
+<li><strong>CLI quality-of-life:</strong> Added <code>--verbose</code> to log every relay call, and
+the client now remembers relays you publish so inbox polling works even
+before you have contacts.</li>
+<li><strong>Demo script hardening:</strong> <code>scripts/demo.sh</code> spins up a relay on a free local
+port, preserves your host <code>CARGO_HOME</code>/<code>RUSTUP_HOME</code>, supports tracing
+(<code>TRACE=1</code>), and cleans up temp state unless you keep it.</li>
+<li><strong>Docs and hygiene:</strong> README now documents the relay API + demo
+troubleshooting, threat model calls out relay abuse/traffic-analysis
+limits, and we added Elixir ignores (<code>_build/</code>, <code>deps/</code>, PLTs,
+<code>.elixir_ls/</code>) to <code>.gitignore</code>.</li>
 </ul>
-<h2 id="running-the-demo">Running the demo<a class="zola-anchor" href="#running-the-demo" aria-label="Anchor link for: running-the-demo" style="visibility: hidden;"></a>
-</h2>
-<p>The demo sets up two temp clients (Alice/Bob) and a temp relay, runs the invite/handshake, and sends a message.</p>
-<p>Requirements: <code>cargo</code>, <code>mix</code>, <code>curl</code>, and <code>python3</code> on PATH. Rust toolchain should be installed (<code>rustup default stable</code> if not).</p>
+<p><strong>Running the demo</strong></p>
+<p>The demo sets up two temp clients (Alice/Bob) and a temp relay, runs the
+invite/handshake, and sends a message.</p>
+<p>Requirements: <code>cargo</code>, <code>mix</code>, <code>curl</code>, and <code>python3</code> on PATH. Rust toolchain
+should be installed (<code>rustup default stable</code> if not).</p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> from repo root</span><span class="z-comment z-line z-number-sign z-shell">
 </span></span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">make</span></span><span class="z-meta z-function-call z-arguments z-shell"> demo</span>
 </span></code></pre>
@@ -187,14 +181,16 @@
 </span></code></pre>
 <p>Useful env toggles:</p>
 <ul>
-<li><code>RELAY_URL=http://127.0.0.1:5005</code> – force a specific relay URL/port (otherwise the script finds a free port).</li>
-<li><code>USE_EXISTING_RELAY=1 RELAY_URL=http://127.0.0.1:4000</code> – skip starting a relay and point at one you already run (<code>mix run --no-halt</code>).</li>
+<li><code>RELAY_URL=http://127.0.0.1:5005</code> – force a specific relay URL/port
+(otherwise the script finds a free port).</li>
+<li><code>USE_EXISTING_RELAY=1 RELAY_URL=http://127.0.0.1:4000</code> – skip starting a
+relay and point at one you already run (<code>mix run --no-halt</code>).</li>
 <li><code>KEEP_STATE=1</code> – keep temp dirs under <code>/tmp</code> instead of cleaning them up.</li>
 <li><code>TRACE=1</code> – bash trace for the script.</li>
 </ul>
-<p>During the demo the CLI prints the <code>peer=</code> value after handshake; that’s the key to use with <code>send</code>.</p>
-<h2 id="manual-quickstart-without-the-script">Manual quickstart (without the script)<a class="zola-anchor" href="#manual-quickstart-without-the-script" aria-label="Anchor link for: manual-quickstart-without-the-script" style="visibility: hidden;"></a>
-</h2>
+<p>During the demo the CLI prints the <code>peer=</code> value after handshake; that’s
+the key to use with <code>send</code>.</p>
+<p><strong>Manual quickstart (without the script)</strong></p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> start relay on a chosen port</span><span class="z-comment z-line z-number-sign z-shell">
 </span></span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-support z-function z-cd z-shell">cd</span></span><span class="z-meta z-function-call z-arguments z-shell"> relay/kaheksa</span>
 </span><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">RELAY_PORT</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">5005</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">mix</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>no-halt</span></span>
@@ -218,65 +214,11 @@
 </span></code></pre>
 <p>Add <code>--verbose</code> to any CLI command if you want to see relay URLs per call.</p>
 
-      </article>
-
-      
-      
-
-      
-      
-    </div>
-
-    
-
-
-<footer>
-  <div class="left">
-    <div class="copyright">
-      ∅ 2026 n0um3n4
-      
-    </div>
-  </div>
-
-  <div class="right">
-    
-    
-      
-    
-    
-    <a id="rss-btn" href="https://idunnowhatiamdoing.engineering/posts/feed.xml">RSS</a>
-    
-    
-
-    
-  </div>
-</footer>
-
-
-
-
-<dialog id="rss-mask">
-  <div>
-    <a href="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml">https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml</a>
-    
-    
-    <button autofocus aria-label="copy" data-link="https:&#x2F;&#x2F;idunnowhatiamdoing.engineering&#x2F;posts&#x2F;feed.xml" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
-" >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z" fill="currentColor"></path></svg>
-
-    </button>
-  </div>
-</dialog>
-
-
-
-  </main>
-</div>
+  </pre>
+</main>
 
   
 <script src="/js/lightense.min.js"></script>
-
 
   <script src="https://idunnowhatiamdoing.engineering/js/main.js"></script>
 </body>

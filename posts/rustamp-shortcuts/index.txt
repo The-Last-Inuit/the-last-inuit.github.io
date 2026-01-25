@@ -1,15 +1,13 @@
-← back
 
-rustamp | shortcuts
 
-Nov 15, 2025
+    ← back
 
-One thing I don't like is the different shortcuts for each UI engine.
-Ughh!
+    rustamp | shortcuts
+    Nov 15, 2025
 
-It should be relative simple to change that with the architecture we
-designed. Let us centralize that with input.rs:
-
+    One thing I don't like is the different shortcuts for each UI engine. Ughh!
+    It should be relative simple to change that with the architecture we designed.
+    Let us centralize that with input.rs:
     use crate::engine::Command;
     use std::path::PathBuf;
 
@@ -230,11 +228,3 @@ We only need to update our keyboard handler at app:
 
         None => Task::none(),
     }
-
-∅ 2026 n0um3n4
-
-RSS
-
-https://idunnowhatiamdoing.engineering/posts/feed.xml
-
-[]
